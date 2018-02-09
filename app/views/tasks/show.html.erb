@@ -1,0 +1,51 @@
+
+<h1>Task : <%= @task.title %></h1>
+<div class= "left_wrap">
+
+  <p>Author : <%= @task.author %></p>
+  <br/>
+  <p>Created at : <%= @task.created_at %></p>
+  <br/>
+  <p>Description : <%= @task.description%></p>
+  <br/>
+  <p>Job Number : <%= @task.job_number%></p>
+  <br/>
+  <p>Status : <%= @task.status%></p>
+  <br/>
+  <p>parent task : <%= @task.parent_task%></p>
+  <br/>
+  <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
+  <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the task?"}%>
+  <br/><br/>
+</div>
+
+<div class = "right_wrap">
+  <h2>SubTasks</h2>
+  <ul id="subtasks">
+    <% @project.tasks.each do |subtask| %>
+        <% if subtask.parent_task == @task.id %>
+            <li>
+              <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
+            </li>
+        <%end%>
+    <% end %>
+  </ul>
+  <br/>
+  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id), {:style=>'color:red'}%>
+  <br/><br/>
+</div>
+
+
+<h2>Comments(<%= @task.comments.size %>)</h2>
+<%= render partial: 'tasks/comment', collection: @task.comments.reverse %>
+<h3>Post a Comment</h3>
+<%= render partial: 'comments/form' %>
+<br/>
+
+
+
+<% if @task.parent_task == nil %>
+    <%= link_to "<< Back to Project", project_path(@task.project_id) %>
+<% else %>
+    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task)%>
+<% end %>

@@ -1,0 +1,18 @@
+
+<style>
+    ul li {list-style: none}
+</style>
+
+<h1>All Projects</h1>
+
+<ul id="projects">
+  <% @projects.each do |project| %>
+      <li>
+        <%= link_to project.title, project_path(project), class: 'project_title' %>
+      </li>
+  <% end %>
+</ul>
+
+<%= link_to "Create a New Project", new_project_path, class: "new_project" %>
+
+

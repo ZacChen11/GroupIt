@@ -1,0 +1,23 @@
+
+<style>
+    ul li {color:red}
+</style>
+
+<%= form_for @comment, url: project_task_comments_path(@task.project_id, @comment.task_id) do |f| %>
+    <ul>
+      <% @comment.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+      <% end %>
+    </ul>
+    <p>
+      <%= f.label :author_name, "Your Name" %><br/>
+      <%= f.text_field :author_name %>
+    </p>
+    <p>
+      <%= f.label :body, "Your Comment" %><br/>
+      <%= f.text_area :body %>
+    </p>
+    <p>
+      <%= f.submit 'Submit' %>
+    </p>
+<% end %>

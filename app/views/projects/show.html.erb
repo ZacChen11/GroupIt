@@ -1,0 +1,22 @@
+<h1><%= @project.title %></h1>
+<p>Author : <%= @project.author %></p>
+<br/>
+<p>Description : <%= @project.description%></p>
+<br/>
+<%= link_to  "edit" , edit_project_path(@project), {:style=>'color:red'} %>
+<%= link_to  "delete" , project_path(@project), :style=>'color:red', method: :delete, data: {confirm: "Really delete the project?"} %>
+<br/><br/>
+<h2>Tasks</h2>
+<ul id="tasks">
+  <% @project.tasks.each do |task| %>
+      <% if task.parent_task == nil %>
+      <li>
+         <%= link_to task.title, project_task_path(task.project_id, task.id)%>
+      </li>
+      <%end%>
+  <% end %>
+</ul>
+<br/>
+<%= link_to "create task", new_project_task_path(@project), {:style=>'color:red'}%>
+<br/><br/>
+<%= link_to "<< Back to Project List", projects_path %>
