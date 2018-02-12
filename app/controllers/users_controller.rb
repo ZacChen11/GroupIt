@@ -4,6 +4,10 @@ class UsersController < ApplicationController
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :user_type, :password, :password_confirmation)
   end
 
+  def index
+    @users = User.all
+  end
+
   def show
     @user = User.find(params[:id])
   end

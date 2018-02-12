@@ -22,12 +22,11 @@
 <div class = "right_wrap">
   <h2>SubTasks</h2>
   <ul id="subtasks">
-    <% @project.tasks.each do |subtask| %>
-        <% if subtask.parent_task == @task.id %>
-            <li>
-              <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
-            </li>
-        <%end%>
+    <% @task.tasks.each do |subtask| %>
+      <li>
+        <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
+      </li>
+
     <% end %>
   </ul>
   <br/>

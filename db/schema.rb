@@ -27,9 +27,13 @@ ActiveRecord::Schema.define(version: 20180209162606) do
     t.string   "title"
     t.string   "author"
     t.text     "description"
+    t.integer  "parent_user"
+    t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id"
 
   create_table "tasks", force: :cascade do |t|
     t.string   "title"
@@ -52,7 +56,7 @@ ActiveRecord::Schema.define(version: 20180209162606) do
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
-    t.integer  "user_type"
+    t.boolean  "user_type"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password_digest"

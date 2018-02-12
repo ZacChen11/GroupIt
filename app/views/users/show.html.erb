@@ -1,16 +1,27 @@
 <h1><%= @user.user_name %></h1>
+
+<% if @user.user_type %>
+  <h2>Welcome Administer !!</h2>
+<% else %>
+  <h2>Welcome Developer !!</h2>
+<% end %>
+
+
 <p>Email Address : <%= @user.email%></p>
 <br/>
 <p>First Name : <%= @user.first_name%></p>
 <br/>
 <p>Last Name : <%= @user.last_name%></p>
 <br/>
-<p>User Type : <%= @user.user_type%></p>
-<br/>
 
 
-<h3><%= link_to "View Projects" %></h3>
+<% if @user.user_type %>
+  <h3><%= link_to "View Users", users_path %></h3>
+<% end %>
+
+
+<h3><%= link_to "View Projects", projects_path %></h3>
 
 <h2>
-  <%= link_to "Log out" %>
+  <%= link_to "Log out", login_path %>
 </h2>

@@ -13,6 +13,12 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.job_number = $jobNum
     @task.project_id = params[:project_id]
+
+    #if the task is a sub task
+    if @task.parent_task != nil
+      @task.task_id = @task.parent_task
+    end
+
     if @task.save
       redirect_to  project_task_path(@task.project_id, @task.id)
     else
