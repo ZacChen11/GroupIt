@@ -1,11 +1,12 @@
 class ProjectsController < ApplicationController
 
   def project_params
-    params.require(:project).permit(:title, :author, :description)
+    params.require(:project).permit(:title, :author, :description, :user_id)
   end
 
   def index
-    @projects = Project.all
+    @user = User.find(params[:user])
+    @projects = @user.projects.all
   end
 
   def show
@@ -27,8 +28,9 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project = Project.find(params[:id])
+    user_id = @project.user_id
     @project.destroy
-    redirect_to projects_path
+    redirect_to projects_path(:user => user_id)
   end
 
   def edit

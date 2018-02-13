@@ -1,7 +1,7 @@
 <h1><%= @user.user_name %></h1>
 
 <% if @user.user_type %>
-  <h2>Welcome Administer !!</h2>
+  <h2>Welcome Administor !!</h2>
 <% else %>
   <h2>Welcome Developer !!</h2>
 <% end %>
@@ -16,12 +16,14 @@
 
 
 <% if @user.user_type %>
-  <h3><%= link_to "View Users", users_path %></h3>
+    <h3><%= link_to "View Users", users_path(:user => @user.id) %></h3>
 <% end %>
 
+<% if params[:admin] != nil %>
+    <h3><%= link_to "View Projects", projects_path(:user => @user.id, :admin => params[:admin]) %></h3>
+    <h3><%= link_to "<< Back to User List", users_path(:user => params[:admin]) %></h3>
+<% else %>
+    <h3><%= link_to "View Projects", projects_path(:user => @user.id) %></h3>
+    <h2><%= link_to "Log out", login_path %></h2>
+<% end %>
 
-<h3><%= link_to "View Projects", projects_path %></h3>
-
-<h2>
-  <%= link_to "Log out", login_path %>
-</h2>

@@ -12,25 +12,24 @@
   <br/>
   <p>Status : <%= @task.status%></p>
   <br/>
-  <p>parent task : <%= @task.parent_task%></p>
-  <br/>
+
   <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
-  <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the task?"}%>
+  | <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the task?"}%>
   <br/><br/>
 </div>
 
 <div class = "right_wrap">
-  <h2>SubTasks</h2>
+  <h2>SubTasks(<%= @task.tasks.size %>)</h2>
   <ul id="subtasks">
     <% @task.tasks.each do |subtask| %>
       <li>
-        <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
+        <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id, :admin => params[:admin])%>
       </li>
 
     <% end %>
   </ul>
   <br/>
-  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id), {:style=>'color:red'}%>
+  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id),  class: "new_project" %>
   <br/><br/>
 </div>
 
@@ -44,7 +43,7 @@
 
 
 <% if @task.parent_task == nil %>
-    <%= link_to "<< Back to Project", project_path(@task.project_id) %>
+    <%= link_to "<< Back to Project", project_path(@task.project_id, :admin => params[:admin]) %>
 <% else %>
-    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task)%>
+    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task, :admin => params[:admin])%>
 <% end %>

@@ -7,12 +7,17 @@
 
 <ul id="projects">
   <% @projects.each do |project| %>
-      <li>
-        <%= link_to project.title, project_path(project), class: 'project_title' %>
-      </li>
+      <li><%= link_to project.title, project_path(project, :admin => params[:admin]), class: 'project_title' %></li>
   <% end %>
 </ul>
 
-<%= link_to "Create a New Project", new_project_path, class: "new_project" %>
+<%= link_to "Create a New Project", new_project_path(:user => @user.id), class: "new_project" %>
+
+<br/><br/>
+<% if params[:admin] == nil %>
+    <h3><%= link_to "<< Back to Personal Profile", user_path(@user) %></h3>
+<% else %>
+    <h3><%= link_to "<< Back to User Profiel", user_path(@user, :admin => params[:admin]) %></h3>
+<% end %>
 
 

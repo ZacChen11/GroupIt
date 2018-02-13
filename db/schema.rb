@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(version: 20180209162606) do
     t.string   "title"
     t.string   "author"
     t.text     "description"
-    t.integer  "parent_user"
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

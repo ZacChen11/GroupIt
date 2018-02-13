@@ -14,7 +14,6 @@
       <%= f.label :title %><br />
       <%= f.text_field :title %>
     </p>
-
     <p>
       <%= f.label :author %><br />
       <%= f.text_field :author %>
@@ -25,8 +24,9 @@
     </p>
     <p>
       <%= f.label :status %><br />
-      <%= f.text_field :status %>
+      <%= f.select :status, options_for_select([["Open", "Open"], ["In Progress", "In Progress"], ["Waiting", "Waiting"], ["Resloved", "Resolved"]]) %>
     </p>
+    <br/>
     <p>
       <%= f.hidden_field :parent_task, :value => params[:parent_task] %>
       <%= f.submit %>
