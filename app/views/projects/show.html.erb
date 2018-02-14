@@ -7,9 +7,8 @@
 <br/>
 
 
-
-<%= link_to  "edit" , edit_project_path(@project, :user => @project.user_id), {:style=>'color:red'} %>
-| <%= link_to  "delete" , project_path(@project), :style=>'color:red', method: :delete, data: {confirm: "Really delete the project?"} %>
+<%= link_to  "edit" , edit_project_path(@project), {:style=>'color:red'} %>
+| <%= link_to  "delete" , @project, :style=>'color:red', method: :delete, data: {confirm: "Really delete the project?"} %>
 <br/><br/>
 <h2>Tasks</h2>
 <ul id="tasks">
@@ -17,12 +16,12 @@
       <%# only display parent task %>
       <% if task.parent_task == nil %>
       <li>
-         <%= link_to task.title, project_task_path(task.project_id, task.id, :admin => params[:admin])%>
+         <%= link_to task.title, project_task_path(task.project_id, task.id)%>
       </li>
       <%end%>
   <% end %>
 </ul>
 <br/>
-<%= link_to "create task", new_project_task_path(@project), class: "new_project" %>
+<%= link_to "Create Task", new_project_task_path(@project), class: "new_project" %>
 <br/><br/>
-<h3><%= link_to "<< Back to Project List", projects_path(:user => @project.user_id, :admin => params[:admin]) %></h3>
+<h3><%= link_to "<< Back to Project List", projects_path %></h3>

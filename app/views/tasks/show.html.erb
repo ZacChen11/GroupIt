@@ -1,4 +1,3 @@
-
 <h1>Task : <%= @task.title %></h1>
 <div class= "left_wrap">
 
@@ -23,7 +22,7 @@
   <ul id="subtasks">
     <% @task.tasks.each do |subtask| %>
       <li>
-        <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id, :admin => params[:admin])%>
+        <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
       </li>
 
     <% end %>
@@ -43,7 +42,7 @@
 
 
 <% if @task.parent_task == nil %>
-    <%= link_to "<< Back to Project", project_path(@task.project_id, :admin => params[:admin]) %>
+    <%= link_to "<< Back to Project", project_path(@task.project_id) %>
 <% else %>
-    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task, :admin => params[:admin])%>
+    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task)%>
 <% end %>

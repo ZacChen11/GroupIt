@@ -16,4 +16,8 @@ class SessionsController < ApplicationController
     redirect_to 'new'
   end
 
+  def welcome
+
+  end
+
 end

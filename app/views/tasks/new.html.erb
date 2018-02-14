@@ -15,10 +15,6 @@
       <%= f.text_field :title %>
     </p>
     <p>
-      <%= f.label :author %><br />
-      <%= f.text_field :author %>
-    </p>
-    <p>
       <%= f.label :description %><br/>
       <%= f.text_area :description %>
     </p>
@@ -28,6 +24,7 @@
     </p>
     <br/>
     <p>
+      <%= f.hidden_field :author, :value => current_user.user_name %>
       <%= f.hidden_field :parent_task, :value => params[:parent_task] %>
       <%= f.submit %>
     </p>

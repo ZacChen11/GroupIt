@@ -7,6 +7,7 @@ class CreateTasks < ActiveRecord::Migration
       t.text :description
       t.string :status
       t.integer :parent_task
+      t.string :assignee
       t.references :task, index: true, foreign_key: true
       t.references :project, index: true, foreign_key: true
       t.timestamps null: false

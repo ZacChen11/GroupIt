@@ -1,17 +1,26 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :show]
+  before_action :correct_user,   only: [:index, :edit, :update, :show]
 
   def logged_in_user
     unless logged_in?
-      redirect_to login_path
+      redirect_to root_path
     end
   end
 
   # Confirms the correct user or the admin user.
   def correct_user
-    @user = User.find(params[:id])
-    redirect_to login_path unless @user == current_user || current_user.user_type
+    # When an admin tries to check all the users
+    if params[:id] == nil
+      redirect_to root_path unless current_user.user_type
+    else
+      @user = User.find(params[:id])
+      # When the user is not the administrator
+      if !current_user.user_type
+        redirect_to root_path unless @user == current_user
+      end
+    end
+
   end
 
   def user_params
@@ -20,7 +29,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    @user = User.find(params[:user])
+    @user = User.find(current_user.id)
   end
 
   def show
@@ -34,11 +43,11 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.save
-      if params[:admin] == nil
+      if current_user != nil && current_user.user_type
+        redirect_to users_path
+      else
         log_in(@user)
         redirect_to @user
-      else
-        redirect_to users_path(:user => params[:admin])
       end
     else
         render 'new'
@@ -58,7 +67,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to user_path(@user.id, :admin => params[:admin])
+      redirect_to user_path(@user.id)
     else
       render 'edit'
     end

@@ -1,23 +1,18 @@
-
-<style>
-    ul li {list-style: none}
-</style>
-
 <h1>All Projects</h1>
-
-<ul id="projects">
-  <% @projects.each do |project| %>
-      <li><%= link_to project.title, project_path(project, :admin => params[:admin]), class: 'project_title' %></li>
-  <% end %>
-</ul>
-
-<%= link_to "Create a New Project", new_project_path(:user => @user.id), class: "new_project" %>
-
-<br/><br/>
-<% if params[:admin] == nil %>
-    <h3><%= link_to "<< Back to Personal Profile", user_path(@user) %></h3>
+<% if Project.all.size >0 %>
+    <h2><%= Project.all.size %> Projects</h2>
+    <ul id="projects">
+      <% @projects.each do |project| %>
+          <li><%= link_to project.title, project, class: 'project_title' %></li>
+      <% end %>
+    </ul>
 <% else %>
-    <h3><%= link_to "<< Back to User Profiel", user_path(@user, :admin => params[:admin]) %></h3>
+    <p>No Projects</p>
 <% end %>
+
+<%= link_to "Create a New Project", new_project_path, class: "new_project" %>
+<br/><br/>
+<h3><%= link_to "<< Back to Personal Profile", current_user %></h3>
+
 
 

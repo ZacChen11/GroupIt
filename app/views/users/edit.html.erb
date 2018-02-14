@@ -1,31 +1,54 @@
-<h1>Modify a User</h1>
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for @user, url: user_path(:admin => params[:admin]) do |f| %>
-        <%= render partial: 'error_messages' %>
-        <%= f.label :user_name %>
-        <%= f.text_field :user_name%>
-        <br/><br/>
-        <%= f.label :email %>
-        <%= f.text_field :email %>
-        <br/><br/>
-        <%= f.label :first_name%>
-        <%= f.text_field :first_name %>
-        <br/><br/>
-        <%= f.label :last_name%>
-        <%= f.text_field :last_name %>
-        <br/><br/>
-        <%= f.label :admin %>
-        <%= f.check_box :user_type  %>
-        <br/><br/>
-        <%= f.label :password %>
-        <%= f.password_field :password%>
-        <br/><br/>
-        <%= f.label :password_confirmation%>
-        <%= f.password_field :password_confirmation %>
-        <br/><br/>
-
-        <%= f.submit%>
-    <% end %>
-  </div>
-</div>
+<% if current_user.user_type %>
+    <h1>Modify a User</h1>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <%= form_for @user, url: user_path do |f| %>
+            <%= render partial: 'error_messages' %>
+            <%= f.label :user_name %>
+            <%= f.text_field :user_name%>
+            <br/><br/>
+            <%= f.label :email %>
+            <%= f.text_field :email %>
+            <br/><br/>
+            <%= f.label :first_name%>
+            <%= f.text_field :first_name %>
+            <br/><br/>
+            <%= f.label :last_name%>
+            <%= f.text_field :last_name %>
+            <br/><br/>
+            <%= f.label :admin %>
+            <%= f.check_box :user_type  %>
+            <br/><br/>
+            <%= f.label :password %>
+            <%= f.password_field :password%>
+            <br/><br/>
+            <%= f.label :password_confirmation%>
+            <%= f.password_field :password_confirmation %>
+            <br/><br/>
+            <%= f.submit%>
+        <% end %>
+      </div>
+    </div>
+<% else %>
+    <h1>Update Your Information</h1>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <%= form_for @user, url: user_path do |f| %>
+            <%= render partial: 'error_messages' %>
+            <%= f.label :first_name%>
+            <%= f.text_field :first_name %>
+            <br/><br/>
+            <%= f.label :last_name%>
+            <%= f.text_field :last_name %>
+            <br/><br/>
+            <%= f.label :password %>
+            <%= f.password_field :password%>
+            <br/><br/>
+            <%= f.label :password_confirmation%>
+            <%= f.password_field :password_confirmation %>
+            <br/><br/>
+            <%= f.submit%>
+        <% end %>
+      </div>
+    </div>
+<% end %>

@@ -19,5 +19,13 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+  #
+  # def host_id(user)
+  #   @host_user ||= User.find_by(id: user.id)
+  # end
+  #
+  # def wipe_host_user
+  #   @host_user = nil
+  # end
 
 end

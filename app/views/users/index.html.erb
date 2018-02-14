@@ -3,16 +3,16 @@
 <ul id="users">
   <% @users.each do |user| %>
     <li>
-      <%= link_to user.user_name, user_path(user, :admin => @user.id), class: 'user_title' %>
+      <%= link_to user.user_name, user, class: 'user_title' %>
       <% if !user.user_type %>
-          | <%= link_to "delete", user_path(user, :admin => @user.id), method: :delete, data: { confirm: "You sure?" } %>
-          | <%= link_to "modify", edit_user_path(user.id, :admin => @user.id) %>
+          | <%= link_to "delete", user, method: :delete, data: { confirm: "You sure?" } %>
+          | <%= link_to "modify", edit_user_path(user.id) %>
       <% end %>
     </li>
   <% end %>
 </ul>
 
-<%= link_to "Create a New User", new_user_path(:admin => @user.id), class: "new_project" %>
+<%= link_to "Create a New User", new_user_path, class: "new_project" %>
 <br/><br/>
-<h3><%= link_to "<< Back to Personal Profile", user_path(@user) %></h3>
+<h3><%= link_to "<< Back to Personal Profile", @user %></h3>
 

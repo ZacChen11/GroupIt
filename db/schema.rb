@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180209162606) do
     t.text     "description"
     t.string   "status"
     t.integer  "parent_task"
+    t.string   "assignee"
     t.integer  "task_id"
     t.integer  "project_id"
     t.datetime "created_at",  null: false
