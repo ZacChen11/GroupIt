@@ -40,16 +40,15 @@ ActiveRecord::Schema.define(version: 20180209162606) do
     t.string   "author"
     t.text     "description"
     t.string   "status"
-    t.integer  "parent_task"
-    t.string   "assignee"
-    t.integer  "task_id"
+    t.integer  "assignee"
+    t.integer  "parent_task_id"
     t.integer  "project_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
+  add_index "tasks", ["parent_task_id"], name: "index_tasks_on_parent_task_id"
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id"
-  add_index "tasks", ["task_id"], name: "index_tasks_on_task_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "user_name"

@@ -1,29 +1,13 @@
 class ProjectsController < ApplicationController
 
   before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-  before_action :correct_user,   only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
 
   def logged_in_user
     unless logged_in?
-      redirect_to login_path
+      redirect_to root_path
     end
   end
-
-  # Confirms the correct user or the admin user.
-  def correct_user
-    if params[:id] == nil
-      redirect_to root_path unless current_user.user_type
-    else
-      @user = User.find(params[:id])
-    end
-
-    # When the current is not an admin
-    if !current_user.user_type
-      redirect_to root_path unless @user == current_user
-    end
-  end
-
 
   def project_params
     params.require(:project).permit(:title, :author, :description, :user_id)

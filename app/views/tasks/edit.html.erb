@@ -13,10 +13,17 @@
       <%= f.label :title %><br />
       <%= f.text_field :title %>
     </p>
+    <br/>
     <p>
       <%= f.label :description %><br/>
       <%= f.text_area :description %>
     </p>
+    <br/>
+    <p>
+      <%= f.label :Assign_This_Task %><br/>
+      <%= f.collection_select :assignee, User.all, :id, :user_name, prompt: "Please select a user" %>
+    </p>
+    <br/>
     <p>
       <%= f.label :status %><br />
       <%= f.select :status, options_for_select([["Open", "Open"], ["In Progress", "In Progress"], ["Waiting", "Waiting"], ["Resloved", "Resolved"]]) %>

@@ -20,7 +20,6 @@ class UsersController < ApplicationController
         redirect_to root_path unless @user == current_user
       end
     end
-
   end
 
   def user_params
@@ -44,7 +43,7 @@ class UsersController < ApplicationController
     @user = User.create(user_params)
     if @user.save
       if current_user != nil && current_user.user_type
-        redirect_to users_path
+        redirect_to @user
       else
         log_in(@user)
         redirect_to @user

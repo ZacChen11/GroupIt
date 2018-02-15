@@ -11,20 +11,23 @@
   <br/>
   <p>Status : <%= @task.status%></p>
   <br/>
+  <p>Assignee : <%= User.find_by(id: @task.assignee).user_name %></p>
 
+ <%# <%= collection_select(f, :assignee, User.all, :user_name, :user_name, prompt: "Please select a user") %>
+
+  <br/>
   <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
   | <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the task?"}%>
   <br/><br/>
 </div>
 
 <div class = "right_wrap">
-  <h2>SubTasks(<%= @task.tasks.size %>)</h2>
+  <h2>SubTasks(<%= @task.sub_tasks.size %>)</h2>
   <ul id="subtasks">
-    <% @task.tasks.each do |subtask| %>
+    <% @task.sub_tasks.each do |subtask| %>
       <li>
         <%= link_to subtask.title, project_task_path(subtask.project_id, subtask.id)%>
       </li>
-
     <% end %>
   </ul>
   <br/>

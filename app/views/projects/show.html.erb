@@ -1,6 +1,8 @@
 <h1><%= @project.title %></h1>
 <p>Author : <%= @project.author %></p>
 <br/>
+<p>Created at : <%= @project.created_at %></p>
+<br/>
 <p>Description : <%= @project.description%></p>
 <br/>
 <p>User: <%= @project.user_id %></p>
@@ -14,7 +16,7 @@
 <ul id="tasks">
   <% @project.tasks.each do |task| %>
       <%# only display parent task %>
-      <% if task.parent_task == nil %>
+      <% if task.parent_task_id == nil %>
       <li>
          <%= link_to task.title, project_task_path(task.project_id, task.id)%>
       </li>

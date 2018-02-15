@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out
-    redirect_to 'new'
+    redirect_to root_path
   end
 
   def welcome

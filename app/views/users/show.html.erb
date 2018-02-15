@@ -24,5 +24,5 @@
     <h3><%= link_to "<<Back to User List", users_path %></h3>
 <% else%>
     <h3><%= link_to "Update Personal Information", edit_user_path(@user.id) %></h3>
-    <h3><%= link_to "Log out", root_path %></h3>
+    <h3><%= link_to "Log out", logout_path, method: :delete %></h3>
 <% end %>

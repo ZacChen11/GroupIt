@@ -1,6 +1,7 @@
 class Task < ActiveRecord::Base
-  belongs_to :project
-  has_many :tasks
+  has_many :sub_tasks,  class_name: "Task", foreign_key: "parent_task_id"
   has_many :comments
-  validates :title, :author, :description, :status, :presence => true
+  belongs_to :project
+  belongs_to :parent_task, class_name: "Task"
+  validates :title, :author, :description, :status, :assignee, :presence => true
 end
