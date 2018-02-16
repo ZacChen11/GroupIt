@@ -1,11 +1,10 @@
 <h1><%= @user.user_name %></h1>
 
-<% if @user.user_type %>
+<% if @user.admin %>
   <h2>Welcome Administor !!</h2>
 <% else %>
   <h2>Welcome Developer !!</h2>
 <% end %>
-
 
 <p>Email Address : <%= @user.email%></p>
 <br/>
@@ -14,13 +13,13 @@
 <p>Last Name : <%= @user.last_name%></p>
 <br/>
 
-
-<% if @user.user_type %>
+<% if @user.admin %>
     <h3><%= link_to "View Users", users_path %></h3>
 <% end %>
+
 <h3><%= link_to "View Projects", projects_path(:user => @user.id) %></h3>
 
-<% if current_user.user_type && @user.id != current_user.id %>
+<% if current_user.admin && @user.id != current_user.id %>
     <h3><%= link_to "<<Back to User List", users_path %></h3>
 <% else%>
     <h3><%= link_to "Update Personal Information", edit_user_path(@user.id) %></h3>

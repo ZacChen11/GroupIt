@@ -5,6 +5,7 @@ class TasksController < ApplicationController
 
   def logged_in_user
     unless logged_in?
+      flash.notice = "Please Log In"
       redirect_to root_path
     end
   end
@@ -27,23 +28,22 @@ class TasksController < ApplicationController
     else
       render 'new'
     end
-
   end
 
   def show
-    @users = User.all
-    @project = Project.find(params[:project_id])
-    @task = @project.tasks.find(params[:id])
+    # @project = Project.find(params[:project_id])
+    # @task = @project.tasks.find(params[:id])
+    @task = Task.find(params[:id])
     @comment = Comment.new
     @comment.task_id = @task.id
   end
 
   def edit
-    @task = Project.find(params[:project_id]).tasks.find(params[:id])
+    @task = Task.find(params[:id])
   end
 
   def update
-    @task = Project.find(params[:project_id]).tasks.find(params[:id])
+    @task = Task.find(params[:id])
     if @task.update(task_params)
       redirect_to project_task_path(@task.project_id, @task.id)
     else

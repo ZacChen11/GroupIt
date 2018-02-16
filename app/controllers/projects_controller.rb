@@ -5,6 +5,7 @@ class ProjectsController < ApplicationController
 
   def logged_in_user
     unless logged_in?
+      flash.notice = "Please Log In"
       redirect_to root_path
     end
   end

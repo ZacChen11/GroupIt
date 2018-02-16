@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   def logged_in_user
     unless logged_in?
+      flash.notice = "Please Log In"
       redirect_to root_path
     end
   end
@@ -12,18 +13,24 @@ class UsersController < ApplicationController
   def correct_user
     # When an admin tries to check all the users
     if params[:id] == nil
-      redirect_to root_path unless current_user.user_type
+      unless current_user.admin
+        flash.notice = "You are not the right user !"
+        redirect_to root_path
+      end
     else
       @user = User.find(params[:id])
       # When the user is not the administrator
-      if !current_user.user_type
-        redirect_to root_path unless @user == current_user
+      unless current_user.admin
+        unless @user == current_user
+          flash.notice = "Your are not the right user !"
+          redirect_to root_path
+        end
       end
     end
   end
 
   def user_params
-    params.require(:user).permit(:user_name, :email, :first_name, :last_name, :user_type, :password, :password_confirmation)
+    params.require(:user).permit(:user_name, :email, :first_name, :last_name, :admin, :password, :password_confirmation)
   end
 
   def index
@@ -42,11 +49,14 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.save
-      if current_user != nil && current_user.user_type
+      #when the admin create a user, the user will be activated automatically
+      if current_user != nil && current_user.admin
+        @user.activated = true
+        @user.save
         redirect_to @user
       else
-        log_in(@user)
-        redirect_to @user
+        flash.notice = "Thanks for signing up"
+        redirect_to root_path
       end
     else
         render 'new'

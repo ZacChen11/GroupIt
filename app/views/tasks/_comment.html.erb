@@ -1,13 +1,17 @@
+<style>
+    #comment{display: inline;  position: relative; left: 100px;}
+    #comment_time{display: inline}
+</style>
+
 <div>
   <h6>Comment by <%= comment.author_name %></h6>
-
-  <% if current_user.user_type %>
-      <%= link_to "delete", project_task_comment_path, :style=>'color:red', method: :delete,  data: { confirm: "You sure?" }%>
-      | <%= link_to "edit", {:style=>'color:red'} %>
-  <% end %>
-
-  <p>Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>
-
+  <p id = "comment_time">Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>
+  <li id = "comment">
+    <%# only admin can edit or delete a comment %>
+    <% if current_user.admin %>
+        <%= link_to "edit", edit_project_task_comment_path(params[:project_id], comment.task_id, comment.id), {:style=>'color:red'} %>
+        | <%= link_to "delete",  project_task_comment_path(params[:project_id], comment.task_id, comment.id), :style=>'color:red', method: :delete, data: { confirm: "You sure?" }%>
+    <% end %>
+  </li>
   <p class="comment"><%= comment.body %></p>
-
 </div>

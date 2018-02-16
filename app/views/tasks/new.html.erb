@@ -22,7 +22,7 @@
     <br/>
     <p>
       <%= f.label :Assign_This_Task %><br/>
-      <%= f.collection_select :assignee, User.all, :id, :user_name, prompt: "Please select a user" %>
+      <%= f.collection_select :assignee, User.where(activated: true), :id, :user_name, prompt: "Please select a user" %>
     </p>
     <br/>
     <p>

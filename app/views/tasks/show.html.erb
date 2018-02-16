@@ -1,6 +1,5 @@
 <h1>Task : <%= @task.title %></h1>
 <div class= "left_wrap">
-
   <p>Author : <%= @task.author %></p>
   <br/>
   <p>Created at : <%= @task.created_at %></p>
@@ -31,7 +30,7 @@
     <% end %>
   </ul>
   <br/>
-  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id),  class: "new_project" %>
+  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id),  class: "new" %>
   <br/><br/>
 </div>
 
@@ -43,9 +42,10 @@
 <br/>
 
 
-
-<% if @task.parent_task == nil %>
-    <%= link_to "<< Back to Project", project_path(@task.project_id) %>
-<% else %>
-    <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task)%>
-<% end %>
+<h3>
+    <% if @task.parent_task == nil %>
+        <%= link_to "<< Back to Project", project_path(@task.project_id) %>
+    <% else %>
+        <%= link_to "<< Back to Parent Task", project_task_path(@task.project_id, @task.parent_task)%>
+    <% end %>
+</h3>
