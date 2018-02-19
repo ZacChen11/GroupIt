@@ -1,7 +1,7 @@
 <%# when the user type is different, the user has different privilege to modify information %>
 <% if current_user.admin %>
     <h1>Modify a User</h1>
-    <%= form_for @user, url: user_path do |f| %>
+    <%= form_for @user do |f| %>
         <%= render partial: 'error_messages' %>
         <%= f.label :user_name %>
         <%= f.text_field :user_name%>
@@ -31,7 +31,7 @@
     <% end %>
 <% else %>
     <h1>Update Your Information</h1>
-        <%= form_for @user, url: user_path do |f| %>
+        <%= form_for @user do |f| %>
         <%= render partial: 'error_messages' %>
         <%= f.label :first_name%>
         <%= f.text_field :first_name %>

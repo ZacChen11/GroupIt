@@ -8,6 +8,8 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean :admin, default: false
       t.boolean :activated, default: false
       t.timestamps null: false
+
+
     end
   end
 end

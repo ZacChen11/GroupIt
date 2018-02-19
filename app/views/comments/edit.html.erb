@@ -2,7 +2,7 @@
     ul li {color:red}
 </style>
 <h1>Edit a Comment</h1>
-<%= form_for @comment, url: project_task_comment_path(params[:project_id], @comment.task_id, @comment.id) do |f| %>
+<%= form_for  [@comment.task.project, @comment.task, @comment] do |f| %>
     <ul>
       <% @comment.errors.full_messages.each do |error| %>
           <li><%= error %></li>
@@ -13,6 +13,7 @@
       <%= f.text_area :body %>
     </p>
     <p>
+      <%= f.hidden_field :edit, :value => true %>
       <%= f.submit 'Submit' %>
     </p>
 <% end %>

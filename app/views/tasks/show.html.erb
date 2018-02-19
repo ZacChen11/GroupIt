@@ -1,16 +1,27 @@
 <h1>Task : <%= @task.title %></h1>
 <div class= "left_wrap">
-  <p>Author : <%= @task.author %></p>
+  <p>Author : <%= User.find_by(id: @task.author).user_name %></p>
   <br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
   <p>Description : <%= @task.description%></p>
   <br/>
-  <p>Job Number : <%= @task.job_number%></p>
+  <p>Job Number : <%= @task.id%></p>
   <br/>
-  <p>Status : <%= @task.status%></p>
+  <p>Status :
+    <% case @task.status %>
+    <% when 1 %>
+        <%= "Opening" %>
+    <% when 2 %>
+        <%= "In Processing" %>
+    <% when 3 %>
+        <%= "Waiting" %>
+    <% when 4 %>
+        <%= "Resolved" %>
+    <% end %>
+  </p>
   <br/>
-  <p>Assignee : <%= User.find_by(id: @task.assignee).user_name %></p>
+  <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
 
  <%# <%= collection_select(f, :assignee, User.all, :user_name, :user_name, prompt: "Please select a user") %>
 

@@ -4,7 +4,7 @@
 </style>
 
 <h1>Create a New Task</h1>
-<%= form_for @task, url: project_tasks_path do |f| %>
+<%= form_for [:project,@task] do |f| %>
     <ul>
       <% @task.errors.full_messages.each do |error| %>
           <li><%= error %></li>
@@ -22,16 +22,16 @@
     <br/>
     <p>
       <%= f.label :Assign_This_Task %><br/>
-      <%= f.collection_select :assignee, User.where(activated: true), :id, :user_name, prompt: "Please select a user" %>
+      <%= f.collection_select :assignee_id, User.where(activated: true), :id, :user_name, prompt: "Please select a user" %>
     </p>
     <br/>
     <p>
       <%= f.label :status %><br />
-      <%= f.select :status, options_for_select([["Open", "Open"], ["In Progress", "In Progress"], ["Waiting", "Waiting"], ["Resloved", "Resolved"]]), prompt: "Please select a status" %>
+      <%= f.select :status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]]), prompt: "Please select a status" %>
     </p>
     <br/>
     <p>
-      <%= f.hidden_field :author, :value => current_user.user_name %>
+      <%= f.hidden_field :author, :value => current_user.id %>
       <%= f.hidden_field :parent_task_id, :value => params[:parent_task] %>
       <%= f.submit %>
     </p>

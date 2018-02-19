@@ -1,5 +1,5 @@
 <h1>Sign up</h1>
-<%= form_for @user, url: users_path  do |f| %>
+<%= form_for @user  do |f| %>
     <%= render partial: 'error_messages' %>
     <%= f.label :user_name %>
     <%= f.text_field :user_name%>

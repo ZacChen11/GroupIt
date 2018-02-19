@@ -3,7 +3,7 @@
 </style>
 
 <h1>Create a New Project</h1>
-<%= form_for @project, url: projects_path do |f| %>
+<%= form_for @project do |f| %>
     <ul>
       <% @project.errors.full_messages.each do |error| %>
           <li><%= error %></li>
@@ -18,7 +18,6 @@
       <%= f.text_area :description %>
     </p>
     <p>
-      <%= f.hidden_field :author, :value => current_user.user_name %>
       <%= f.hidden_field :user_id, :value => current_user.id %>
       <%= f.submit %>
     </p>

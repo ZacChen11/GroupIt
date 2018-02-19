@@ -3,15 +3,15 @@ class ProjectsController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
 
-  def logged_in_user
+  private def logged_in_user
     unless logged_in?
       flash.notice = "Please Log In"
       redirect_to root_path
     end
   end
 
-  def project_params
-    params.require(:project).permit(:title, :author, :description, :user_id)
+  private def project_params
+    params.require(:project).permit(:title, :description, :user_id)
   end
 
   def index

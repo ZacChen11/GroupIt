@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :show]
   before_action :correct_user,   only: [:index, :edit, :update, :show]
 
-  def logged_in_user
+  private def logged_in_user
     unless logged_in?
       flash.notice = "Please Log In"
       redirect_to root_path
@@ -10,7 +10,8 @@ class UsersController < ApplicationController
   end
 
   # Confirms the correct user or the admin user.
-  def correct_user
+
+  private def correct_user
     # When an admin tries to check all the users
     if params[:id] == nil
       unless current_user.admin
@@ -29,7 +30,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def user_params
+  private def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :admin, :password, :password_confirmation)
   end
 
@@ -48,18 +49,21 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
-    if @user.save
-      #when the admin create a user, the user will be activated automatically
-      if current_user != nil && current_user.admin
-        @user.activated = true
-        @user.save
+    #when the admin create a user, the user will be activated automatically
+    if current_user && current_user.admin
+      @user.activated = true
+      if @user.save
         redirect_to @user
       else
-        flash.notice = "Thanks for signing up"
-        redirect_to root_path
+        render 'new'
       end
     else
+      if @user.save
+        flash.notice = "Thanks for signing up"
+        redirect_to root_path
+      else
         render 'new'
+      end
     end
   end
 

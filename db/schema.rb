@@ -11,21 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180209162606) do
+ActiveRecord::Schema.define(version: 20180219164244) do
 
   create_table "comments", force: :cascade do |t|
-    t.string   "author_name"
+    t.integer  "author"
     t.text     "body"
+    t.boolean  "edit",       default: false
     t.integer  "task_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "comments", ["task_id"], name: "index_comments_on_task_id"
 
+  create_table "hours", force: :cascade do |t|
+    t.integer  "work_time"
+    t.integer  "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "hours", ["task_id"], name: "index_hours_on_task_id"
+
   create_table "projects", force: :cascade do |t|
     t.string   "title"
-    t.string   "author"
     t.text     "description"
     t.integer  "user_id"
     t.datetime "created_at",  null: false
@@ -36,11 +45,10 @@ ActiveRecord::Schema.define(version: 20180209162606) do
 
   create_table "tasks", force: :cascade do |t|
     t.string   "title"
-    t.integer  "job_number"
-    t.string   "author"
+    t.integer  "author"
     t.text     "description"
-    t.string   "status"
-    t.integer  "assignee"
+    t.integer  "status"
+    t.integer  "assignee_id"
     t.integer  "parent_task_id"
     t.integer  "project_id"
     t.datetime "created_at",     null: false
