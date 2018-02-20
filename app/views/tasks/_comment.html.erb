@@ -1,9 +1,5 @@
-<style>
-    #comment{display: inline;  position: relative; left: 100px}
-    #comment_time{display: inline}
-    .icon{display: inline; position: relative; left: 200px; color: green}
-</style>
 
+<%= stylesheet_link_tag 'tasks.scss' %>
 <div>
   <h6 id="comment_author">Comment by <%= User.find_by(id: comment.author).user_name %></h6>
   <p id = "comment_time">Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>

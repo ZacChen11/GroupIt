@@ -15,6 +15,11 @@ class CommentsController < ApplicationController
     unless current_user.admin
       flash.notice = "You don't have the privilege"
       redirect_to root_path
+    else
+      unless Comment.find_by(id: params[:id])
+        flash.notice = "Comment doesn't exist !"
+        redirect_to current_user
+      end
     end
   end
 
@@ -23,8 +28,9 @@ class CommentsController < ApplicationController
   end
 
   def create
+    @comment = Comment.new(comment_params)
     @task = Task.find(params[:task_id])
-    @comment = @task.comments.new(comment_params)
+    @comment.task_id = @task.id
     if @comment.save
       redirect_to project_task_path(params[:project_id], @comment.task_id)
     else

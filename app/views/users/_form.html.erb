@@ -1,0 +1,33 @@
+<%= form_for @user  do |f| %>
+    <%= render partial: 'error_messages', object: @user, as: :item %>
+    <% if local_assigns[:sign_up] || (local_assigns[:edit] && current_user.admin) %>
+        <%= f.label :user_name %>
+        <%= f.text_field :user_name%>
+        <br/><br/>
+        <%= f.label :email %>
+        <%= f.text_field :email %>
+        <br/><br/>
+    <% end %>
+    <%= f.label :first_name%>
+    <%= f.text_field :first_name %>
+    <br/><br/>
+    <%= f.label :last_name%>
+    <%= f.text_field :last_name %>
+    <br/><br/>
+    <% if local_assigns[:edit] && current_user.admin %>
+        <%= f.label :activate%><br/>
+        <%= f.select :activated, options_for_select([["Yes", true], ["No", false]]), prompt: "Please make a choice" %>
+        <br/><br/>
+        <%= f.label :prompt_as_adminnistrator %>
+        <%= f.check_box :admin  %>
+        <br/><br/>
+    <% end %>
+    <%= f.label :password %>
+    <%= f.password_field :password%>
+    <br/><br/>
+    <%= f.label :password_confirmation%>
+    <%= f.password_field :password_confirmation %>
+    <br/><br/>
+    <%= f.submit%>
+<% end %>
+

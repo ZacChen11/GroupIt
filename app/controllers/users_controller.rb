@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :show]
   before_action :correct_user,   only: [:index, :edit, :update, :show]
 
+
   private def logged_in_user
     unless logged_in?
       flash.notice = "Please Log In"
@@ -10,7 +11,6 @@ class UsersController < ApplicationController
   end
 
   # Confirms the correct user or the admin user.
-
   private def correct_user
     # When an admin tries to check all the users
     if params[:id] == nil
@@ -19,13 +19,19 @@ class UsersController < ApplicationController
         redirect_to root_path
       end
     else
-      @user = User.find(params[:id])
-      # When the user is not the administrator
-      unless current_user.admin
-        unless @user == current_user
-          flash.notice = "Your are not the right user !"
-          redirect_to root_path
+      @user = User.find_by(id: params[:id])
+      #check if user exists in database
+      if @user
+        # When the user is not the administrator
+        unless current_user.admin
+          unless @user == current_user
+            flash.notice = "Your are not the right user !"
+            redirect_to root_path
+          end
         end
+      else
+        flash.notice = "User doesn't exist !"
+        redirect_to current_user
       end
     end
   end
