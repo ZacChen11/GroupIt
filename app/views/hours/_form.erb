@@ -1,0 +1,18 @@
+<div id="create_hour">
+  <%= form_for @hour do |f| %>
+      <ul>
+        <% @hour.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+        <% end %>
+      </ul>
+      <p>
+        <%= f.number_field :work_time, step: 0.5 %>
+      </p>
+
+      <p>
+        <%= f.hidden_field :task_id, :value => params[:id] %>
+        <%= f.submit 'ok'  %>
+      </p>
+  <% end %>
+
+</div>

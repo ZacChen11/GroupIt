@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20180219164244) do
   add_index "comments", ["task_id"], name: "index_comments_on_task_id"
 
   create_table "hours", force: :cascade do |t|
-    t.integer  "work_time"
+    t.float    "work_time"
     t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

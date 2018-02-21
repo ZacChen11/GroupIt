@@ -2,14 +2,14 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for :session, url: login_path do |f| %>
-        <%= f.label :email %>
-        <%= f.text_field :email, class: 'form-control' %>
+    <%= form_tag  login_path do  %>
+        <%= label_tag :email_or_username %>
+        <%= text_field_tag :email_or_username %>
         <br/><br/>
-        <%= f.label :password %>
-        <%= f.password_field :password, class: 'form-control' %>
+        <%= label_tag :password %>
+        <%= password_field_tag :password %>
         <br/><br/>
-        <%= f.submit "Log in"%>
+        <%= submit_tag "Log in"%>
     <% end %>
     <br/>
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>

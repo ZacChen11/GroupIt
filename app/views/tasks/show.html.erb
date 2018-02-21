@@ -22,6 +22,11 @@
   </p>
   <br/>
   <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
+  <br/>
+  <p>Task Total Time : <%= @total_time %> h</p>
+  <br/>
+  <p>Set Work Time</p>
+  <%= render partial: 'hours/form' %>
 
  <%# <%= collection_select(f, :assignee, User.all, :user_name, :user_name, prompt: "Please select a user") %>
 

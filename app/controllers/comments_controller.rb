@@ -32,13 +32,15 @@ class CommentsController < ApplicationController
     @task = Task.find(params[:task_id])
     @comment.task_id = @task.id
     if @comment.save
-      redirect_to project_task_path(params[:project_id], @comment.task_id)
+      redirect_to project_task_path(@comment.task.project, @comment.task)
     else
-      render 'tasks/show'
+      flash.notice = "Comment can't be empty"
+      redirect_to :back
     end
   end
 
   def edit
+    @task = Task.find(params[:task_id])
     @comment = Comment.find(params[:id])
   end
 

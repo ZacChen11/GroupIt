@@ -8,9 +8,19 @@ class SessionsController < ApplicationController
     end
   end
 
+  private def valid_email(email)
+    email_format = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    email =~ email_format
+  end
+
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
-    if  user && user.authenticate(params[:session][:password])
+    if valid_email(params[:email_or_username])
+      user = User.find_by(email: params[:email_or_username].downcase)
+    else
+      user = User.find_by(user_name: params[:email_or_username])
+    end
+
+    if  user && user.authenticate(params[:password])
       if user.activated
         # places a temporary cookie on the user’s browser containing an encrypted version of the user’s id,
         # which allows to retrieve the id on subsequent pages using session[:user_id]
@@ -32,6 +42,9 @@ class SessionsController < ApplicationController
   end
 
   def welcome
+  end
+
+  def new
   end
 
 end

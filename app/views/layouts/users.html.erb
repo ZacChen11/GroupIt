@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WorkSystem</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <style>
+      .navbar{position: relative; bottom:30px; left: 700px}
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-class">
+    <ul class="navbar">
+      <li><%=link_to "<<Back to Account", current_user%></li>
+    </ul>
+  </div>
+</header>
+<p class="flash"><%= flash.notice %></p>
+<%= yield %>
+</body>
+</html>
