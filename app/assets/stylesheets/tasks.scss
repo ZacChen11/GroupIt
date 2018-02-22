@@ -1,13 +1,14 @@
 // Place all the styles related to the Tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-#new_task{
-  ul li {color:red}
-}
-#edit_task{
-  ul li {color:red}
-}
-
-#comment{display: inline;  position: relative; left: 100px}
+#new_task{ ul li {color:red} }
+#edit_task{ ul li {color:red} }
+#comment_modify{display: inline;  position: relative; left: 100px}
 #comment_time{display: inline}
 .icon{display: inline; position: relative; left: 200px; color: green}
+#show_time{display: inline; position: relative; left: 10%; }
+#user_work_time{ color: darkseagreen }
+#user_time_link{color: darkseagreen}
+#subtask_work_time{color: indianred}
+#task_link{color: indianred}
+#create_hour{ display:inline; position: relative; bottom:40px; left: 25%}

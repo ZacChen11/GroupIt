@@ -4,6 +4,7 @@ class CreateHours < ActiveRecord::Migration
       t.float :work_time
       t.text :explanation
       t.references :task, index: true, foreign_key: true
+      t.references :user, index: true, foreign_key: true
       t.timestamps null: false
     end
   end

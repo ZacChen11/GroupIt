@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180219164244) do
+ActiveRecord::Schema.define(version: 20180222181902) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "author"
@@ -26,12 +26,15 @@ ActiveRecord::Schema.define(version: 20180219164244) do
 
   create_table "hours", force: :cascade do |t|
     t.float    "work_time"
+    t.text     "explanation"
     t.integer  "task_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "hours", ["task_id"], name: "index_hours_on_task_id"
+  add_index "hours", ["user_id"], name: "index_hours_on_user_id"
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -43,16 +46,34 @@ ActiveRecord::Schema.define(version: 20180219164244) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id"
 
+  create_table "role_maps", force: :cascade do |t|
+    t.integer  "role_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "role_maps", ["role_id"], name: "index_role_maps_on_role_id"
+  add_index "role_maps", ["user_id"], name: "index_role_maps_on_user_id"
+
+  create_table "roles", force: :cascade do |t|
+    t.integer  "role_type"
+    t.string   "role_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string   "title"
     t.integer  "author"
     t.text     "description"
     t.integer  "status"
     t.integer  "assignee_id"
+    t.float    "total_work_time", default: 0.0
     t.integer  "parent_task_id"
     t.integer  "project_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   add_index "tasks", ["parent_task_id"], name: "index_tasks_on_parent_task_id"
@@ -63,7 +84,6 @@ ActiveRecord::Schema.define(version: 20180219164244) do
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
-    t.boolean  "admin",           default: false
     t.boolean  "activated",       default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false

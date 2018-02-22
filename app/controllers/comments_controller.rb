@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
 
   # Confirms only admin can edit/delete a comment.
   private def correct_user
-    unless current_user.admin
+    unless current_user.roles.exists?(role_name: "administrator")
       flash.notice = "You don't have the privilege"
       redirect_to root_path
     else

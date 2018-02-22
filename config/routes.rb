@@ -12,6 +12,6 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
-  post   '/hours',   to: 'tasks#create_hour'
-
+  # post   '/hours',   to: 'tasks#create_hour'
+  resources :hours, only: [:create, :show]
 end

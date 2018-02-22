@@ -6,12 +6,17 @@
         <% end %>
       </ul>
       <p>
-        <%= f.number_field :work_time, step: 0.5 %>
+        <%= f.label :Set_Work_Time %>
+        <%= f.number_field :work_time, step: 0.5, style: 'display: block' %>
       </p>
+      <p>
+      <%= f.label :explanation %>
+      <%= f.text_field :explanation, style: 'width: 40%; display: block' %>
 
       <p>
         <%= f.hidden_field :task_id, :value => params[:id] %>
-        <%= f.submit 'ok'  %>
+        <%= f.hidden_field :user_id, :value => current_user.id %>
+        <%= f.submit 'OK'  %>
       </p>
   <% end %>
 

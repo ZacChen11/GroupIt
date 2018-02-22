@@ -3,7 +3,7 @@
   <% @users.each do |user| %>
     <li>
       <%= link_to user.user_name, user, class: 'user_title' %>
-      <% unless user.admin %>
+      <% unless user.roles.exists?(role_name: "administrator") %>
           | <%= link_to "delete", user, method: :delete, data: { confirm: "You sure?" } %>
           | <%= link_to "modify", edit_user_path(user.id) %>
       <% end %>

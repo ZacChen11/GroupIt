@@ -1,11 +1,10 @@
-
 <%= stylesheet_link_tag 'tasks.scss' %>
 <div>
   <h6 id="comment_author">Comment by <%= User.find_by(id: comment.author).user_name %></h6>
   <p id = "comment_time">Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>
-  <li id = "comment">
+  <li id = "comment_modify">
     <%# only admin can edit or delete a comment %>
-    <% if current_user.admin %>
+    <% if current_user.roles.exists?(role_name: "administrator") %>
         <%= link_to "edit", edit_project_task_comment_path(comment.task.project, comment.task_id, comment.id), {:style=>'color:red'} %>
         | <%= link_to "delete",  project_task_comment_path(comment.task.project, comment.task_id, comment.id), :style=>'color:red', method: :delete, data: { confirm: "You sure?" }%>
     <% end %>

@@ -21,21 +21,17 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :author, :description, :status, :assignee_id, :parent_task_id)
   end
 
-  private def hour_params
-    params.require(:hour).permit(:work_time, :task_id)
-  end
-
   private def total_work_time(task)
-    total_work_time = 0
+    task.total_work_time = 0
     task.sub_tasks.each do |subtask|
       subtask.hours.each do |hour|
-        total_work_time += hour.work_time
+        task.total_work_time += hour.work_time
       end
     end
     task.hours.each do |hour|
-      total_work_time += hour.work_time
+      task.total_work_time += hour.work_time
+      task.save
     end
-    return total_work_time
   end
 
   def new
@@ -53,28 +49,13 @@ class TasksController < ApplicationController
     end
   end
 
-  def create_hour
-    @hour = Hour.new(hour_params)
-    @task = @hour.task
-    if @hour.save
-      redirect_to project_task_path(@hour.task.project, @hour.task)
-    else
-      flash.notice = "Invalid Work Time"
-      redirect_to [@task.project, @task]
-    end
-
-  end
-
   def show
-    # @project = Project.find(params[:project_id])
-    # @task = @project.tasks.find(params[:id])
     @task = Task.find(params[:id])
     @hour = Hour.new
     @hour.task_id = @task.id
     @comment = Comment.new
     @comment.task_id = @task.id
-    @total_time = total_work_time(@task)
-
+    total_work_time(@task)
   end
 
   def edit

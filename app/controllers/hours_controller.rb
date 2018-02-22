@@ -1,7 +1,15 @@
 class HoursController < ApplicationController
+  before_action :logged_in_user
+
+  private def logged_in_user
+    unless logged_in?
+      flash.notice = "Please Log In"
+      redirect_to root_path
+    end
+  end
 
   private def hour_params
-    params.require(:hour).permit(:work_time, :task_id)
+    params.require(:hour).permit(:work_time, :task_id, :user_id, :explanation)
   end
 
   def create
@@ -13,6 +21,11 @@ class HoursController < ApplicationController
       flash.notice = "Invalid Work Time"
       redirect_to :back
     end
+  end
 
- end
+  def show
+    @hour = Hour.find(params[:id])
+  end
+
+
 end

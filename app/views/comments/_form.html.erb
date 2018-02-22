@@ -8,7 +8,7 @@
       </ul>
       <p>
         <%= f.label :body, "Your Comment" %><br/>
-        <%= f.text_area :body %>
+        <%= f.text_area :body, style: 'width: 50%' %>
       </p>
       <p>
         <%= f.hidden_field :author, :value => current_user.id %>

@@ -1,0 +1,18 @@
+<div id="show_time">
+
+  <% if @task.hours.size != 0 || @task.sub_tasks.size !=0 %>
+      <ul id="work_time">
+        <% @task.hours.each do |h| %>
+            <li id="user_work_time"><%= link_to h.work_time, h, id: "user_time_link" %> h | <%= h.user.user_name %></li>
+        <% end %>
+        <% @task.sub_tasks.each do |t| %>
+            <% if t.total_work_time > 0 %>
+                <li id="subtask_work_time"><%= link_to t.total_work_time, [t.project, t], id: "task_link" %> h | <%= t.title %></li>
+            <% end %>
+        <% end %>
+      </ul>
+      <br/>
+  <% end %>
+
+</div>
+

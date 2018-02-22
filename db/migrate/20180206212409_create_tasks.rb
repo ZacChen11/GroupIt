@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration
       t.text :description
       t.integer :status
       t.integer :assignee_id
+      t.float :total_work_time, default: 0
       t.references :parent_task, index: true, foreign_key: true
       t.references :project, index: true, foreign_key: true
       t.timestamps null: false
