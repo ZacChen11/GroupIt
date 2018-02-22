@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  require 'csv'
   has_many :projects
   has_many :hours
   has_many :role_maps
@@ -9,4 +10,17 @@ class User < ActiveRecord::Base
       uniqueness: {case_sensitive: false}
   validates :password,  presence: true, length: {minimum: 4}
   has_secure_password
+
+  def self.to_csv
+    attributes = %w{user_name email first_name last_name}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |user|
+        csv << attributes.map{ |attr| user.send(attr) }
+      end
+    end
+  end
+
 end
