@@ -161,6 +161,7 @@ class UsersController < ApplicationController
               # when choose user
             elsif !params[:task_checked].present? && params[:user_checked].present?
               @users = User.created_between(params[:start_time], params[:end_time])
+              render 'search_report' and return
             else
               # when choose task status
               if params[:status_selected].present?
@@ -176,7 +177,6 @@ class UsersController < ApplicationController
 
   def create_report
     check_filter
-
   end
 
 end
