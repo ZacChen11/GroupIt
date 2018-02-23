@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag 'users.scss' %>
 <h1><%= @user.user_name %></h1>
 <% if @user.roles.exists?(role_name: "administrator") %>
   <h2>Welcome Administor !!</h2>
@@ -11,6 +12,21 @@
 <br/>
 <p>Last Name : <%= @user.last_name%></p>
 <br/>
+<ul id="user_type"> User Type :
+  <% @user.roles.each do |role| %>
+      <li>
+        <%= role.role_name %>
+        <% unless role == @user.roles.last %>
+            |
+        <% end %>
+      </li>
+  <% end %>
+</ul>
+<br/>
+
+<% if @user.roles.exists?(role_name: "report manager") %>
+    <h3><%= link_to "Produce Report", report_path%></h3>
+<% end %>
 
 <% if @user.roles.exists?(role_name: "administrator") %>
     <h3><%= link_to "View Users", users_path %></h3>

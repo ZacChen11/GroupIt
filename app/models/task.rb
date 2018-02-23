@@ -5,4 +5,7 @@ class Task < ActiveRecord::Base
   belongs_to :project
   belongs_to :parent_task, class_name: "Task"
   validates :title, :author, :description, :status, :assignee_id, :presence => true
+  scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
+  scope :task_status, lambda{ |status| where(:status => status)}
+
 end

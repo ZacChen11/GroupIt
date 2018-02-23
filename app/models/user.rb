@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
       uniqueness: {case_sensitive: false}
   validates :password,  presence: true, length: {minimum: 4}
   has_secure_password
+  scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
 
   def self.to_csv
     attributes = %w{user_name email first_name last_name}

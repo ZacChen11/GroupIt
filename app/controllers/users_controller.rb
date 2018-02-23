@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :show]
   before_action :correct_user,   only: [:index, :edit, :update, :show]
+  before_action :check_format, only: [:create_report]
 
 
   private def logged_in_user
@@ -30,14 +31,33 @@ class UsersController < ApplicationController
           end
         end
       else
-        flash.notice = "User doesn't exist !"
-        redirect_to current_user
+        render plain: "404 Not Found", status: 404
+        # flash.notice = "User doesn't exist !"
+        # redirect_to current_user
       end
     end
   end
 
   private def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation)
+  end
+
+  private def check_format
+    unless params[:start_time].present?
+      flash.notice = "please choose starting time"
+      render 'search_report'
+    else
+      unless params[:end_time].present?
+        flash.notice = "please choose ending time"
+        render 'search_report'
+      else
+        unless params[:start_time] < params[:end_time]
+          flash.notice = "ending time should be larger than starting time, please choose again"
+          render 'search_report'
+
+        end
+      end
+    end
   end
 
   def index
@@ -94,14 +114,15 @@ class UsersController < ApplicationController
 
   def update
 
-
-
     @user = User.find(params[:id])
     if @user.update(user_params)
       # assign roles for users
       if params[:user][:roles]
         params[:user][:roles].each do |r|
-          @user.role_maps.create(role_id: r)
+          # prevent to create duplicate roles
+          unless @user.role_maps.exists?(role_id: r)
+            @user.role_maps.create(role_id: r)
+          end
         end
       end
       redirect_to user_path(@user.id)
@@ -110,5 +131,52 @@ class UsersController < ApplicationController
     end
   end
 
+  def search_report
+    @tasks = Task.all
+    @users = User.all
+  end
+
+  private def check_filter
+            if params[:task_checked].present? && params[:user_checked].present?
+              @users = User.created_between(params[:start_time], params[:end_time])
+              # when choose task/user/task status
+              if params[:status_selected].present?
+                    @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
+                    render 'search_report' and return
+              else
+                # when choose task/user
+                @tasks = Task.created_between(params[:start_time], params[:end_time])
+                render 'search_report' and return
+              end
+            elsif params[:task_checked].present? && !params[:user_checked].present?
+              # when choose task/task status
+              if params[:status_selected].present?
+                @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
+                render 'search_report' and return
+              else
+                # when choose task
+                @tasks = Task.created_between(params[:start_time], params[:end_time])
+                render 'search_report' and return
+              end
+              # when choose user
+            elsif !params[:task_checked].present? && params[:user_checked].present?
+              @users = User.created_between(params[:start_time], params[:end_time])
+            else
+              # when choose task status
+              if params[:status_selected].present?
+                @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
+                render 'search_report' and return
+              else
+                # when nothing
+                @tasks = Task.created_between(params[:start_time], params[:end_time])
+                render 'search_report' and return
+              end
+            end
+  end
+
+  def create_report
+    check_filter
+
+  end
 
 end

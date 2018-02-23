@@ -1,0 +1,58 @@
+<% stylesheet_link_tag 'users.scss' %>
+
+<h1>Reports</h1>
+<div class="search_wrap">
+<%= form_tag reports_path do  %>
+    <div id="start_time">
+      From
+      <%= date_field_tag :start_time %>
+    </div>
+    <div id="end_time">
+      To
+      <%= date_field_tag :end_time %>
+    </div>
+    <div id="task">
+      Task
+      <%= check_box_tag :task_checked %>
+    </div>
+    <div id="user">
+      User
+      <%= check_box_tag :user_checked %>
+    </div>
+    <div id="status">
+      Status
+      <%= select_tag :status_selected, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]]), prompt: "Please make a choice" %>
+    </div>
+    <div id="submit">
+        <%= submit_tag 'search' %>
+    </div>
+
+<% end %>
+</div>
+
+<div class="report_wrap">
+  <h2>Search Result</h2>
+  <ul id="task_list">
+    <% if @tasks.present? %>
+        <% @tasks.each do |t| %>
+            <li>
+              <%= t.title %> | <%= User.find(t.author).user_name %> | <%= t.total_work_time %>
+            </li>
+        <% end %>
+    <% end %>
+  </ul>
+
+  <ul id="user_list">
+    <% if @users.present? %>
+        <% @users.each do |t| %>
+            <li>
+              <% s = 0 %>
+              <% t.hours.each do |h| %>
+                  <% s += h.work_time %>
+              <% end %>
+              <%= t.user_name %> | <%= s %>
+            </li>
+        <% end %>
+    <% end %>
+  </ul>
+</div>
