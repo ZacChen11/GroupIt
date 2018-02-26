@@ -68,6 +68,15 @@ class UsersController < ApplicationController
       format.csv { send_data @users.to_csv, filename: "users-#{Date.today}.csv" }
     end
   end
+  #
+  # private def total_work_time(user)
+  #   user.total_work_time = 0
+  #   user.hours.each do |hour|
+  #     user.total_work_time += hour.work_time
+  #   end
+  #   user.save
+  #
+  # end
 
   def show
     @user = User.find(params[:id])
@@ -131,47 +140,69 @@ class UsersController < ApplicationController
     end
   end
 
+  private def export_task(a)
+    records = Task.where(id: a.each{ |t| t})
+    return records
+  end
+
+  private def export_user(a)
+    records = User.where(id: a.each{ |t| t})
+    return records
+  end
+
+  private def string_to_boolean(s)
+          if s == "true"
+            return true
+          else
+            return false
+          end
+  end
+
+
   def search_report
-    @tasks = Task.all
-    @users = User.all
+    if params[:tasks].present?
+      records = export_task(params[:tasks])
+    end
+    if params[:users].present?
+      records = export_user(params[:users])
+    end
+    respond_to do |format|
+      format.html
+      format.csv { send_data records.to_csv, filename: "users-#{Date.today}.csv" }
+    end
   end
 
   private def check_filter
+
             if params[:task_checked].present? && params[:user_checked].present?
-              @users = User.created_between(params[:start_time], params[:end_time])
-              # when choose task/user/task status
-              if params[:status_selected].present?
-                    @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
-                    render 'search_report' and return
-              else
-                # when choose task/user
-                @tasks = Task.created_between(params[:start_time], params[:end_time])
-                render 'search_report' and return
-              end
-            elsif params[:task_checked].present? && !params[:user_checked].present?
+              # when choose user/task
+              flash.notice = "can't choose task and user at the same time, choose again"
+              render 'search_report'
+
+            elsif params[:task_checked].present?
               # when choose task/task status
               if params[:status_selected].present?
                 @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
-                render 'search_report' and return
               else
                 # when choose task
                 @tasks = Task.created_between(params[:start_time], params[:end_time])
-                render 'search_report' and return
               end
-              # when choose user
-            elsif !params[:task_checked].present? && params[:user_checked].present?
-              @users = User.created_between(params[:start_time], params[:end_time])
               render 'search_report' and return
-            else
-              # when choose task status
-              if params[:status_selected].present?
-                @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
-                render 'search_report' and return
+
+            elsif params[:user_checked].present?
+              if params[:user_status_selected].present?
+                # when choose user/user status
+                params[:user_status_selected] = string_to_boolean(params[:user_status_selected])
+                @users = User.created_between(params[:start_time], params[:end_time]).user_status(params[:user_status_selected])
               else
-                # when nothing
-                @tasks = Task.created_between(params[:start_time], params[:end_time])
-                render 'search_report' and return
+                # when choose user
+                @users = User.created_between(params[:start_time], params[:end_time])
               end
+              render 'search_report' and return
+
+            else
+              flash.notice = "please select task or user"
+              render 'search_report' and return
             end
   end
 

@@ -15,5 +15,6 @@ Rails.application.routes.draw do
   # post   '/hours',   to: 'tasks#create_hour'
   resources :hours, only: [:create, :show]
   get     '/report', to: 'users#search_report'
-  post    '/reports', to: 'users#create_report'
+  post    '/report', to: 'users#create_report'
+
 end

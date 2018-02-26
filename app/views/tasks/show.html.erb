@@ -1,6 +1,6 @@
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
-  <p>Author : <%= User.find_by(id: @task.author).user_name %></p>
+  <p>Author : <%= @task.user.user_name %></p>
   <br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>

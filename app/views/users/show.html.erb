@@ -23,6 +23,8 @@
   <% end %>
 </ul>
 <br/>
+<p>Total Work Time : <%= @user.total_work_time %> h</p>
+<br/>
 
 <% if @user.roles.exists?(role_name: "report manager") %>
     <h3><%= link_to "Produce Report", report_path%></h3>

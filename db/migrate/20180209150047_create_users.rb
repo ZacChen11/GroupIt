@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :first_name
       t.string :last_name
+      t.float  :total_work_time, default: 0
       t.boolean :activated, default: false
       t.timestamps null: false
 

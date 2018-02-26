@@ -18,7 +18,7 @@ class TasksController < ApplicationController
   end
 
   private def task_params
-    params.require(:task).permit(:title, :author, :description, :status, :assignee_id, :parent_task_id)
+    params.require(:task).permit(:title, :user_id, :description, :status, :assignee_id, :parent_task_id)
   end
 
   private def total_work_time(task)
@@ -30,8 +30,8 @@ class TasksController < ApplicationController
     end
     task.hours.each do |hour|
       task.total_work_time += hour.work_time
-      task.save
     end
+    task.save
   end
 
   def new
