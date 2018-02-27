@@ -1,18 +1,39 @@
-<h1>All Projects</h1>
-<% if Project.all.size >0 %>
-    <h2><%= Project.all.size %> Projects</h2>
-    <ul id="projects">
-      <% @projects.each do |project| %>
-          <li><%= link_to project.title, project, class: 'project_title' %></li>
-      <% end %>
-    </ul>
-<% else %>
-    <p>No Projects</p>
-<% end %>
+<% stylesheet_link_tag 'projects.scss' %>
+<h1>Projects</h1>
+
+<div class="project_filter">
+  <%= form_tag filter_projects_path do  %>
+      <div id="project_select">
+        Project Filter
+        <%= select_tag :filter_selected, options_for_select([["All Projects", 1], ["My Projects", 2]]), prompt: "Please choose" %>
+      </div>
+      <div id="project_filter_submit">
+        <%= submit_tag 'submit' %>
+      </div>
+  <% end %>
+</div>
+
+
+<div class="projects_wrap">
+
+  <% if @projects.present? %>
+      <h2><%= @projects.size %> Projects</h2>
+      <ul id="projects">
+        <% @projects.each do |project| %>
+            <li><%= link_to project.title, project, class: 'project_title' %></li>
+        <% end %>
+      </ul>
+  <% else %>
+      <p>No Projects</p>
+  <% end %>
+
+</div>
+
 
 <%= link_to "Create a New Project", new_project_path, class: "new" %>
 <br/><br/>
 <h3><%= link_to "<< Back to Personal Profile", current_user %></h3>
+
 
 
 

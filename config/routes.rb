@@ -4,10 +4,14 @@ Rails.application.routes.draw do
   get 'sessions/welcome'
   resources :users
   resources :projects do
+    collection do
+      post 'filter'
+    end
     resources :tasks do
       resources :comments
     end
   end
+
   get    '/signup',  to: 'users#new'
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
@@ -16,5 +20,6 @@ Rails.application.routes.draw do
   resources :hours, only: [:create, :show]
   get     '/report', to: 'users#search_report'
   post    '/report', to: 'users#create_report'
+
 
 end

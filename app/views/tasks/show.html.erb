@@ -23,10 +23,18 @@
   <br/>
   <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
   <br/>
-  <p>Task Total Time : <%= @task.total_work_time %> h</p>
-  <br/>
-  <%= render partial: 'hour' %>
-  <%= render partial: 'hours/form' %>
+  <div class="task_time">
+    <div id="show_time">
+      <p>Task Total Time : <%= @task.total_work_time %> h</p>
+    </div>
+      <br/>
+
+      <%= render partial: 'hour' %>
+
+
+    <%= render partial: 'hours/form' %>
+  </div>
+
 
  <%# <%= collection_select(f, :assignee, User.all, :user_name, :user_name, prompt: "Please select a user") %>
 

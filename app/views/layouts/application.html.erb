@@ -5,9 +5,20 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <style>
+      .navbar{position: relative; bottom:30px; left: 700px}
+  </style>
 </head>
-<body>
-    <p class="flash"><%= flash.notice %></p>
-    <%= yield %>
+<body><header class="navbar">
+  <div class="navbar-class">
+    <ul class="navbar">
+      <% if current_user %>
+          <li><%=link_to "<<Back to Account", current_user%></li>
+      <% end %>
+    </ul>
+  </div>
+</header>
+<p class="flash"><%= flash.notice %></p>
+<%= yield %>
 </body>
 </html>

@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy, :filter]
   before_action :valid_project, only: [:show, :edit, :update, :destroy]
 
   private def logged_in_user
@@ -61,4 +61,17 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def filter
+    # when select all projects
+    if params[:filter_selected] == '1'
+      @projects = Project.all
+      render 'index' and return
+    elsif params[:filter_selected] == '2'
+      @projects = current_user.projects
+      render 'index' and return
+    else
+      flash.notice = "please choose a scope"
+      redirect_to projects_path and return
+    end
+  end
 end

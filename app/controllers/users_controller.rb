@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :show]
+  before_action :logged_in_user, only: [:index, :edit, :update, :show, :search_report, :create_report]
   before_action :correct_user,   only: [:index, :edit, :update, :show]
   before_action :check_format, only: [:create_report]
-
+  before_action :check_reporter, only: [:search_report, :create_report]
 
   private def logged_in_user
     unless logged_in?
@@ -58,6 +58,13 @@ class UsersController < ApplicationController
         end
       end
     end
+  end
+
+  private def check_reporter
+            unless current_user.roles.exists?(role_name: "report manager")
+              flash.notice = "You don't have the previlege"
+              redirect_to current_user
+            end
   end
 
   def index

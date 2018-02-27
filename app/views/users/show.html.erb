@@ -34,7 +34,7 @@
     <h3><%= link_to "View Users", users_path %></h3>
 <% end %>
 
-<h3><%= link_to "View Projects", projects_path(:user => @user.id) %></h3>
+<h3><%= link_to "View Projects", projects_path %></h3>
 
 <% if current_user.roles.exists?(role_name: "administrator") && @user.id != current_user.id %>
     <h3><%= link_to "<<Back to User List", users_path %></h3>
