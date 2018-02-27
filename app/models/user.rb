@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  def check_role(role_name)
+    roles.exists?(role_name: role_name)
+  end
+
 end

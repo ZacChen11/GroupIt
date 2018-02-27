@@ -1,6 +1,6 @@
 <%= form_for @user  do |f| %>
     <%= render partial: 'error_messages', object: @user, as: :item %>
-    <% if local_assigns[:sign_up] || (local_assigns[:edit] && current_user.roles.exists?(role_name: "administrator")) %>
+    <% if local_assigns[:sign_up] || (local_assigns[:edit] && current_user.check_role("administrator")) %>
         <%= f.label :user_name %>
         <%= f.text_field :user_name%>
         <br/><br/>
@@ -14,12 +14,12 @@
     <%= f.label :last_name%>
     <%= f.text_field :last_name %>
     <br/><br/>
-    <% if local_assigns[:edit] && current_user.roles.exists?(role_name: "administrator") %>
+    <% if local_assigns[:edit] && current_user.check_role("administrator") %>
         <%= f.label :activate%><br/>
         <%= f.select :activated, options_for_select([["Yes", true], ["No", false]]), prompt: "Please make a choice" %>
         <br/><br/>
         <%= label_tag :assign_roles %>
-        <%= f.collection_check_boxes :roles, Role.all, :role_type, :role_name, :include_hidden => false %>
+        <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :include_hidden => false %>
         <br/><br/>
     <% end %>
     <%= f.label :password %>

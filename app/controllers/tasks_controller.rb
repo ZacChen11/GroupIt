@@ -3,37 +3,6 @@ class TasksController < ApplicationController
   before_action :valid_task, only: [:show, :edit, :update, :destroy]
 
 
-  private def logged_in_user
-    unless logged_in?
-      flash.notice = "Please Log In"
-      redirect_to root_path
-    end
-  end
-
-  private def valid_task
-    unless Task.find_by(id: params[:id])
-      flash.notice = "Task doesn't exist !"
-      redirect_to current_user
-    end
-  end
-
-  private def task_params
-    params.require(:task).permit(:title, :user_id, :description, :status, :assignee_id, :parent_task_id)
-  end
-
-  private def total_work_time(task)
-    task.total_work_time = 0
-    task.sub_tasks.each do |subtask|
-      subtask.hours.each do |hour|
-        task.total_work_time += hour.work_time
-      end
-    end
-    task.hours.each do |hour|
-      task.total_work_time += hour.work_time
-    end
-    task.save
-  end
-
   def new
     @project = Project.find(params[:project_id])
     @task = Task.new
@@ -79,5 +48,33 @@ class TasksController < ApplicationController
     @task.destroy
     redirect_to @project
   end
+
+
+
+  private
+  def valid_task
+    unless Task.find_by(id: params[:id])
+      flash.notice = "Task doesn't exist !"
+      redirect_to current_user
+    end
+  end
+
+  def task_params
+    params.require(:task).permit(:title, :user_id, :description, :status, :assignee_id, :parent_task_id)
+  end
+
+  def total_work_time(task)
+    task.total_work_time = 0
+    task.sub_tasks.each do |subtask|
+      subtask.hours.each do |hour|
+        task.total_work_time += hour.work_time
+      end
+    end
+    task.hours.each do |hour|
+      task.total_work_time += hour.work_time
+    end
+    task.save
+  end
+
 
 end

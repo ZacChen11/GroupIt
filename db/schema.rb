@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(version: 20180222181902) do
   add_index "role_maps", ["user_id"], name: "index_role_maps_on_user_id"
 
   create_table "roles", force: :cascade do |t|
-    t.integer  "role_type"
     t.string   "role_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

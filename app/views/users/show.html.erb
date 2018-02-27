@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'users.scss' %>
 <h1><%= @user.user_name %></h1>
-<% if @user.roles.exists?(role_name: "administrator") %>
+<% if @user.check_role("administrator") %>
   <h2>Welcome Administor !!</h2>
 <% else %>
   <h2>Welcome Developer !!</h2>
@@ -26,17 +26,17 @@
 <p>Total Work Time : <%= @user.total_work_time %> h</p>
 <br/>
 
-<% if @user.roles.exists?(role_name: "report manager") %>
+<% if @user.check_role("report manager") %>
     <h3><%= link_to "Produce Report", report_path%></h3>
 <% end %>
 
-<% if @user.roles.exists?(role_name: "administrator") %>
+<% if @user.check_role("administrator") %>
     <h3><%= link_to "View Users", users_path %></h3>
 <% end %>
 
 <h3><%= link_to "View Projects", projects_path %></h3>
 
-<% if current_user.roles.exists?(role_name: "administrator") && @user.id != current_user.id %>
+<% if current_user.check_role("administrator") && @user.id != current_user.id %>
     <h3><%= link_to "<<Back to User List", users_path %></h3>
 <% else%>
     <h3><%= link_to "Update Personal Information", edit_user_path(@user.id) %></h3>

@@ -1,16 +1,7 @@
 class HoursController < ApplicationController
   before_action :logged_in_user
 
-  private def logged_in_user
-    unless logged_in?
-      flash.notice = "Please Log In"
-      redirect_to root_path
-    end
-  end
 
-  private def hour_params
-    params.require(:hour).permit(:work_time, :task_id, :user_id, :explanation)
-  end
 
   def create
     @hour = Hour.new(hour_params)
@@ -29,6 +20,11 @@ class HoursController < ApplicationController
 
   def show
     @hour = Hour.find(params[:id])
+  end
+
+  private
+  def hour_params
+    params.require(:hour).permit(:work_time, :task_id, :user_id, :explanation)
   end
 
 

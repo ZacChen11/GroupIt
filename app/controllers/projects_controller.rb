@@ -3,23 +3,6 @@ class ProjectsController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy, :filter]
   before_action :valid_project, only: [:show, :edit, :update, :destroy]
 
-  private def logged_in_user
-    unless logged_in?
-      flash.notice = "Please Log In"
-      redirect_to root_path
-    end
-  end
-
-  private def valid_project
-            unless Project.find_by(id: params[:id])
-              flash.notice = "Project doesn't exist !"
-              redirect_to current_user
-            end
-  end
-
-  private def project_params
-    params.require(:project).permit(:title, :description, :user_id)
-  end
 
   def index
     @projects = Project.all
@@ -74,4 +57,17 @@ class ProjectsController < ApplicationController
       redirect_to projects_path and return
     end
   end
+
+  private
+  def valid_project
+    unless Project.find_by(id: params[:id])
+      flash.notice = "Project doesn't exist !"
+      redirect_to current_user
+    end
+  end
+
+  def project_params
+    params.require(:project).permit(:title, :description, :user_id)
+  end
+
 end
