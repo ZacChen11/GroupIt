@@ -14,15 +14,16 @@
 ActiveRecord::Schema.define(version: 20180222181902) do
 
   create_table "comments", force: :cascade do |t|
-    t.integer  "author"
     t.text     "body"
     t.boolean  "edit",       default: false
+    t.integer  "user_id"
     t.integer  "task_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
 
   add_index "comments", ["task_id"], name: "index_comments_on_task_id"
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "hours", force: :cascade do |t|
     t.float    "work_time"

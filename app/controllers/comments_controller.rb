@@ -1,11 +1,12 @@
 class CommentsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :correct_user,   only: [:edit, :update, :destroy]
+  before_action :is_admin,   only: [:edit, :update, :destroy]
 
   def create
     @comment = Comment.new(comment_params)
     @task = Task.find(params[:task_id])
     @comment.task_id = @task.id
+    @comment.user_id = current_user.id
     if @comment.save
       redirect_to project_task_path(@comment.task.project, @comment.task)
     else
@@ -38,21 +39,16 @@ class CommentsController < ApplicationController
 
   private
   # Confirms only admin can edit/delete a comment.
-  def correct_user
-    unless current_user.check_role("administrator")
+  def is_admin
+    if !current_user.check_role("administrator")
+      # when the user is not administrator
       flash.notice = "You don't have the privilege"
-      redirect_to current_user
-    else
-      unless Comment.find_by(id: params[:id])
-        flash.notice = "Comment doesn't exist !"
-        redirect_to current_user
-      end
+      return redirect_to current_user
     end
   end
 
   def comment_params
-    params.require(:comment).permit(:author, :body, :edit)
+    params.require(:comment).permit(:body, :edit)
   end
-
 
 end

@@ -49,11 +49,9 @@ class TasksController < ApplicationController
     redirect_to @project
   end
 
-
-
   private
   def valid_task
-    unless Task.find_by(id: params[:id])
+    if !Task.find_by(id: params[:id])
       flash.notice = "Task doesn't exist !"
       redirect_to current_user
     end

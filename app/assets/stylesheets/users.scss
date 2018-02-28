@@ -3,19 +3,3 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 /* forms */
 #user_type li{ display: inline }
-#start_time {display: inline; position: relative}
-#end_time {display: inline-block; position: relative; left: 10px}
-#task{display: inline; position: relative;
- left: 4%}
-#user{display: inline;  position: relative;
- left:25%}
-
-
-#task_states{ position: relative;  left:35%;}
-#user_status{display: inline;  position: relative;
-  left:  61%; bottom: 27px }
-
-#submit{display: inline;  position: relative; left: 65%; bottom: 40px }
-
-#task_list p{color: darkseagreen} li{color: black}
-#user_list p{color: darkseagreen} li{color: black}

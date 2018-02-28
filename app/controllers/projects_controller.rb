@@ -46,21 +46,21 @@ class ProjectsController < ApplicationController
 
   def filter
     # when select all projects
-    if params[:filter_selected] == '1'
+    if params[:filter_selected] == "All Projects"
       @projects = Project.all
-      render 'index' and return
-    elsif params[:filter_selected] == '2'
-      @projects = current_user.projects
-      render 'index' and return
-    else
-      flash.notice = "please choose a scope"
-      redirect_to projects_path and return
+      return render 'index'
     end
+    if params[:filter_selected] == "My Projects"
+      @projects = current_user.projects
+      return render 'index'
+    end
+    flash.notice = "please choose a scope"
+    return redirect_to projects_path
   end
 
   private
   def valid_project
-    unless Project.find_by(id: params[:id])
+    if !Project.find_by(id: params[:id])
       flash.notice = "Project doesn't exist !"
       redirect_to current_user
     end

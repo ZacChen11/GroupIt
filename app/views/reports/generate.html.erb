@@ -1,8 +1,8 @@
-<% stylesheet_link_tag 'users.scss' %>
+<% stylesheet_link_tag 'reports.scss' %>
 
 <h1>Reports</h1>
 <div class="search_wrap">
-<%= form_tag report_path do  %>
+<%= form_tag report_path  do  %>
     <div id="start_time">
       From
       <%= date_field_tag :start_time %>
@@ -14,12 +14,12 @@
 
     <div id="task">
       Task
-      <%= check_box_tag :task_checked %>
+      <%= radio_button_tag :task_checked, true %>
     </div>
 
       <div id="user">
         User
-        <%= check_box_tag :user_checked %>
+        <%= radio_button_tag :user_checked, true %>
       </div>
 
       <div id="task_states">

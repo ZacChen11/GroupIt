@@ -1,12 +1,12 @@
 class Task < ActiveRecord::Base
   require 'csv'
-  has_many :sub_tasks,  class_name: "Task", foreign_key: "parent_task_id"
-  has_many :comments
-  has_many :hours
+  has_many :sub_tasks,  class_name: "Task", foreign_key: "parent_task_id", dependent: :delete_all
+  has_many :comments, dependent: :delete_all
+  has_many :hours, dependent: :delete_all
   belongs_to :project
   belongs_to :parent_task, class_name: "Task"
   belongs_to :user
-  validates :title, :description, :status, :assignee_id, :presence => true
+  validates :title, :description, :status, :presence => true
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
   scope :task_status, lambda{ |status| where(:status => status)}
 

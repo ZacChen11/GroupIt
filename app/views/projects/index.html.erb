@@ -5,7 +5,7 @@
   <%= form_tag filter_projects_path do  %>
       <div id="project_select">
         Project Filter
-        <%= select_tag :filter_selected, options_for_select([["All Projects", 1], ["My Projects", 2]]), prompt: "Please choose" %>
+        <%= select_tag :filter_selected, options_for_select([["All Projects", "All Projects"], ["My Projects", "My Projects"]]), prompt: "Please choose" %>
       </div>
       <div id="project_filter_submit">
         <%= submit_tag 'submit' %>

@@ -1,6 +1,8 @@
 // Place all the styles related to the Tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+#task_author{display: inline}
+.task_modify{display: inline; position: relative; left: 85%}
 #new_task{ ul li {color:red} }
 #edit_task{ ul li {color:red} }
 #comment_modify{display: inline;  position: relative; left: 100px}

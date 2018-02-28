@@ -1,7 +1,12 @@
+<% stylesheet_link_tag 'tasks.scss'%>
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
-  <p>Author : <%= @task.user.user_name %></p>
-  <br/>
+  <p id="task_author">Author : <%= @task.user.user_name %></p>
+  <div class="task_modify">
+    <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
+    | <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the       task?"}%>
+  </div>
+  <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
   <p>Description : <%= @task.description%></p>
@@ -21,29 +26,21 @@
     <% end %>
   </p>
   <br/>
-  <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
-  <br/>
+  <% if @task.assignee_id.present? %>
+      <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
+      <br/>
+  <% end %>
+
   <div class="task_time">
     <div id="show_time">
       <p>Task Total Time : <%= @task.total_work_time %> h</p>
     </div>
-      <br/>
-
-      <%= render partial: 'hour' %>
-
-
+    <br/>
+    <%= render partial: 'hour' %>
     <%= render partial: 'hours/form' %>
   </div>
-
-
- <%# <%= collection_select(f, :assignee, User.all, :user_name, :user_name, prompt: "Please select a user") %>
-
-  <br/>
-  <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
-  | <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the task?"}%>
   <br/><br/>
 </div>
-
 <div class = "subtask_wrap">
   <h2>SubTasks(<%= @task.sub_tasks.size %>)</h2>
   <ul id="subtasks">

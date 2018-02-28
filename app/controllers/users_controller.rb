@@ -1,8 +1,7 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :show, :search_report, :create_report]
+  before_action :logged_in_user, only: [:index, :edit, :update, :show]
   before_action :is_admin,   only: [:index, :edit, :update, :show]
-  before_action :check_format, only: [:create_report]
-  before_action :check_reporter, only: [:search_report, :create_report]
+
 
   def index
     @users = User.all
@@ -23,9 +22,8 @@ class UsersController < ApplicationController
     # set new user as developer
     @role_map = @user.role_maps.new
     @role_map.role_id = Role.find_by(role_name: "developer").id
-
-    #when the admin create a user, the user will be activated automatically
     if current_user && current_user.check_role("administrator")
+      #when the admin create a user, the user will be activated automatically
       @user.activated = true
       if @user.save
         @role_map.save
@@ -57,6 +55,10 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    # check if user reset password
+    if params[:user][:password].blank?
+      @user.password_validation = false
+    end
     if @user.update(user_params)
       # assign roles for users
       if params[:user][:roles]
@@ -67,29 +69,19 @@ class UsersController < ApplicationController
           end
         end
       end
-      return redirect_to user_path(@user.id)
-    else
-      return render 'edit'
+      return redirect_to user_path(@user)
     end
+
+   if params[:user][:password].blank?
+     return render 'edit'
+   else
+     return render 'reset_password'
+   end
   end
 
-  def search_report
-    if params[:tasks].present?
-      records = export_task(params[:tasks])
-    end
-    if params[:users].present?
-      records = export_user(params[:users])
-    end
-    respond_to do |format|
-      format.html
-      format.csv { send_data records.to_csv, filename: "users-#{Date.today}.csv" }
-    end
+  def reset_password
+    @user = User.find(params[:id])
   end
-
-  def create_report
-    check_filter
-  end
-
 
   private
   # Confirms the correct user or the admin user.
@@ -117,84 +109,9 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation)
-  end
-
-  def check_format
-    if params[:start_time].present?
-      if params[:end_time].present?
-        if params[:start_time] > params[:end_time]
-          flash.notice = "ending time should be larger than starting time, please choose again"
-          render 'search_report'
-        end
-      else
-        flash.notice = "please choose ending time"
-        render 'search_report'
-      end
-    else
-      flash.notice = "please choose starting time"
-      render 'search_report'
-    end
-  end
-
-  def check_reporter
-    if !current_user.check_role("report manager")
-      flash.notice = "You don't have the previlege"
-      redirect_to current_user
-    end
+    params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)
   end
 
 
- def export_task(a)
-   records = Task.where(id: a.each{ |t| t})
-   return records
-  end
-
-  def export_user(a)
-    records = User.where(id: a.each{ |t| t})
-    return records
-  end
-
-  def string_to_boolean(s)
-    if s == "true"
-      return true
-    else
-      return false
-    end
-  end
-
-  def check_filter
-    if params[:task_checked].present? && params[:user_checked].present?
-      # when choose user/task
-      flash.notice = "can't choose task and user at the same time, choose again"
-      return render 'search_report'
-    end
-
-    if params[:task_checked].present?
-      # when choose task/task status
-      if params[:status_selected].present?
-        @tasks = Task.created_between(params[:start_time], params[:end_time]).task_status(params[:status_selected])
-      else
-        # when choose task
-        @tasks = Task.created_between(params[:start_time], params[:end_time])
-      end
-      return render 'search_report'
-    end
-
-    if params[:user_checked].present?
-      if params[:user_status_selected].present?
-        # when choose user/user status
-        params[:user_status_selected] = string_to_boolean(params[:user_status_selected])
-        @users = User.created_between(params[:start_time], params[:end_time]).user_status(params[:user_status_selected])
-      else
-        # when choose user
-        @users = User.created_between(params[:start_time], params[:end_time])
-      end
-      return render 'search_report'
-    end
-
-    flash.notice = "please select task or user"
-    return render 'search_report'
-  end
 
 end
