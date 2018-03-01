@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :show]
+  before_action :logged_in_user, only: [:index, :edit, :update, :show, :reset_password]
   before_action :is_admin,   only: [:index, :edit, :update, :show]
 
 
@@ -17,7 +17,6 @@ class UsersController < ApplicationController
   end
 
   def create
-
     @user = User.create(user_params)
     # set new user as developer
     @role_map = @user.role_maps.new
@@ -71,8 +70,7 @@ class UsersController < ApplicationController
       end
       return redirect_to user_path(@user)
     end
-
-   if params[:user][:password].blank?
+   if !params[:user].has_key?("password")
      return render 'edit'
    else
      return render 'reset_password'

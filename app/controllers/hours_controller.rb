@@ -5,10 +5,6 @@ class HoursController < ApplicationController
     @hour = Hour.new(hour_params)
     @task = @hour.task
     if @hour.save
-      #update user total work time
-      user = @hour.user
-      user.total_work_time += @hour.work_time
-      user.save(validate: false)
       redirect_to project_task_path(@hour.task.project, @hour.task)
     else
       error_message = ""

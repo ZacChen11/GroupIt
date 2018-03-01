@@ -15,8 +15,16 @@ class Task < ActiveRecord::Base
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |task|
-        csv << attributes.map{ |attr| task.send(attr) }
+        csv << [task.id, task.title, task.check_work_time]
       end
+    end
+  end
+
+  def check_work_time
+    if sub_tasks.present?
+      return hours.map{|t| t.work_time}.sum + sub_tasks.map{|s| s.check_work_time}.sum
+    else
+      return hours.map{|t| t.work_time}.sum
     end
   end
 

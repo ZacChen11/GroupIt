@@ -1,11 +1,24 @@
 class ProjectsController < ApplicationController
 
-  before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy, :filter]
+  before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   before_action :valid_project, only: [:show, :edit, :update, :destroy]
 
 
   def index
     @projects = Project.all
+    # when select all projects
+    if params[:filter_selected] == "All Projects"
+      @projects = Project.all
+      return render 'index'
+    end
+    if params[:filter_selected] == "My Projects"
+      @projects = current_user.projects
+      return render 'index'
+    end
+    if params.has_key?("filter_selected") && params[:filter_selected].blank?
+      flash.notice = "please choose a scope"
+      return redirect_to projects_path
+    end
   end
 
   def show
@@ -18,6 +31,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
+    @project.user_id = current_user.id
     if @project.save
       redirect_to @project
     else
@@ -44,20 +58,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def filter
-    # when select all projects
-    if params[:filter_selected] == "All Projects"
-      @projects = Project.all
-      return render 'index'
-    end
-    if params[:filter_selected] == "My Projects"
-      @projects = current_user.projects
-      return render 'index'
-    end
-    flash.notice = "please choose a scope"
-    return redirect_to projects_path
-  end
-
   private
   def valid_project
     if !Project.find_by(id: params[:id])
@@ -67,7 +67,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:title, :description, :user_id)
+    params.require(:project).permit(:title, :description)
   end
 
 end

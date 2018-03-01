@@ -1,0 +1,12 @@
+<div class="assign_task">
+  <h1>Assign Task</h1>
+  <%= form_for @task, url:assign_task_project_task_path(@task.project, @task) , method: :get  do |f| %>
+      <p>
+        <%= f.label :Assign_This_Task %><br/>
+        <%= f.collection_select :assignee_id, User.where(activated: true), :id, :user_name, prompt: "Please select a user" %>
+      </p>
+      <br/>
+      <p><%= f.submit "Ok"%></p>
+  <% end %>
+</div>
+

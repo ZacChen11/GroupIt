@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
          return redirect_to user
       else
         flash.notice = "The User Account is not activated !!"
-        return redirect_to root_path
+        return redirect_to login_path
       end
     end
 

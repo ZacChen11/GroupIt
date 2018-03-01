@@ -9,9 +9,6 @@
       <%= f.text_area :description %>
     </p>
     <p>
-      <% if local_assigns[:create] %>
-          <%= f.hidden_field :user_id, :value => current_user.id %>
-      <% end %>
       <%= f.submit %>
     </p>
 <% end %>

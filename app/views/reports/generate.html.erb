@@ -2,37 +2,38 @@
 
 <h1>Reports</h1>
 <div class="search_wrap">
-<%= form_tag report_path  do  %>
+<%= form_for @report, url:report_path do  |f| %>
     <div id="start_time">
       From
-      <%= date_field_tag :start_time %>
+      <%= f.date_field :start_time, value: @report.start_time %>
     </div>
     <div id="end_time">
       To
-      <%= date_field_tag :end_time %>
+      <%= f.date_field :end_time, value: @report.end_time%>
     </div>
 
     <div id="task">
       Task
-      <%= radio_button_tag :task_checked, true %>
+      <%= f.radio_button :task_checked, true %>
     </div>
 
       <div id="user">
         User
-        <%= radio_button_tag :user_checked, true %>
+        <%= f.radio_button :user_checked, true %>
       </div>
+
 
       <div id="task_states">
         Task Status
-        <%= select_tag :status_selected, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]]), prompt: "Please choose a task status" %>
+        <%= f.select :task_status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
       </div>
 
       <div id="user_status">
         User Status
-        <%= select_tag :user_status_selected, options_for_select([["active", true], ["inactive", false]]), prompt: "Please choose a user status" %>
+        <%= f.select :user_status, options_for_select([["active", true], ["inactive", false]], selected: @report.user_status), prompt: "Please choose a user status" %>
       </div>
     <div id="submit">
-        <%= submit_tag 'search' %>
+        <%= f.submit 'search' %>
     </div>
 
 <% end %>
@@ -46,7 +47,7 @@
         <b/>
         <% @tasks.each do |t| %>
             <li>
-              <%= t.id %> | <%= t.title %> | <%= t.user.user_name %> | <%= t.total_work_time %>
+              <%= t.id %> | <%= t.title %> | <%= t.user.user_name %> | <%= t.check_work_time %>
             </li>
         <% end %>
     <% end %>
@@ -59,7 +60,7 @@
         <br/>
         <% @users.each do |t| %>
             <li>
-              <%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.total_work_time %>
+              <%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.check_work_time %>
             </li>
         <% end %>
     <% end %>

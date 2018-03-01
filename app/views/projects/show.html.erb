@@ -13,8 +13,9 @@
   <br/>
 </div>
 <br/>
+
 <div class="task_wrap">
-  <h2>Tasks</h2>
+  <h2>Tasks (<%= @project.tasks.size %>)</h2>
   <ul id="tasks">
     <% @project.tasks.each do |task| %>
         <%# only display parent task %>
@@ -27,6 +28,8 @@
   </ul>
 </div>
 <br/>
+
+
 
 <%= link_to "Create Task", new_project_task_path(@project), class: "new" %>
 <br/><br/>

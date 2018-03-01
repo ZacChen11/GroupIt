@@ -13,19 +13,20 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :password, length: {minimum: 4}, if: :password_validation
+  after_initialize :set_password_validation_default_value
   has_secure_password
+  attr_accessor :password_validation
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
   scope :user_status, lambda{ |status| where(:activated => status)}
-  attr_accessor :password_validation
-  after_initialize :set_password_validation_default_value
+
+
   def self.to_csv
     attributes = %w{id user_name email first_name last_name total_work_time}
-
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
       all.each do |user|
-        csv << attributes.map{ |attr| user.send(attr) }
+        csv < [user.id, user.user_name, user.email, user.first_name, user.last_name, user.check_work_time]
       end
     end
   end
@@ -34,10 +35,17 @@ class User < ActiveRecord::Base
     roles.exists?(role_name: role_name)
   end
 
+  def check_work_time
+    hours.map{|t| t.work_time}.sum
+  end
+
+
   private
   def set_password_validation_default_value
     self.password_validation = true
   end
+
+
 
 
 end

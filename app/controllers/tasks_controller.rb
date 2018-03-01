@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
-  before_action :logged_in_user, only: [:show, :new, :create, :edit, :update, :destroy]
-  before_action :valid_task, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:show, :new, :create, :edit, :update, :destroy, :assign_task]
+  before_action :valid_task, only: [:show, :edit, :update, :destroy, :assign_task]
 
 
   def new
@@ -24,7 +24,6 @@ class TasksController < ApplicationController
     @hour.task_id = @task.id
     @comment = Comment.new
     @comment.task_id = @task.id
-    total_work_time(@task)
   end
 
   def edit
@@ -49,6 +48,15 @@ class TasksController < ApplicationController
     redirect_to @project
   end
 
+  def assign_task
+    @task = Task.find(params[:id])
+    if params.has_key?("task")
+      if @task.update(assignee_id: params[:task][:assignee_id])
+        return redirect_to project_task_path(@task.project, @task)
+      end
+    end
+  end
+
   private
   def valid_task
     if !Task.find_by(id: params[:id])
@@ -61,18 +69,6 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :user_id, :description, :status, :assignee_id, :parent_task_id)
   end
 
-  def total_work_time(task)
-    task.total_work_time = 0
-    task.sub_tasks.each do |subtask|
-      subtask.hours.each do |hour|
-        task.total_work_time += hour.work_time
-      end
-    end
-    task.hours.each do |hour|
-      task.total_work_time += hour.work_time
-    end
-    task.save
-  end
 
 
 end

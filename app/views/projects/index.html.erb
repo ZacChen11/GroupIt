@@ -2,7 +2,7 @@
 <h1>Projects</h1>
 
 <div class="project_filter">
-  <%= form_tag filter_projects_path do  %>
+  <%= form_tag projects_path, :method => :get do  %>
       <div id="project_select">
         Project Filter
         <%= select_tag :filter_selected, options_for_select([["All Projects", "All Projects"], ["My Projects", "My Projects"]]), prompt: "Please choose" %>
@@ -13,20 +13,15 @@
   <% end %>
 </div>
 
-
 <div class="projects_wrap">
-
+  <h2>Projects (<%= @projects.size %>)</h2>
   <% if @projects.present? %>
-      <h2><%= @projects.size %> Projects</h2>
       <ul id="projects">
         <% @projects.each do |project| %>
             <li><%= link_to project.title, project, class: 'project_title' %></li>
         <% end %>
       </ul>
-  <% else %>
-      <p>No Projects</p>
   <% end %>
-
 </div>
 
 

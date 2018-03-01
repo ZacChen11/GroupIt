@@ -2,10 +2,14 @@
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
   <p id="task_author">Author : <%= @task.user.user_name %></p>
-  <div class="task_modify">
-    <%= link_to  "edit" , edit_project_task_path(@task.project_id, @task.id), {:style=>'color:red'}%>
-    | <%= link_to  "delete" , project_task_path(@task.project_id, @task.id), :style=>'color:red', method: :delete, data: {confirm: "Really delete the       task?"}%>
-  </div>
+  <% if current_user == @task.user || current_user.id == @task.assignee_id%>
+      <div class="task_modify">
+        <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
+        | <%= link_to  "edit" , edit_project_task_path(@task, @task), {:style=>'color:red'}%>
+        | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete, data: {confirm: "Really delete the             task?"}%>
+      </div>
+  <% end %>
+
   <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
@@ -33,7 +37,7 @@
 
   <div class="task_time">
     <div id="show_time">
-      <p>Task Total Time : <%= @task.total_work_time %> h</p>
+      <p>Task Total Time : <%= @task.check_work_time %> h</p>
     </div>
     <br/>
     <%= render partial: 'hour' %>

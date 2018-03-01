@@ -65,16 +65,14 @@ ActiveRecord::Schema.define(version: 20180222181902) do
 
   create_table "tasks", force: :cascade do |t|
     t.string   "title"
-    t.integer  "author"
     t.text     "description"
     t.integer  "status"
     t.integer  "assignee_id"
-    t.float    "total_work_time", default: 0.0
     t.integer  "parent_task_id"
     t.integer  "project_id"
     t.integer  "user_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   add_index "tasks", ["parent_task_id"], name: "index_tasks_on_parent_task_id"
@@ -86,7 +84,6 @@ ActiveRecord::Schema.define(version: 20180222181902) do
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
-    t.float    "total_work_time", default: 0.0
     t.boolean  "activated",       default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false

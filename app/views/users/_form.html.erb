@@ -25,7 +25,7 @@
         <%= f.select :activated, options_for_select([["Yes", true], ["No", false]]), prompt: "Please make a choice" %>
         <br/><br/>
         <%= label_tag :assign_roles %>
-        <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :include_hidden => false %>
+        <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :checked => @user.roles.map{|t| t.id}, :include_hidden => false %>
         <br/><br/>
     <% end %>
     <% if local_assigns[:edit] %>

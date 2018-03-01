@@ -8,10 +8,10 @@ Rails.application.routes.draw do
     end
   end
   resources :projects do
-    collection do
-      post 'filter'
-    end
     resources :tasks do
+      member  do
+        get 'assign_task'
+      end
       resources :comments, except:[:show]
     end
   end
