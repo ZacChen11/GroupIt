@@ -1,8 +1,8 @@
 <% stylesheet_link_tag 'projects.scss' %>
 <div class="project-wrap">
   <h1><%= @project.title %></h1>
-  <p id="project_author">Author : <%= @project.user.user_name %></p>
-  <div class="project_modify">
+  <p class="project-wrap_author">Author : <%= @project.user.user_name %></p>
+  <div class="project-wrap_modify">
     <%= link_to  "edit" , edit_project_path(@project), {:style=>'color:red'} %>
     | <%= link_to  "delete" , @project, :style=>'color:red', method: :delete, data: {confirm: "Really delete the project?"} %>
   </div>
@@ -14,9 +14,9 @@
 </div>
 <br/>
 
-<div class="task_wrap">
+<div class="task-wrap">
   <h2>Tasks (<%= @project.tasks.size %>)</h2>
-  <ul id="tasks">
+  <ul class="task-wrap_task-list">
     <% @project.tasks.each do |task| %>
         <%# only display parent task %>
         <% if task.parent_task_id == nil %>

@@ -1,14 +1,14 @@
 // Place all the styles related to the projects controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-#project_author{display: inline }
-.project_modify{display: inline; position: relative; left:85%}
-#new_project{
+.project-wrap_author{display: inline }
+.project-wrap_modify{display: inline; position: relative; left:85%}
+.new-project{
   ul li {color:red}
 }
-#edit_project{
+.edit-project{
   ul li {color:red}
 }
-.project_filter{position: relative; left: 72%}
-#project_select{display: inline}
-#project_filter_submit{display: inline; position: relative; left: 24px;}
+.project-filter{position: relative; left: 72%}
+.project-filter_select{display: inline}
+.project-filter_submit{display: inline; position: relative; left: 24px;}

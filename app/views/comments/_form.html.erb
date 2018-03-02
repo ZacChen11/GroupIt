@@ -1,5 +1,5 @@
 <%= stylesheet_link_tag 'comments.scss' %>
-<div id="create_comment">
+<div class="create-comment">
   <%= form_for [@task.project, @task, @comment] do |f| %>
       <ul>
         <% @comment.errors.full_messages.each do |error| %>

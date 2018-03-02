@@ -1,13 +1,13 @@
 <% stylesheet_link_tag 'projects.scss' %>
 <h1>Projects</h1>
 
-<div class="project_filter">
+<div class="project-filter">
   <%= form_tag projects_path, :method => :get do  %>
-      <div id="project_select">
+      <div class="project-filter_select">
         Project Filter
         <%= select_tag :filter_selected, options_for_select([["All Projects", "All Projects"], ["My Projects", "My Projects"]]), prompt: "Please choose" %>
       </div>
-      <div id="project_filter_submit">
+      <div class="project-filter_submit">
         <%= submit_tag 'submit' %>
       </div>
   <% end %>
