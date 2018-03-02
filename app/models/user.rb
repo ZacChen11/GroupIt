@@ -38,7 +38,6 @@ class User < ActiveRecord::Base
     hours.map{|t| t.work_time}.sum
   end
 
-
   private
   def set_password_validation_default_value
     self.password_validation = true

@@ -1,0 +1,17 @@
+%h1 Work Time
+%p Length : #{@hour.work_time}
+%br
+%p
+  Created at :
+  =@hour.created_at
+%br
+%p
+  User :
+  =@hour.user.user_name
+%br
+%p
+  Explanation :
+  =@hour.explanation
+%br
+%br
+%h3 #{link_to "<<Back to Task", [@hour.task.project, @hour.task]}
