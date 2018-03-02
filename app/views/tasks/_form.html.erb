@@ -15,12 +15,6 @@
       <%= f.select :status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]]), prompt: "Please select a status" %>
     </p>
     <br/>
-    <% if local_assigns[:create] %>
-        <p>
-          <%= f.hidden_field :user_id, :value => current_user.id %>
-          <%= f.hidden_field :parent_task_id, :value => params[:parent_task] %>
-        </p>
-    <% end %>
     <p>
       <%= f.submit %>
     </p>

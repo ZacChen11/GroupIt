@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :show, :reset_password]
-  before_action :is_admin,   only: [:index, :edit, :update, :show]
-
+  before_action :is_admin,   only: [:index, :edit, :update, :show, :reset_password]
 
   def index
     @users = User.all
@@ -92,7 +91,7 @@ class UsersController < ApplicationController
       end
     else
       @user = User.find_by(id: params[:id])
-      #check if user account
+      #check a user account
       if @user
         # When the user is not the administrator
         if !current_user.check_role("administrator") && @user != current_user
@@ -109,6 +108,29 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)
   end
+
+  def validate_user
+    if !User.find_by(id: params[:id])
+      flash.notice = "User doesn't exist !"
+      redirect_to current_user
+    end
+  end
+  #
+  # def is_admin
+  #   if !current_user.check_role("administrator")
+  #     # when the user is not administrator
+  #     flash.notice = "You don't have the privilege"
+  #     return redirect_to current_user
+  #   end
+  # end
+  #
+  # def correct_user
+  #   @user = User.find(params[:id])
+  #   if current_user != @user
+  #     flash.notice = "You don't have the previlege"
+  #     redirect_to current_user
+  #   end
+  # end
 
 
 

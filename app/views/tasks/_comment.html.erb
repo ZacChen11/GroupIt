@@ -6,7 +6,7 @@
     <%# only admin can edit or delete a comment %>
     <% if current_user.check_role("administrator") %>
         <%= link_to "edit", edit_project_task_comment_path(comment.task.project, comment.task_id, comment.id), {:style=>'color:red'} %>
-        | <%= link_to "delete",  project_task_comment_path(comment.task.project, comment.task_id, comment.id), :style=>'color:red', method: :delete, data: { confirm: "You sure?" }%>
+        | <%= link_to "delete",  project_task_comment_path(comment.task.project, comment.task_id, comment.id), :style=>'color:red', method: :delete,            data: { confirm: "You sure?" }%>
     <% end %>
   </li>
   <%# add warning icon to edited comment %>

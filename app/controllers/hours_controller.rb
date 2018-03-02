@@ -3,13 +3,14 @@ class HoursController < ApplicationController
 
   def create
     @hour = Hour.new(hour_params)
-    @task = @hour.task
+    @hour.user_id = current_user.id
+    @hour.task_id = params[:task_id]
     if @hour.save
       redirect_to project_task_path(@hour.task.project, @hour.task)
     else
       error_message = ""
       @hour.errors.full_messages.each do |m|
-        error_message = error_message  + m + "."
+        error_message = error_message  + m + ". "
       end
         flash.notice = error_message
       redirect_to :back
@@ -22,7 +23,7 @@ class HoursController < ApplicationController
 
   private
   def hour_params
-    params.require(:hour).permit(:work_time, :task_id, :user_id, :explanation)
+    params.require(:hour).permit(:work_time, :explanation)
   end
 
 

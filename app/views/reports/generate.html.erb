@@ -2,53 +2,46 @@
 
 <h1>Reports</h1>
 <div class="search_wrap">
-<%= form_for @report, url:report_path do  |f| %>
-    <div id="start_time">
-      From
-      <%= f.date_field :start_time, value: @report.start_time %>
-    </div>
-    <div id="end_time">
-      To
-      <%= f.date_field :end_time, value: @report.end_time%>
-    </div>
-
-    <div id="task">
-      Task
-      <%= f.radio_button :task_checked, true %>
-    </div>
-
+  <%= form_for @report, url:report_path do  |f| %>
+      <div id="start_time">
+        From
+        <%= f.date_field :start_time, value: @report.start_time %>
+      </div>
+      <div id="end_time">
+        To
+        <%= f.date_field :end_time, value: @report.end_time%>
+      </div>
+      <div id="task">
+        Task
+        <%= f.radio_button :task_checked, true %>
+      </div>
       <div id="user">
         User
         <%= f.radio_button :user_checked, true %>
       </div>
-
-
       <div id="task_states">
         Task Status
-        <%= f.select :task_status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
+        <%= f.select :task_status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected=> @report                 .task_status),prompt: "Please choose a task status" %>
       </div>
-
       <div id="user_status">
         User Status
-        <%= f.select :user_status, options_for_select([["active", true], ["inactive", false]], selected: @report.user_status), prompt: "Please choose a user status" %>
+        <%= f.select :user_status, options_for_select([["active", true], ["inactive", false]], selected: @report.user_status),
+                     prompt: "Please choose a user status" %>
       </div>
-    <div id="submit">
+      <div id="submit">
         <%= f.submit 'search' %>
-    </div>
-
-<% end %>
+      </div>
+  <% end %>
 </div>
 
 <div class="report_wrap">
   <ul id="task_list">
     <% if @tasks.present? %>
         <h2>Search Result (<%= @tasks.size %>)</h2>
-        <p>Task ID | Task Title | Task Total Work Time</p>
+        <p>Task ID | Task Title | Task Total Work Time (h)</p>
         <b/>
         <% @tasks.each do |t| %>
-            <li>
-              <%= t.id %> | <%= t.title %> | <%= t.user.user_name %> | <%= t.check_work_time %>
-            </li>
+            <li><%= t.id %> | <%= t.title %> | <%= t.check_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>
@@ -59,27 +52,21 @@
         <p>User ID | User Name | User Email | Task Total Work Time (h)</p>
         <br/>
         <% @users.each do |t| %>
-            <li>
-              <%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.check_work_time %>
-            </li>
+            <li><%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.check_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>
-
   <% if !@tasks.present? && !@users.present? %>
     <h2> Search Result (0) </h2>
   <% end %>
-
 </div>
 <br/>
 
 <div class="generate_report">
     <% if @users.present? %>
       <h3><%= link_to "Export Report", report_path(format: :csv, users: @users.each {|t| t.id}) %></h3>
-
     <% elsif @tasks.present? %>
       <h3><%= link_to "Export Report", report_path(format: :csv, tasks: @tasks.each{|t| t.id}) %></h3>
-
     <% end %>
 </div>
 

@@ -1,5 +1,5 @@
 <div id="create_hour">
-  <%= form_for @hour do |f| %>
+  <%= form_for @hour, url: [@hour.task.project, @hour.task, @hour] do |f| %>
       <ul>
         <% @hour.errors.full_messages.each do |error| %>
             <li><%= error %></li>
@@ -12,12 +12,8 @@
       <p>
       <%= f.label :explanation %>
       <%= f.text_field :explanation %>
-
-      <p>
-        <%= f.hidden_field :task_id, :value => params[:id] %>
-        <%= f.hidden_field :user_id, :value => current_user.id %>
-        <%= f.submit 'OK'  %>
       </p>
+      <p><%= f.submit 'OK'  %></p>
   <% end %>
 
 </div>

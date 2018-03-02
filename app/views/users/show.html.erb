@@ -16,7 +16,7 @@
   <% @user.roles.each do |role| %>
       <li>
         <%= role.role_name %>
-        <% unless role == @user.roles.last %>
+        <% if role != @user.roles.last %>
             |
         <% end %>
       </li>

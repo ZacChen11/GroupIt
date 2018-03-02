@@ -1,0 +1,25 @@
+<div id="new_subtask">
+  <h1>Create a Sub Task</h1>
+  <%= form_for @task, url:create_subtask_project_task_path(@task.project, @task.parent_task) do |f| %>
+      <%= render partial: 'users/error_messages', object: @task, as: :item %>
+      <p>
+        <%= f.label :title %><br />
+        <%= f.text_field :title %>
+      </p>
+      <br/>
+      <p>
+        <%= f.label :description %><br/>
+        <%= f.text_area :description %>
+      </p>
+      <br/>
+      <p>
+        <%= f.label :status %><br/>
+        <%= f.select :status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]]), prompt: "Please select a status"%>
+      </p>
+      <br/>
+      <p>
+        <%= f.submit %>
+      </p>
+  <% end %>
+</div>
+

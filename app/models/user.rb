@@ -24,9 +24,8 @@ class User < ActiveRecord::Base
     attributes = %w{id user_name email first_name last_name total_work_time}
     CSV.generate(headers: true) do |csv|
       csv << attributes
-
       all.each do |user|
-        csv < [user.id, user.user_name, user.email, user.first_name, user.last_name, user.check_work_time]
+        csv << [user.id, user.user_name, user.email, user.first_name, user.last_name, user.check_work_time]
       end
     end
   end

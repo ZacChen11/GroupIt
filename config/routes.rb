@@ -12,6 +12,13 @@ Rails.application.routes.draw do
       member  do
         get 'assign_task'
       end
+      member do
+        get 'new_subtask'
+      end
+      member do
+        post 'create_subtask'
+      end
+      resources :hours, only: [:create, :show]
       resources :comments, except:[:show]
     end
   end
@@ -20,7 +27,6 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
   # post   '/hours',   to: 'tasks#create_hour'
-  resources :hours, only: [:create, :show]
   get     '/report', to: 'reports#generate'
   post     '/report', to: 'reports#search'
 end

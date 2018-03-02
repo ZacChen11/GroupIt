@@ -1,7 +1,7 @@
 <%= form_for @project do |f| %>
     <%= render partial: 'users/error_messages', object: @project, as: :item %>
     <p>
-      <%= f.label :title %><br />
+      <%= f.label :title %><br/>
       <%= f.text_field :title %>
     </p>
     <p>

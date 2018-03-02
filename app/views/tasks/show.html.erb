@@ -2,14 +2,13 @@
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
   <p id="task_author">Author : <%= @task.user.user_name %></p>
-  <% if current_user == @task.user || current_user.id == @task.assignee_id%>
+  <% if current_user == @task.user%>
       <div class="task_modify">
         <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
-        | <%= link_to  "edit" , edit_project_task_path(@task, @task), {:style=>'color:red'}%>
+        | <%= link_to  "edit" , edit_project_task_path(@task.project, @task), {:style=>'color:red'}%>
         | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete, data: {confirm: "Really delete the             task?"}%>
       </div>
   <% end %>
-
   <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
@@ -17,18 +16,7 @@
   <br/>
   <p>Job Number : <%= @task.id%></p>
   <br/>
-  <p>Status :
-    <% case @task.status %>
-    <% when 1 %>
-        <%= "Opening" %>
-    <% when 2 %>
-        <%= "In Processing" %>
-    <% when 3 %>
-        <%= "Waiting" %>
-    <% when 4 %>
-        <%= "Resolved" %>
-    <% end %>
-  </p>
+  <p>Status : <%= task_status(@task) %></p>
   <br/>
   <% if @task.assignee_id.present? %>
       <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
@@ -55,7 +43,7 @@
     <% end %>
   </ul>
   <br/>
-  <%= link_to "create subtask", new_project_task_path(@task.project_id, parent_task:@task.id),  class: "new" %>
+  <%= link_to "create subtask", new_subtask_project_task_path(@task.project, @task),  class: "new" %>
   <br/><br/>
 </div>
 
