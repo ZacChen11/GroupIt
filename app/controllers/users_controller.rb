@@ -60,12 +60,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       # assign roles for users
       if params[:user][:roles]
-        params[:user][:roles].each do |r|
-          # prevent to create duplicate roles
-          if !@user.role_maps.exists?(role_id: r)
-            @user.role_maps.create(role_id: r)
-          end
-        end
+       generate_role(params[:user][:roles], @user)
       end
       return redirect_to user_path(@user)
     end
@@ -131,6 +126,22 @@ class UsersController < ApplicationController
   #     redirect_to current_user
   #   end
   # end
+
+  def generate_role(roles, user)
+    # parameter roles indicate an array of role ids string
+    #delete roles of user
+    user.role_maps.all.each do |r|
+      if !roles.include?(r.role_id.to_s)
+        r.destroy
+      end
+    end
+    #add new role to user
+    roles.each do |r|
+      if !user.role_maps.exists?(role_id: r)
+        user.role_maps.create(role_id: r)
+      end
+    end
+  end
 
 
 
