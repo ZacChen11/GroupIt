@@ -202,6 +202,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.10.2, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.9.10, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rdoc (v4.3.0, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rename (v1.0.6, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ruby_parser (v3.11.0, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sass (v3.5.5, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sass-listen (v4.0.0, RVM: ruby-2.3.0 [work_system]) [gem]" level="application" />
