@@ -1,7 +1,7 @@
 <%= form_for @user  do |f| %>
     <%= render partial: 'error_messages', object: @user, as: :item %>
     <%= f.label :user_name %>
-    <%= f.text_field :user_name%>
+    <%= f.text_field :user_name, placeholder: "case sensitive"%>
     <br/><br/>
     <%= f.label :email %>
     <%= f.text_field :email %>
@@ -14,7 +14,7 @@
     <br/><br/>
     <% if local_assigns[:sign_up] %>
         <%= f.label :password %>
-        <%= f.password_field :password%>
+        <%= f.password_field :password, placeholder: "minimum 4 characters" %>
         <br/><br/>
         <%= f.label :password_confirmation%>
         <%= f.password_field :password_confirmation %>
