@@ -1,12 +1,13 @@
-<% stylesheet_link_tag 'tasks.scss'%>
+<% stylesheet_link_tag 'tasks/show.scss'%>
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
-  <p id="task_author">Author : <%= @task.user.user_name %></p>
+  <p class="task_wrap_author">Author : <%= @task.user.user_name %></p>
   <% if current_user == @task.user%>
-      <div class="task_modify">
+      <div class="task_wrap_modify">
         <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
         | <%= link_to  "edit" , edit_project_task_path(@task.project, @task), {:style=>'color:red'}%>
-        | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete, data: {confirm: "Really delete the             task?"}%>
+        | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete,
+                       data: {confirm: "Really delete the task?"}%>
       </div>
   <% end %>
   <br/><br/>
@@ -24,7 +25,7 @@
   <% end %>
 
   <div class="task_time">
-    <div id="show_time">
+    <div class="task_time_show_time">
       <p>Task Total Time : <%= @task.check_work_time %> h</p>
     </div>
     <br/>
@@ -47,7 +48,7 @@
   <br/><br/>
 </div>
 
-<div class="comment-wrap">
+<div class="comment_wrap">
   <h2>Comments(<%= @task.comments.size %>)</h2>
   <%= render partial: 'tasks/comment', collection: @task.comments.reverse %>
   <h3>Post a Comment</h3>

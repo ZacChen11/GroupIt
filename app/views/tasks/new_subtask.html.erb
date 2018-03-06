@@ -1,4 +1,6 @@
-<div id="new_subtask">
+<% stylesheet_link_tag 'tasks/new_subtask.scss'%>
+
+<div class="new_subtask">
   <h1>Create a Sub Task</h1>
   <%= form_for @task, url:create_subtask_project_task_path(@task.project, @task.parent_task) do |f| %>
       <%= render partial: 'users/error_messages', object: @task, as: :item %>

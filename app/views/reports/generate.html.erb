@@ -1,41 +1,41 @@
-<% stylesheet_link_tag 'reports.scss' %>
+<% stylesheet_link_tag 'reports/generate.scss' %>
 
 <h1>Reports</h1>
 <div class="search_wrap">
   <%= form_for @report, url:report_path do  |f| %>
-      <div id="start_time">
+      <div class="search_wrap_start_time">
         From
         <%= f.date_field :start_time, value: @report.start_time %>
       </div>
-      <div id="end_time">
+      <div class="search_wrap_end_time">
         To
         <%= f.date_field :end_time, value: @report.end_time%>
       </div>
-      <div id="task">
+      <div class="search_wrap_task">
         Task
         <%= f.radio_button :task_checked, true %>
       </div>
-      <div id="user">
+      <div class="search_wrap_user">
         User
         <%= f.radio_button :user_checked, true %>
       </div>
-      <div id="task_states">
+      <div class="search_wrap_task_states">
         Task Status
         <%= f.select :task_status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected=> @report                 .task_status),prompt: "Please choose a task status" %>
       </div>
-      <div id="user_status">
+      <div class="search_wrap_user_status">
         User Status
         <%= f.select :user_status, options_for_select([["active", true], ["inactive", false]], selected: @report.user_status),
                      prompt: "Please choose a user status" %>
       </div>
-      <div id="submit">
+      <div class="search_wrap_submit">
         <%= f.submit 'search' %>
       </div>
   <% end %>
 </div>
 
 <div class="report_wrap">
-  <ul id="task_list">
+  <ul class="report_wrap_task_list">
     <% if @tasks.present? %>
         <h2>Search Result (<%= @tasks.size %>)</h2>
         <p>Task ID | Task Title | Task Total Work Time (h)</p>
@@ -46,7 +46,7 @@
     <% end %>
   </ul>
 
-  <ul id="user_list">
+  <ul class="report_wrap_user_list">
     <% if @users.present? %>
         <h2>Search Result (<%= @users.size %>)</h2>
         <p>User ID | User Name | User Email | Task Total Work Time (h)</p>

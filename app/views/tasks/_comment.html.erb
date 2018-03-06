@@ -1,17 +1,17 @@
-<%= stylesheet_link_tag 'tasks.scss' %>
-<div>
-  <h6 id="comment_author">Comment by <%= comment.user.user_name %></h6>
-  <p id = "comment_time">Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>
-  <li id = "comment_modify">
+<div class="comment_show">
+  <h6 class="comment_show_author">Comment by <%= comment.user.user_name %></h6>
+  <p class = "comment_show_time">Posted <%= distance_of_time_in_words(comment.task.created_at, comment.created_at) %> later</p>
+  <li class = "comment_show_modify">
     <%# only admin can edit or delete a comment %>
     <% if current_user.check_role("administrator") %>
         <%= link_to "edit", edit_project_task_comment_path(comment.task.project, comment.task_id, comment.id), {:style=>'color:red'} %>
-        | <%= link_to "delete",  project_task_comment_path(comment.task.project, comment.task_id, comment.id), :style=>'color:red', method: :delete,            data: { confirm: "You sure?" }%>
+        | <%= link_to "delete",  project_task_comment_path(comment.task.project, comment.task_id, comment.id), :style=>'color:red',
+                      method: :delete, data: { confirm: "You sure?" }%>
     <% end %>
   </li>
   <%# add warning icon to edited comment %>
   <% if comment.edit %>
-      <%= image_tag("icon.png", height: '28', width: '28', class: "icon") %>
+      <%= image_tag("icon.png", height: '28', width: '28', class: "comment_show_icon") %>
   <% end %>
   <p class="comment"><%= comment.body %></p>
 </div>
