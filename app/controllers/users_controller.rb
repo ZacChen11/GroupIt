@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :show, :reset_password]
-  before_action :is_admin,   only: [:index, :edit, :update, :show, :reset_password]
+  skip_before_action :verify_user_logged_in_before_action, only: [:new, :create]
+  before_action :is_admin_before_action,   only: [:index, :edit, :update, :show, :reset_password]
 
   def index
     @users = User.all
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     # set new user as developer
     @role_map = @user.role_maps.new
     @role_map.role_id = Role.find_by(role_name: "developer").id
-    if current_user && current_user.check_role("administrator")
+    if current_user && current_user.has_role?("administrator")
       #when the admin create a user, the user will be activated automatically
       @user.activated = true
       if @user.save
@@ -77,10 +77,10 @@ class UsersController < ApplicationController
 
   private
   # Confirms the correct user or the admin user.
-  def is_admin
+  def is_admin_before_action
     # When an admin tries to check all the users
     if params[:id] == nil
-      if !current_user.check_role("administrator")
+      if !current_user.has_role?("administrator")
         flash.notice = "You don't have the previlege !"
         return redirect_to current_user
       end
@@ -89,7 +89,7 @@ class UsersController < ApplicationController
       #check a user account
       if @user
         # When the user is not the administrator
-        if !current_user.check_role("administrator") && @user != current_user
+        if !current_user.has_role?("administrator") && @user != current_user
           flash.notice = "You don't have the previlege !"
           return redirect_to current_user
         end
@@ -112,7 +112,7 @@ class UsersController < ApplicationController
   end
   #
   # def is_admin
-  #   if !current_user.check_role("administrator")
+  #   if !current_user.has_role?("administrator")
   #     # when the user is not administrator
   #     flash.notice = "You don't have the privilege"
   #     return redirect_to current_user

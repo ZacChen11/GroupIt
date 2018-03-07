@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
-  before_action :logged_in_user, only: [:show, :new, :create, :edit, :update, :destroy, :assign_task, :new_subtask, :create_subtask]
-  before_action :valid_task, only: [:show, :edit, :update, :destroy, :assign_task]
+  before_action :valid_task_before_action, only: [:show, :edit, :update, :destroy, :assign_task]
   before_action :correct_user, only: [:edit, :update, :destroy, :assign_task]
 
   def new
@@ -81,7 +80,7 @@ class TasksController < ApplicationController
   end
 
   private
-  def valid_task
+  def valid_task_before_action
     if !Task.find_by(id: params[:id])
       flash.notice = "Task doesn't exist !"
       redirect_to current_user

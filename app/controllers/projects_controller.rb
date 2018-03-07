@@ -1,7 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :logged_in_user, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-  before_action :valid_project, only: [:show, :edit, :update, :destroy]
+  before_action :load_project, only: [:show, :edit, :update, :destroy]
 
 
   def index
@@ -9,20 +8,15 @@ class ProjectsController < ApplicationController
     # when select all projects
     if params[:filter_selected] == "All Projects"
       @projects = Project.all
-      return render 'index'
-    end
-    if params[:filter_selected] == "My Projects"
+    elsif params[:filter_selected] == "My Projects"
       @projects = current_user.projects
-      return render 'index'
-    end
-    if params.has_key?("filter_selected") && params[:filter_selected].blank?
+    elsif params.has_key?("filter_selected") && params[:filter_selected].blank?
       flash.notice = "please choose a scope"
       return redirect_to projects_path
     end
   end
 
   def show
-    @project = Project.find(params[:id])
   end
 
   def new
@@ -40,17 +34,14 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = Project.find(params[:id])
     @project.destroy
     redirect_to projects_path
   end
 
   def edit
-    @project = Project.find(params[:id])
   end
 
   def update
-    @project = Project.find(params[:id])
     if @project.update(project_params)
       redirect_to @project
     else
@@ -59,8 +50,9 @@ class ProjectsController < ApplicationController
   end
 
   private
-  def valid_project
-    if !Project.find_by(id: params[:id])
+  def load_project
+    @project = Project.find_by(id: params[:id])
+    if @project.blank?
       flash.notice = "Project doesn't exist !"
       redirect_to current_user
     end

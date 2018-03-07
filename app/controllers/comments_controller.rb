@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :is_admin,   only: [:edit, :update, :destroy]
 
   def create
@@ -40,7 +39,7 @@ class CommentsController < ApplicationController
   private
   # Confirms only admin can edit/delete a comment.
   def is_admin
-    if !current_user.check_role("administrator")
+    if !current_user.has_role?("administrator")
       # when the user is not administrator
       flash.notice = "You don't have the privilege"
       return redirect_to current_user

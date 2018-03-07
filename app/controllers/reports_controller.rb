@@ -1,6 +1,5 @@
 class ReportsController < ApplicationController
 
-  before_action :logged_in_user, :is_reporter, only: [:generate, :search]
 
 
   def generate
@@ -87,7 +86,7 @@ class ReportsController < ApplicationController
   end
 
   def is_reporter
-    if !current_user.check_role("report manager")
+    if !current_user.has_role?("report manager")
       flash.notice = "You don't have the previlege"
       redirect_to current_user
     end

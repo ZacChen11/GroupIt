@@ -1,12 +1,13 @@
 class SessionsController < ApplicationController
-  before_action :logged_in_already, only: [:create, :new]
+  skip_before_action :verify_user_logged_in_before_action, only: [:welcome, :create, :new]
+  before_action :verify_user_already_logged_in_before_action, only: [:create, :new]
 
   def create
     # check if user uses use name or email to login in
-    if valid_email(params[:email_or_username])
+    if validate_email_format(params[:email_or_username])
       user = User.find_by(email: params[:email_or_username].downcase)
     else
-      user = User.find_by(user_name: params[:email_or_username])
+      user = User.where('lower(user_name) = ?', params[:email_or_username].downcase).first
     end
 
     if user && user.authenticate(params[:password])
@@ -37,14 +38,14 @@ class SessionsController < ApplicationController
 
 
   private
-  def logged_in_already
+  def verify_user_already_logged_in_before_action
     if current_user
       flash.notice = "You have already logged in"
       redirect_to current_user
     end
   end
 
-  def valid_email(email)
+  def validate_email_format(email)
     email_format = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     email =~ email_format
   end
