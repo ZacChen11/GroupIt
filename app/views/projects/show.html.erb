@@ -15,7 +15,7 @@
 <br/>
 
 <div class="task-wrap">
-  <h2>Tasks (<%= @project.tasks.size %>)</h2>
+  <h2>Tasks (<%= @project.tasks.where(parent_task: nil).count %>)</h2>
   <ul class="task-wrap_task-list">
     <% @project.tasks.each do |task| %>
         <%# only display parent task %>

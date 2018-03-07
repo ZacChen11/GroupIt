@@ -1,7 +1,7 @@
 <%= form_for @user  do |f| %>
     <%= render partial: 'error_messages', object: @user, as: :item %>
     <%= f.label :user_name %>
-    <%= f.text_field :user_name, placeholder: "case sensitive"%>
+    <%= f.text_field :user_name%>
     <br/><br/>
     <%= f.label :email %>
     <%= f.text_field :email %>
@@ -20,7 +20,7 @@
         <%= f.password_field :password_confirmation %>
         <br/><br/>
     <% end %>
-    <% if local_assigns[:edit] && current_user.check_role("administrator") %>
+    <% if local_assigns[:edit] && current_user.has_role?("administrator") %>
         <%= f.label :activate%><br/>
         <%= f.select :activated, options_for_select([["Yes", true], ["No", false]]), prompt: "Please make a choice" %>
         <br/><br/>

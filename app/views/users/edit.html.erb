@@ -1,5 +1,5 @@
 <%# when the user type is different, the user has different privilege to modify information %>
-<% if current_user.check_role("administrator") %>
+<% if current_user.has_role?("administrator") %>
     <h1>Modify a User</h1>
     <%= render partial: "form", object: @user, locals: {sign_up: false, edit: true}%>
 <% else %>
