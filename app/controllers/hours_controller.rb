@@ -1,5 +1,4 @@
 class HoursController < ApplicationController
-  before_action :logged_in_user
 
   def create
     @hour = Hour.new(hour_params)
@@ -8,11 +7,7 @@ class HoursController < ApplicationController
     if @hour.save
       redirect_to project_task_path(@hour.task.project, @hour.task)
     else
-      error_message = ""
-      @hour.errors.full_messages.each do |m|
-        error_message = error_message  + m + ". "
-      end
-        flash.notice = error_message
+      flash.notice = @hour.errors.full_messages.join(". ")
       redirect_to :back
     end
   end
