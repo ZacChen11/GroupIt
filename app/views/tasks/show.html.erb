@@ -13,6 +13,14 @@
   <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
+  <p> Belong to Project : <%= link_to @task.project.title,project_path(@task.project)%>
+  <br/><br/>
+  <% if @task.parent_task.present? %>
+      <p>Parent Task : <%= link_to @task.parent_task.title,  project_task_path(@task.project, @task.parent_task) %></p>
+  <% else %>
+      <p>Parent Task : No Parent Task</p>
+  <% end %>
+  <br/>
   <p>Description : <%= @task.description%></p>
   <br/>
   <p>Job Number : <%= @task.id%></p>
@@ -22,8 +30,8 @@
   <% if @task.assignee_id.present? %>
       <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
   <% else %>
-      <p style="display: inline">Assignee : No Assignee</p>
-      <%= link_to  "--> assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
+      <p style="display: inline">Assignee : No Assignee</p> -->
+      <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
       <br/>
   <% end %>
   <br/>
