@@ -13,11 +13,11 @@
       </div>
       <div class="search_wrap_task">
         Task
-        <%= f.radio_button :task_checked, true %>
+        <%= f.radio_button :task_or_user_checked, "task" %>
       </div>
       <div class="search_wrap_user">
         User
-        <%= f.radio_button :user_checked, true %>
+        <%= f.radio_button :task_or_user_checked, "user" %>
       </div>
       <div class="search_wrap_task_states">
         Task Status
@@ -25,7 +25,7 @@
       </div>
       <div class="search_wrap_user_status">
         User Status
-        <%= f.select :user_status, options_for_select([["active", true], ["inactive", false]], selected: @report.user_status),
+        <%= f.select :user_activated, options_for_select([["active", true], ["inactive", false]], selected: @report.user_activated),
                      prompt: "Please choose a user status" %>
       </div>
       <div class="search_wrap_submit">
@@ -39,7 +39,7 @@
     <% if @tasks.present? %>
         <h2>Search Result (<%= @tasks.size %>)</h2>
         <p>Task ID | Task Title | Task Total Work Time (h)</p>
-        <b/>
+        <br/>
         <% @tasks.each do |t| %>
             <li><%= t.id %> | <%= t.title %> | <%= t.check_work_time %> (h)</li>
         <% end %>
@@ -64,9 +64,9 @@
 
 <div class="generate_report">
     <% if @users.present? %>
-      <h3><%= link_to "Export Report", report_path(format: :csv, users: @users.each {|t| t.id}) %></h3>
+      <h3><%= link_to "Export Report", report_path(format: :csv, user_ids: @users.map(&:id)) %></h3>
     <% elsif @tasks.present? %>
-      <h3><%= link_to "Export Report", report_path(format: :csv, tasks: @tasks.each{|t| t.id}) %></h3>
+      <h3><%= link_to "Export Report", report_path(format: :csv, task_ids: @tasks.map(&:id)) %></h3>
     <% end %>
 </div>
 
