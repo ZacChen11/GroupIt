@@ -2,14 +2,13 @@
 <div class= "task_wrap">
   <h1>Task : <%= @task.title %></h1>
   <p class="task_wrap_author">Author : <%= @task.user.user_name %></p>
-  <% if current_user == @task.user%>
-      <div class="task_wrap_modify">
-        <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
-        | <%= link_to  "edit" , edit_project_task_path(@task.project, @task), {:style=>'color:red'}%>
-        | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete,
-                       data: {confirm: "Really delete the task?"}%>
-      </div>
-  <% end %>
+  <div class="task_wrap_modify">
+    <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
+    | <%= link_to  "edit" , edit_project_task_path(@task.project, @task), {:style=>'color:red'}%>
+    | <%= link_to  "delete" , project_task_path(@task.project, @task), :style=>'color:red', method: :delete,
+                   data: {confirm: "Really delete the task?"}%>
+  </div>
+
   <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
