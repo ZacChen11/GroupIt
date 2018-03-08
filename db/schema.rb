@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20180222181902) do
   create_table "tasks", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "status"
+    t.string   "status"
     t.integer  "assignee_id"
     t.integer  "parent_task_id"
     t.integer  "project_id"

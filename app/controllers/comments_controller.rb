@@ -21,6 +21,7 @@ class CommentsController < ApplicationController
 
   def update
     @comment = Comment.find(params[:id])
+    @comment.edit = true
     if @comment.update(comment_params)
       redirect_to project_task_path(params[:project_id], @comment.task.id)
     else
@@ -47,7 +48,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body, :edit)
+    params.require(:comment).permit(:body)
   end
 
 end

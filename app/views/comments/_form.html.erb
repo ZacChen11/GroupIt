@@ -1,11 +1,7 @@
-<%= stylesheet_link_tag 'comments/form.scss' %>
+
 <div class="create-comment">
-  <%= form_for [@task.project, @task, @comment] do |f| %>
-      <ul>
-        <% @comment.errors.full_messages.each do |error| %>
-            <li><%= error %></li>
-        <% end %>
-      </ul>
+  <%= form_for [@comment.task.project, @comment.task, @comment] do |f| %>
+      <%= render partial: 'users/error_messages', object: @comment, as: :item %>
       <p>
         <%= f.label :body, "Your Comment" %><br/>
         <%= f.text_area :body, style: 'width: 50%' %>
