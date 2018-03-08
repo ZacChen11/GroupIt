@@ -131,7 +131,7 @@ class UsersController < ApplicationController
     # parameter roles indicate an array of role ids string
     #delete roles of user
     user.role_maps.all.each do |r|
-      if !roles.include?(r.role_id.to_s)
+      if roles.exclude?(r.role_id.to_s)
         r.destroy
       end
     end
