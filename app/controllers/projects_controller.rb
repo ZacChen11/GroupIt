@@ -6,9 +6,9 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
     # when select all projects
-    if params[:filter_selected] == "All Projects"
+    if params[:filter_selected] == "all_projects"
       @projects = Project.all
-    elsif params[:filter_selected] == "My Projects"
+    elsif params[:filter_selected] == "my_projects"
       @projects = current_user.projects
     elsif params.has_key?("filter_selected") && params[:filter_selected].blank?
       flash.notice = "please choose a scope"

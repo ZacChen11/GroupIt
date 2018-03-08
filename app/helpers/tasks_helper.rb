@@ -2,13 +2,13 @@ module TasksHelper
 
   def task_status(task)
     case task.status
-      when 1
-        "Opening"
-      when 2
+      when "open"
+        "Open"
+      when "in_progress"
         "In Progress"
-      when 3
+      when "waiting"
         "Waiting"
-      when 4
+      when "resolved"
         "Resolved"
     end
   end

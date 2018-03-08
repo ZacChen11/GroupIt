@@ -16,7 +16,7 @@
       <br/>
       <p>
         <%= f.label :status %><br/>
-        <%= f.select :status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected => @task.status)%>
+        <%= f.select :status, options_for_select([["Open", "open"], ["In Progress", "in_progress"], ["Waiting", "waiting"], ["Resloved", "resloved"]], :selected => @task.status)%>
       </p>
       <br/>
       <p>

@@ -21,7 +21,7 @@
       </div>
       <div class="search_wrap_task_states">
         Task Status
-        <%= f.select :task_status, options_for_select([["Open", 1], ["In Progress", 2], ["Waiting", 3], ["Resloved", 4]], :selected=> @report                 .task_status),prompt: "Please choose a task status" %>
+        <%= f.select :task_status, options_for_select([["Open", "open"], ["In Progress", "in_progress"], ["Waiting", "waiting"], ["Resloved", "resloved"]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
       </div>
       <div class="search_wrap_user_status">
         User Status
