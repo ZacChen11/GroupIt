@@ -60,7 +60,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       # assign roles for users
       if params[:user][:roles]
-       generate_role(params[:user][:roles], @user)
+       update_role(params[:user][:roles], @user)
       end
       return redirect_to user_path(@user)
     end
@@ -127,7 +127,7 @@ class UsersController < ApplicationController
   #   end
   # end
 
-  def generate_role(roles, user)
+  def update_role(roles, user)
     # parameter roles indicate an array of role ids string
     #delete roles of user
     user.role_maps.all.each do |r|
