@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   has_many :tasks, dependent: :delete_all
   has_many :comments, dependent: :delete_all
   before_save { self.email = email.downcase }
-  before_save {self.user_name = user_name.delete(' \t\r\n')}
+  before_save {self.user_name = user_name.delete(' ')}
+  before_destroy :release_all_assigned_tasks
   validates :user_name,  presence: true, length: {maximum: 50}, uniqueness: {case_sensitive: false}
   validates :email,  presence: true, length: {maximum: 200}, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "invalid email format"},
       uniqueness: {case_sensitive: false}
@@ -18,7 +19,7 @@ class User < ActiveRecord::Base
   has_secure_password
   attr_accessor :password_validation
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
-  scope :user_status, lambda{ |status| where(:activated => status)}
+  scope :user_activated, lambda{ |status| where(:activated => status)}
 
 
   def self.to_csv
@@ -42,6 +43,10 @@ class User < ActiveRecord::Base
   private
   def set_password_validation_default_value
     self.password_validation = true
+  end
+
+  def release_all_assigned_tasks
+    Task.where(assignee_id:  id).map{|task| task.update(assignee_id: nil)}
   end
 
 

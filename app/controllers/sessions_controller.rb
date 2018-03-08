@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if validate_email_format(params[:email_or_username])
       user = User.find_by(email: params[:email_or_username].downcase)
     else
-      user = User.where('lower(user_name) = ?', params[:email_or_username].downcase.delete(' \t\r\n')).first
+      user = User.where('lower(user_name) = ?', params[:email_or_username].downcase.delete(' ')).first
     end
 
     if user && user.authenticate(params[:password])
