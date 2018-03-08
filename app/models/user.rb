@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |user|
-        csv << [user.id, user.user_name, user.email, user.first_name, user.last_name, user.check_work_time]
+        csv << [user.id, user.user_name, user.email, user.first_name, user.last_name, user.user_total_work_time]
       end
     end
   end
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
     roles.exists?(role_name: role_name)
   end
 
-  def check_work_time
+  def user_total_work_time
     hours.map{|t| t.work_time}.sum
   end
 
