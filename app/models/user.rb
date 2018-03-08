@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :tasks, dependent: :delete_all
   has_many :comments, dependent: :delete_all
   before_save { self.email = email.downcase }
+  before_save {self.user_name = user_name.delete(' \t\r\n')}
   validates :user_name,  presence: true, length: {maximum: 50}, uniqueness: {case_sensitive: false}
   validates :email,  presence: true, length: {maximum: 200}, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "invalid email format"},
       uniqueness: {case_sensitive: false}
