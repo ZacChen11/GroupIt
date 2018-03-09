@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       if user.activated
         log_in(user)
-         return redirect_to user
+         return redirect_to user_profile_path
       else
         flash.notice = "The User Account is not activated !!"
         return redirect_to login_path
@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out
-    redirect_to root_path
+    redirect_to login_path
   end
 
   def welcome
@@ -40,7 +40,7 @@ class SessionsController < ApplicationController
   def verify_user_already_logged_in_before_action
     if current_user
       flash.notice = "You have already logged in"
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 

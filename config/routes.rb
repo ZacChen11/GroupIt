@@ -1,12 +1,25 @@
 Rails.application.routes.draw do
 
-  root to: 'sessions#welcome'
+  root to: 'users#profile'
   get 'sessions/welcome'
-  resources :users do
+  resources :users, except: [:index, :show] do
     member do
       get 'reset_password'
     end
   end
+  get '/users/:id', to: 'administrators#show'
+  get '/users', to: 'administrators#index'
+  get 'user/profile', to: 'users#profile'
+  namespace :administrators do
+    get 'new'
+    post 'create'
+    get 'edit'
+    patch 'update'
+    put 'update'
+  end
+
+
+
   resources :projects do
     resources :tasks do
       member  do
@@ -26,7 +39,6 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
-  # post   '/hours',   to: 'tasks#create_hour'
   get     '/report', to: 'reports#generate'
   post     '/report', to: 'reports#search'
 end

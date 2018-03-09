@@ -2,14 +2,14 @@ class UsersController < ApplicationController
   skip_before_action :verify_user_logged_in_before_action, only: [:new, :create]
   before_action :is_admin_before_action,   only: [:index, :edit, :update, :show, :reset_password]
 
-  def index
-    @users = User.all
-    @user = User.find(current_user.id)
-  end
+  # def index
+  #   @users = User.all
+  #   @user = User.find(current_user.id)
+  # end
 
-  def show
-    @user = User.find(params[:id])
-  end
+  # def show
+  #   @user = User.find(params[:id])
+  # end
 
   def new
     @user = User.new
@@ -73,6 +73,10 @@ class UsersController < ApplicationController
 
   def reset_password
     @user = User.find(params[:id])
+  end
+
+  def profile
+    @user = User.find(current_user.id)
   end
 
   private

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   def verify_user_logged_in_before_action
     if !current_user
       flash.notice = "Please Log In"
-      redirect_to root_path
+      redirect_to login_path
     end
   end
 
