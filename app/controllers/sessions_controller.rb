@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :verify_user_logged_in_before_action, only: [:welcome, :create, :new]
-  before_action :verify_user_already_logged_in_before_action, only: [:create, :new]
+  before_action :verify_user_already_logged_in_before_action, only: [:create, :new, :welcome]
 
   def create
     # check if user uses use name or email to login in
@@ -9,7 +9,6 @@ class SessionsController < ApplicationController
     else
       user = User.where('lower(user_name) = ?', params[:email_or_username].downcase.delete(' ')).first
     end
-
     if user && user.authenticate(params[:password])
       if user.activated
         log_in(user)
@@ -50,8 +49,6 @@ class SessionsController < ApplicationController
     email =~ email_format
   end
 
-  # places a temporary cookie on the user’s browser containing an encrypted version of the user’s id,
-  # which allows to retrieve the id on subsequent pages using session[:user_id]
   def log_in(user)
     session[:user_id] = user.id
   end

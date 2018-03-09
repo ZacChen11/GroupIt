@@ -104,29 +104,6 @@ class UsersController < ApplicationController
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)
   end
 
-  def validate_user
-    if !User.find_by(id: params[:id])
-      flash.notice = "User doesn't exist !"
-      redirect_to current_user
-    end
-  end
-  #
-  # def is_admin
-  #   if !current_user.has_role?("administrator")
-  #     # when the user is not administrator
-  #     flash.notice = "You don't have the privilege"
-  #     return redirect_to current_user
-  #   end
-  # end
-  #
-  # def correct_user
-  #   @user = User.find(params[:id])
-  #   if current_user != @user
-  #     flash.notice = "You don't have the previlege"
-  #     redirect_to current_user
-  #   end
-  # end
-
   def update_role(roles, user)
     # parameter roles indicate an array of role ids string
     #delete roles of user

@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :load_project, only: [:show, :edit, :update, :destroy]
+  before_action :load_project_before_action, only: [:show, :edit, :update, :destroy]
 
 
   def index
@@ -50,7 +50,7 @@ class ProjectsController < ApplicationController
   end
 
   private
-  def load_project
+  def load_project_before_action
     @project = Project.find_by(id: params[:id])
     if @project.blank?
       flash.notice = "Project doesn't exist !"
