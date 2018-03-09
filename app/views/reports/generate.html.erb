@@ -3,29 +3,24 @@
 <h1>Reports</h1>
 <div class="search_wrap">
   <%= form_for @report, url:report_path do  |f| %>
+      <%= render partial: 'users/error_messages', object: @report, as: :item %>
       <div class="search_wrap_start_time">
-        From
-        <%= f.date_field :start_time, value: @report.start_time %>
+        From <%= f.date_field  :start_time, value: @report.start_time %>
       </div>
       <div class="search_wrap_end_time">
-        To
-        <%= f.date_field :end_time, value: @report.end_time%>
+        To <%= f.date_field :end_time, value: @report.end_time%>
       </div>
       <div class="search_wrap_task">
-        Task
-        <%= f.radio_button :task_or_user_checked, "task" %>
+        Task <%= f.radio_button :task_or_user_checked, "task" %>
       </div>
       <div class="search_wrap_user">
-        User
-        <%= f.radio_button :task_or_user_checked, "user" %>
+        User <%= f.radio_button :task_or_user_checked, "user" %>
       </div>
       <div class="search_wrap_task_states">
-        Task Status
-        <%= f.select :task_status, options_for_select([["Open", "open"], ["In Progress", "in_progress"], ["Waiting", "waiting"], ["Resloved", "resloved"]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
+        Task Status <%= f.select :task_status, options_for_select([["Open", "open"], ["In Progress", "in_progress"], ["Waiting", "waiting"], ["Resloved", "resloved"]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
       </div>
       <div class="search_wrap_user_status">
-        User Status
-        <%= f.select :user_activated, options_for_select([["active", true], ["inactive", false]], selected: @report.user_activated),
+        User Status <%= f.select :user_activated, options_for_select([["active", true], ["inactive", false]], selected: @report.user_activated),
                      prompt: "Please choose a user status" %>
       </div>
       <div class="search_wrap_submit">

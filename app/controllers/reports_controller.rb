@@ -36,20 +36,23 @@ class ReportsController < ApplicationController
 
   def search
     @report = Report.new(params[:report])
-    # validate input starting time and ending time
-    if @report.start_time.blank?
-      # no starting time
-      flash.now.notice = "please choose start time"
-      return render 'generate'
-    elsif @report.end_time.blank?
-      # no ending time
-      flash.now.notice = "please choose end time"
-      return render 'generate'
-    elsif @report.start_time >= @report.end_time
-      # starting time >= ending time
-      flash.now.notice = "ending time should be larger or equal to starting time, please choose again"
+    if @report.invalid?
       return render 'generate'
     end
+    # # validate input starting time and ending time
+    # if @report.start_time.blank?
+    #   # no starting time
+    #   flash.now.notice = "please choose start time"
+    #   return render 'generate'
+    # elsif @report.end_time.blank?
+    #   # no ending time
+    #   flash.now.notice = "please choose end time"
+    #   return render 'generate'
+    # elsif @report.start_time >= @report.end_time
+    #   # starting time >= ending time
+    #   flash.now.notice = "ending time should be larger or equal to starting time, please choose again"
+    #   return render 'generate'
+    # end
 
     # load records based on search condition
     if @report.task_or_user_checked == "task"
