@@ -41,7 +41,7 @@
         <p>Task ID | Task Title | Task Total Work Time (h)</p>
         <br/>
         <% @tasks.each do |t| %>
-            <li><%= t.id %> | <%= t.title %> | <%= t.check_work_time %> (h)</li>
+            <li><%= t.id %> | <%= t.title %> | <%= t.task_total_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>
@@ -52,7 +52,7 @@
         <p>User ID | User Name | User Email | Task Total Work Time (h)</p>
         <br/>
         <% @users.each do |t| %>
-            <li><%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.check_work_time %> (h)</li>
+            <li><%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.user_total_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>
@@ -64,9 +64,9 @@
 
 <div class="generate_report">
     <% if @users.present? %>
-      <h3><%= link_to "Export Report", report_path(format: :csv, user_ids: @users.map(&:id)) %></h3>
+      <h3><%= link_to "Export Report", report_path(format: :csv, report: params[:report]) %></h3>
     <% elsif @tasks.present? %>
-      <h3><%= link_to "Export Report", report_path(format: :csv, task_ids: @tasks.map(&:id)) %></h3>
+      <h3><%= link_to "Export Report", report_path(format: :csv, report: params[:report]) %></h3>
     <% end %>
 </div>
 
