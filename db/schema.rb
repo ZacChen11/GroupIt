@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180222181902) do
+ActiveRecord::Schema.define(version: 20180312212643) do
+
+  create_table "assigned_projects_participants", id: false, force: :cascade do |t|
+    t.integer "assigned_project_id"
+    t.integer "participant_id"
+  end
+
+  add_index "assigned_projects_participants", ["assigned_project_id"], name: "index_assigned_projects_participants_on_assigned_project_id"
+  add_index "assigned_projects_participants", ["participant_id"], name: "index_assigned_projects_participants_on_participant_id"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -46,6 +54,14 @@ ActiveRecord::Schema.define(version: 20180222181902) do
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id"
+
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+  end
+
+  add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id"
+  add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id"
 
   create_table "role_maps", force: :cascade do |t|
     t.integer  "role_id"

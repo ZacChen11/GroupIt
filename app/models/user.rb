@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :roles, through: :role_maps
   has_many :tasks, dependent: :delete_all
   has_many :comments, dependent: :delete_all
+  has_and_belongs_to_many :assigned_projects, class_name: "Project", foreign_key: "assigned_project_id"
+
   before_save { self.email = email.downcase }
   before_save {self.user_name = user_name.delete(' ')}
   before_destroy :release_all_assigned_tasks
