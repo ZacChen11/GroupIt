@@ -1,4 +1,3 @@
-<% stylesheet_link_tag 'hours/form.scss' %>
 <div class="create_hour">
   <%= form_for @hour, url: [@hour.task.project, @hour.task, @hour] do |f| %>
       <ul>

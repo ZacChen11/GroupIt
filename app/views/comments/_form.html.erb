@@ -1,4 +1,3 @@
-
 <div class="create-comment">
   <%= form_for [@comment.task.project, @comment.task, @comment] do |f| %>
       <%= render partial: 'users/error_messages', object: @comment, as: :item %>
