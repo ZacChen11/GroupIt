@@ -1,0 +1,23 @@
+<%= stylesheet_link_tag 'users/show.scss' %>
+<h1><%= @user.user_name %></h1>
+<p>Email Address : <%= @user.email%></p>
+<br/>
+<p>First Name : <%= @user.first_name%></p>
+<br/>
+<p>Last Name : <%= @user.last_name%></p>
+<br/>
+<ul class="user_type"> User Type :
+  <% @user.roles.each do |role| %>
+      <li>
+        <%= role.role_name %>
+        <% if role != @user.roles.last %>
+            |
+        <% end %>
+      </li>
+  <% end %>
+</ul>
+<br/>
+<p>Total Work Time : <%= @user.user_total_work_time %> h</p>
+<br/>
+<h3><%= link_to "<<Back to User List", users_path %></h3>
+

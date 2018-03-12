@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-  skip_before_action :verify_user_logged_in_before_action, only: [:welcome, :create, :new]
-  before_action :verify_user_already_logged_in_before_action, only: [:create, :new, :welcome]
+  skip_before_action :verify_user_logged_in_before_action, only: [:create, :new]
+  before_action :verify_user_already_logged_in_before_action, only: [:create, :new]
 
   def create
     # check if user uses use name or email to login in
@@ -29,21 +29,11 @@ class SessionsController < ApplicationController
     redirect_to login_path
   end
 
-  def welcome
-  end
-
   def new
   end
 
 
   private
-  def verify_user_already_logged_in_before_action
-    if current_user
-      flash.notice = "You have already logged in"
-      redirect_to root_path
-    end
-  end
-
   def validate_email_format(email)
     email_format = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     email =~ email_format

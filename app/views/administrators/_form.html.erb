@@ -1,0 +1,35 @@
+<%= form_for @user, url: local_assigns[:submit_path]  do |f| %>
+    <%= render partial: 'users/error_messages', object: @user, as: :item %>
+    <%= f.label :user_name %>
+    <%= f.text_field :user_name%>
+    <br/><br/>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+    <br/><br/>
+    <%= f.label :first_name%>
+    <%= f.text_field :first_name %>
+    <br/><br/>
+    <%= f.label :last_name%>
+    <%= f.text_field :last_name %>
+    <br/><br/>
+    <% if local_assigns[:sign_up] %>
+        <%= f.label :password %>
+        <%= f.password_field :password, placeholder: "minimum 4 characters" %>
+        <br/><br/>
+        <%= f.label :password_confirmation%>
+        <%= f.password_field :password_confirmation %>
+        <br/><br/>
+    <% end %>
+    <%= f.label :activate%><br/>
+    <%= f.select :activated, options_for_select([["Yes", true], ["No", false]], @user.activated) %>
+    <br/><br/>
+    <%= label_tag :assign_roles %>
+    <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :checked => @user.roles.map{|t| t.id}, :include_hidden => false %>
+    <br/><br/>
+    <% if local_assigns[:edit] %>
+        <%= link_to "Reset Password", reset_password_user_path(@user)%>
+        <br/><br/>
+    <% end %>
+    <%= f.submit%>
+<% end %>
+

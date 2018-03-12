@@ -17,4 +17,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def is_admin_before_action
+    if !current_user.has_role?("administrator")
+      flash.notice = "You don't have the privilege"
+      redirect_to root_path
+    end
+  end
+
+  def verify_user_already_logged_in_before_action
+    if current_user
+      flash.notice = "You have already logged in"
+      redirect_to root_path
+    end
+  end
+
+
 end

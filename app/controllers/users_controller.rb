@@ -1,16 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :verify_user_logged_in_before_action, only: [:new, :create]
-  before_action :is_admin_before_action,   only: [:index, :edit, :update, :show, :reset_password]
-
-  # def index
-  #   @users = User.all
-  #   @user = User.find(current_user.id)
-  # end
-
-  # def show
-  #   @user = User.find(params[:id])
-  # end
-
+  before_action :is_the_correct_user_before_action, only: [:reset_password]
+  before_action :verify_user_already_logged_in_before_action, only: [:new]
   def new
     @user = User.new
   end
@@ -20,31 +11,13 @@ class UsersController < ApplicationController
     # set new user as developer
     @role_map = @user.role_maps.new
     @role_map.role_id = Role.find_by(role_name: "developer").id
-    if current_user && current_user.has_role?("administrator")
-      #when the admin create a user, the user will be activated automatically
-      @user.activated = true
-      if @user.save
-        @role_map.save
-        return redirect_to @user
-      else
-        return render 'new'
-      end
-    end
-
     if @user.save
       @role_map.save
       flash.notice = "Thanks for signing up"
-      return redirect_to root_path
+      return redirect_to login_path
     else
       return render 'new'
     end
-
-  end
-
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    redirect_to users_path
   end
 
   def edit
@@ -58,17 +31,13 @@ class UsersController < ApplicationController
       @user.password_validation = false
     end
     if @user.update(user_params)
-      # assign roles for users
-      if params[:user][:roles]
-       update_role(params[:user][:roles], @user)
-      end
-      return redirect_to user_path(@user)
+      return redirect_to root_path
     end
-   if !params[:user].has_key?("password")
-     return render 'edit'
-   else
-     return render 'reset_password'
-   end
+    if !params[:user].has_key?("password")
+      return render 'edit'
+    else
+       return render 'reset_password'
+    end
   end
 
   def reset_password
@@ -80,49 +49,18 @@ class UsersController < ApplicationController
   end
 
   private
-  # Confirms the correct user or the admin user.
-  def is_admin_before_action
-    # When an admin tries to check all the users
-    if params[:id] == nil
-      if !current_user.has_role?("administrator")
-        flash.notice = "You don't have the previlege !"
-        return redirect_to current_user
-      end
-    else
-      @user = User.find_by(id: params[:id])
-      #check a user account
-      if @user
-        # When the user is not the administrator
-        if !current_user.has_role?("administrator") && @user != current_user
-          flash.notice = "You don't have the previlege !"
-          return redirect_to current_user
-        end
-      else
-        # when the user doesn't exist
-        return render plain: "404 Not Found", status: 404
-      end
-    end
-  end
-
   def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)
   end
 
-  def update_role(roles, user)
-    # parameter roles indicate an array of role ids string
-    #delete roles of user
-    user.role_maps.all.each do |r|
-      if roles.exclude?(r.role_id.to_s)
-        r.destroy
-      end
-    end
-    #add new role to user
-    roles.each do |r|
-      if !user.role_maps.exists?(role_id: r)
-        user.role_maps.create(role_id: r)
-      end
+  def is_the_correct_user_before_action
+    # when the current user tries to do something to other users account
+    if !(current_user.has_role?("administrator") || current_user == @user = User.find(params[:id]))
+      flash.notice = "You don't have the privilege"
+      return redirect_to root_path
     end
   end
+
 
 
 

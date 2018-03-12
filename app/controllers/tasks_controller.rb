@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :valid_task_before_action, only: [:show, :edit, :update, :destroy, :assign_task]
+  before_action :load_task_before_action, only: [:show, :edit, :update, :destroy, :assign_task]
 
   def new
     @project = Project.find(params[:project_id])
@@ -40,7 +40,6 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find(params[:id])
     @hour = Hour.new
     @hour.task_id = @task.id
     @comment = Comment.new
@@ -49,12 +48,10 @@ class TasksController < ApplicationController
 
   def edit
     @project = Project.find(params[:project_id])
-    @task = Task.find(params[:id])
   end
 
   def update
     @project = Project.find(params[:project_id])
-    @task = Task.find(params[:id])
     if @task.update(task_params)
       redirect_to project_task_path(@task.project_id, @task.id)
     else
@@ -64,13 +61,11 @@ class TasksController < ApplicationController
 
   def destroy
     @project =  Project.find(params[:project_id])
-    @task = @project.tasks.find(params[:id])
     @task.destroy
     redirect_to @project
   end
 
   def assign_task
-    @task = Task.find(params[:id])
     if params.has_key?("task")
       if @task.update(assignee_id: params[:task][:assignee_id])
         return redirect_to project_task_path(@task.project, @task)
@@ -79,10 +74,11 @@ class TasksController < ApplicationController
   end
 
   private
-  def valid_task_before_action
-    if !Task.find_by(id: params[:id])
+  def load_task_before_action
+    @task = Task.find_by(id: params[:id])
+    if @task.blank?
       flash.notice = "Task doesn't exist !"
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 

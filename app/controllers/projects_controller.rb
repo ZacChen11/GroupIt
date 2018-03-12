@@ -54,7 +54,7 @@ class ProjectsController < ApplicationController
     @project = Project.find_by(id: params[:id])
     if @project.blank?
       flash.notice = "Project doesn't exist !"
-      redirect_to current_user
+      redirect_to root_path
     end
   end
 

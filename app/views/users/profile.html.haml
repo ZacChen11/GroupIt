@@ -1,0 +1,49 @@
+%h1 Welcome to GroupIt
+%p
+  User Name :
+  = @user.user_name
+%br
+%p
+  Email Address :
+  = @user.email
+%br
+%p
+  First Name :
+  = @user.first_name
+%br
+%p
+  Last Name :
+  = @user.last_name
+%br
+%ul{:class => "user_type"}
+  User Type :
+  - @user.roles.each do |role|
+    %li
+      = role.role_name
+      - if role != @user.roles.last
+        |
+%br
+%p
+  Total Work Time :
+  = @user.user_total_work_time
+%br
+- if @user.has_role?("report manager")
+  %h3
+    = link_to "Produce Report", report_path
+- if @user.has_role?("administrator")
+  %h3
+    = link_to "View Users", users_path
+%h3
+  = link_to "View Projects", projects_path
+- if @user.has_role?("administrator")
+  %h3
+    = link_to "Update Personal Information", administrators_edit_path(id: @user.id)
+- else
+  %h3
+    = link_to "Update Personal Information", edit_user_path(@user.id)
+%h3
+  = link_to "Log out", logout_path, method: :delete
+
+
+
+

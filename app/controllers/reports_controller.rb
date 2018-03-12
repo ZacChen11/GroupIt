@@ -6,7 +6,7 @@ class ReportsController < ApplicationController
     @report = Report.new
     respond_to do |format|
       format.html
-      format.csv {
+      format.csv{
         @report = Report.new(params[:report])
         #search records again based on the params
         load_records_from_search
@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
   private
   def is_reporter_before_action
     if !current_user.has_role?("report manager")
-      flash.notice = "You don't have the privelege"
+      flash.notice = "You don't have the privilege"
       redirect_to current_user
     end
   end

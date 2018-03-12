@@ -1,4 +1,5 @@
 class HoursController < ApplicationController
+  before_action :load_hour_before_action, only: [:show]
 
   def create
     @hour = Hour.new(hour_params)
@@ -19,6 +20,14 @@ class HoursController < ApplicationController
   private
   def hour_params
     params.require(:hour).permit(:work_time, :explanation)
+  end
+
+  def load_hour_before_action
+    @hour = Hour.find_by(id: params[:id])
+    if @hour.blank?
+      flash.notice = "Hour doesn't exist !"
+      redirect_to root_path
+    end
   end
 
 
