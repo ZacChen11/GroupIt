@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
 
   root to: 'users#profile'
-  get 'sessions/welcome'
-  resources :users, except: [:index, :show] do
+  resources :users, except: [:index, :show, :destroy] do
     member do
       get 'reset_password'
     end
   end
-  get '/users/:id', to: 'administrators#show'
   get '/users', to: 'administrators#index'
+  get '/users/:id', to: 'administrators#show'
+  delete 'users/:id', to: 'administrators#destroy'
   get 'user/profile', to: 'users#profile'
   namespace :administrators do
     get 'new'
@@ -17,8 +17,6 @@ Rails.application.routes.draw do
     patch 'update'
     put 'update'
   end
-
-
 
   resources :projects do
     resources :tasks do

@@ -20,17 +20,6 @@
         <%= f.password_field :password_confirmation %>
         <br/><br/>
     <% end %>
-
-
-    <% if local_assigns[:edit] && current_user.has_role?("administrator") %>
-        <%= f.label :activate%><br/>
-        <%= f.select :activated, options_for_select([["Yes", true], ["No", false]]), prompt: "Please make a choice" %>
-        <br/><br/>
-        <%= label_tag :assign_roles %>
-        <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :checked => @user.roles.map{|t| t.id}, :include_hidden => false %>
-        <br/><br/>
-    <% end %>
-
     <% if local_assigns[:edit] %>
         <%= link_to "Reset Password", reset_password_user_path(@user)%>
         <br/><br/>
