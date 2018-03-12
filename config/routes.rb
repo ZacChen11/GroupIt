@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       member do
         post 'create_subtask'
       end
-      resources :hours, only: [:create, :show]
+      resources :hours
       resources :comments, except:[:show]
     end
   end

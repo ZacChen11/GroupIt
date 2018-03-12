@@ -1,5 +1,11 @@
 %h1 Work Time
-%p Length : #{@hour.work_time}
+%p{class: "hour_show_length"} Length : #{@hour.work_time}
+.hour_wrap_modify
+  - if current_user == @hour.user
+    = link_to "edit hour", edit_project_task_hour_path(@hour.task.project, @hour.task, @hour)
+    |
+    = link_to "delete hour", project_task_hour_path(@hour.task.project, @hour.task, @hour), method: :delete, data: {confirm: "Really delete the hour?"}
+%br
 %br
 %p
   Created at :

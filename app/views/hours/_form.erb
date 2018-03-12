@@ -1,10 +1,6 @@
 <div class="create_hour">
   <%= form_for @hour, url: [@hour.task.project, @hour.task, @hour] do |f| %>
-      <ul>
-        <% @hour.errors.full_messages.each do |error| %>
-            <li><%= error %></li>
-        <% end %>
-      </ul>
+      <%= render partial: 'users/error_messages', object: @hour, as: :item %>
       <p>
         <%= f.label :Set_Work_Time %>
         <%= f.number_field :work_time, step: 0.5, style: 'display: block' %>

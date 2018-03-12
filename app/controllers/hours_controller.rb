@@ -1,5 +1,5 @@
 class HoursController < ApplicationController
-  before_action :load_hour_before_action, only: [:show]
+  before_action :load_hour_before_action, only: [:show, :edit, :update, :destroy]
 
   def create
     @hour = Hour.new(hour_params)
@@ -14,7 +14,23 @@ class HoursController < ApplicationController
   end
 
   def show
-    @hour = Hour.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @hour.update(hour_params)
+      return redirect_to  project_task_hour_path(@hour.task.project, @hour.task, @hour)
+    else
+      return render 'edit'
+    end
+  end
+
+  def destroy
+    @task =  Task.find(params[:task_id])
+    @hour.destroy
+    redirect_to  project_task_path(@task.project, @task)
   end
 
   private
