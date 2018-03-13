@@ -23,7 +23,7 @@
     <%= f.label :activate%><br/>
     <%= f.select :activated, options_for_select([["Yes", true], ["No", false]], @user.activated) %>
     <br/><br/>
-    <%= label_tag :assign_roles %>
+    <%= f.label :assign_roles %>
     <%= f.collection_check_boxes :roles, Role.all, :id, :role_name, :checked => @user.roles.map{|t| t.id}, :include_hidden => false %>
     <br/><br/>
     <% if local_assigns[:edit] %>

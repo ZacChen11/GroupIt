@@ -6,7 +6,10 @@ class Task < ActiveRecord::Base
   belongs_to :project
   belongs_to :parent_task, class_name: "Task"
   belongs_to :user
-  validates :title, :description, :status, :presence => true
+  has_and_belongs_to_many :assignees, class_name: "User",  join_table: "assigned_tasks_assignees"
+  belongs_to :task_type
+
+  validates :title, :description, :status, :task_type, :presence => true
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
   scope :task_status, lambda{ |status| where(:status => status)}
 

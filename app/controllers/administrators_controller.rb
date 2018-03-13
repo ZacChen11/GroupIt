@@ -31,6 +31,7 @@ class AdministratorsController < ApplicationController
   end
 
   def update
+
     # check if user reset password
     if params[:user][:password].blank?
       @user.password_validation = false

@@ -18,7 +18,9 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.project_id = @project.id
     @task.user_id = current_user.id
+    @task.task_type_id = params[:task][:task_type]
     if @task.save
+      update_assignee(params[:task][:assignees_id], @task)
       redirect_to  project_task_path(@task.project, @task)
     else
       render 'new'
@@ -32,7 +34,9 @@ class TasksController < ApplicationController
     @task.project_id = @project.id
     @task.parent_task_id = @parent_task.id
     @task.user_id = current_user.id
+    @task.task_type_id = params[:task][:task_type]
     if @task.save
+      update_assignee(params[:task][:assignees_id], @task)
       redirect_to project_task_path(@task.project, @task)
     else
       render 'new_subtask'
@@ -52,7 +56,9 @@ class TasksController < ApplicationController
 
   def update
     @project = Project.find(params[:project_id])
+    update_task_type(params[:task][:task_type], @task)
     if @task.update(task_params)
+      update_assignee(params[:task][:assignees_id], @task)
       redirect_to project_task_path(@task.project_id, @task.id)
     else
       render 'edit'
@@ -78,12 +84,46 @@ class TasksController < ApplicationController
     @task = Task.find_by(id: params[:id])
     if @task.blank?
       flash.notice = "Task doesn't exist !"
-      redirect_to root_path
+      return redirect_to root_path
     end
+    # only allow author and participants access a task under a project
+    if @task.project.user != current_user && !@task.project.participants.exists?(current_user)
+      flash.notice = "You don't have privilege !"
+      return redirect_to root_path
+    end
+
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :status, :assignee_id)
+    params.require(:task).permit(:title, :description, :status, :assignees_id)
+  end
+
+  def update_task_type(type, task)
+    # parameter type is the string of task type id
+    if type != task.task_type.id.to_s
+      # when the type of a task is changed, task will delete this type and add a new type
+      task.task_type.tasks.delete(task)
+      task.task_type = TaskType.find_by(id: type)
+    end
+  end
+
+  def update_assignee(assignees_id, task)
+    # parameter participants indicate an array of participants ids string
+    if assignees_id.blank?
+      return task.assignees.delete(task.assignees.all)
+    end
+    task.assignees.all.each do |assignee|
+      if assignees_id.exclude?(assignee.id.to_s)
+        task.assignees.delete(assignee)
+      end
+    end
+    #add new participant to project
+    assignees_id.each do |id|
+      if !task.assignees.exists?(id: id)
+        user = User.find_by(id: id)
+        task.assignees << user
+      end
+    end
   end
 
 

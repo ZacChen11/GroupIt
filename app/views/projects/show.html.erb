@@ -10,6 +10,20 @@
   <br/>
   <p>Description : <%= @project.description%></p>
   <br/>
+  <% if @project.participants.blank? %>
+    <p>Participants : No participants</p>
+  <% else %>
+      <ul class="project-wrap_participant_name"> Participants :
+        <% @project.participants.each do |participant| %>
+            <li>
+              <%= participant.user_name %>
+              <% if participant != @project.participants.last %>
+                  |
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+  <% end %>
 </div>
 <br/>
 

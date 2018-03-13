@@ -4,10 +4,17 @@
       <%= f.label :title %><br/>
       <%= f.text_field :title %>
     </p>
+    </br>
     <p>
       <%= f.label :description %><br/>
       <%= f.text_area :description %>
     </p>
+    </br>
+    <p>
+      <%= f.label :invite_participants %></br>
+      <%= f.collection_check_boxes :participants_id, User.where("activated = ? and id != ?", true, current_user.id), :id, :user_name, :checked => @project.participants.map(&:id), :include_hidden => false %>
+    </p>
+    </br>
     <p>
       <%= f.submit %>
     </p>

@@ -16,8 +16,18 @@
     </p>
     <br/>
     <p>
-      <%= f.label :Assign_This_Task %><br/>
-      <%= f.collection_select :assignee_id, User.where(activated: true), :id, :user_name, prompt: "Please select a user" %>
+      <% if local_assigns[:edit] %>
+          <%= f.label :task_type %><br/>
+          <%= f.collection_select :task_type, TaskType.all, :id, :name,:selected => @task.task_type.id %>
+      <% else %>
+          <%= f.label :task_type %><br/>
+          <%= f.collection_select :task_type, TaskType.all, :id, :name, prompt: "Please choose a type"%>
+      <% end %>
+    </p>
+    <br/>
+    <p>
+      <%= f.label :Assign_This_Task %></br>
+      <%= f.collection_check_boxes :assignees_id, @project.participants, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
     </p>
     <br/>
     <p>

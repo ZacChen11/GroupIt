@@ -25,13 +25,7 @@
   <br/>
   <p>Status : <%= task_status(@task) %></p>
   <br/>
-  <% if @task.assignee_id.present? %>
-      <p>Assignee : <%= User.find_by(id: @task.assignee_id).user_name %></p>
-  <% else %>
-      <p style="display: inline">Assignee : No Assignee</p> -->
-      <%= link_to  "assign task", assign_task_project_task_path(@task.project, @task), {:style=>'color:red'}%>
-      <br/>
-  <% end %>
+  <p>Task Type : <%= @task.task_type.name %></p>
   <br/>
 
   <div class="task_time">

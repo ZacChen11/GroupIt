@@ -9,6 +9,10 @@
 Role.create(role_name: 'administrator')
 Role.create(role_name: 'developer')
 Role.create(role_name: 'report manager')
+TaskType.create(name: 'feature')
+TaskType.create(name: 'bug')
+TaskType.create(name: 'improvement')
 admin = User.create(:user_name => "Zac", :email => "zac@qq.com", :first_name => "Zac", :last_name => "Chen", :activated => true, :password => "1111", :password_confirmation => "1111")
 admin.role_maps.create(role_id: Role.find_by(role_name: 'administrator').id)
-
+user = User.create(:user_name => "San", :email => "san@qq.com", :first_name => "San", :last_name => "Chen", :activated => true, :password => "1111", :password_confirmation => "1111")
+user.role_maps.create(role_id: Role.find_by(role_name: 'developer').id)
