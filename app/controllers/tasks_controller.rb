@@ -72,11 +72,17 @@ class TasksController < ApplicationController
   end
 
   def assign_task
-    if params.has_key?("task")
-      if @task.update(assignee_id: params[:task][:assignee_id])
-        return redirect_to project_task_path(@task.project, @task)
+    if params.has_key?("commit")
+      if params.has_key?("task")
+        # after submitting the form, assign task if choose any users
+        update_assignee(params[:task][:assignees_id], @task)
+      else
+        # remove previous assignees if didn't choose any users
+        update_assignee([], @task)
       end
+      return redirect_to project_task_path(@task.project, @task)
     end
+
   end
 
   private
@@ -86,8 +92,8 @@ class TasksController < ApplicationController
       flash.notice = "Task doesn't exist !"
       return redirect_to root_path
     end
-    # only allow author and participants access a task under a project
-    if @task.project.user != current_user && !@task.project.participants.exists?(current_user)
+    # only allow author, participants and administrator access a task under a project
+    if !current_user.has_role?("administrator") && @task.project.user != current_user && !@task.project.participants.exists?(current_user)
       flash.notice = "You don't have privilege !"
       return redirect_to root_path
     end
@@ -110,24 +116,23 @@ class TasksController < ApplicationController
   def update_assignee(assignees_id, task)
     # parameter participants indicate an array of participants ids string
     if assignees_id.blank?
-      return task.assignees.delete(task.assignees.all)
-    end
-    task.assignees.all.each do |assignee|
-      if assignees_id.exclude?(assignee.id.to_s)
-        task.assignees.delete(assignee)
+      task.assignees.delete(task.assignees.all)
+    else
+      task.assignees.all.each do |assignee|
+        if assignees_id.exclude?(assignee.id.to_s)
+          task.assignees.delete(assignee)
+        end
+      end
+      #add new participant to project
+      assignees_id.each do |id|
+        if !task.assignees.exists?(id: id)
+          user = User.find_by(id: id)
+          task.assignees << user
+        end
       end
     end
-    #add new participant to project
-    assignees_id.each do |id|
-      if !task.assignees.exists?(id: id)
-        user = User.find_by(id: id)
-        task.assignees << user
-      end
-    end
+    # update task assignment status
+    task.update_assignment_status
   end
-
-
-
-
 
 end

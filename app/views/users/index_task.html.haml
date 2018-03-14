@@ -1,0 +1,24 @@
+%h1 Tasks
+.user_task_filter
+  = form_tag index_task_user_path, :method => :get
+  .user_task_filter_select
+    Task Filter
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"], ["Other Accessed Tasks", "other_accessed_tasks"]]), prompt: "Please choose"
+  .user_task_filter_submit
+    = submit_tag 'submit'
+.user_tasks_wrap
+  %h2
+    Tasks (#{@tasks.size})
+  - if @tasks.present?
+    %ul{:id => "user_tasks"}
+      - @tasks.each do |task|
+        %li
+          = link_to task.title,  project_task_path(task.project, task), class: 'task_title'
+          - if task.assignees.exists?(current_user)
+            11111
+          - if task.assignment_confirmed_user_id == current_user.id
+            333
+%br
+%br
+%h3
+  = link_to "<< Back to Personal Profile", root_path

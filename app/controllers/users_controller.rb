@@ -8,11 +8,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
-    # set new user as developer
-    @role_map = @user.role_maps.new
-    @role_map.role_id = Role.find_by(role_name: "developer").id
     if @user.save
-      @role_map.save
+      # set new user as developer
+      @user.role_maps.create(role_id: Role.find_by(role_name: "developer").id)
       flash.notice = "Thanks for signing up"
       return redirect_to login_path
     else
@@ -46,6 +44,24 @@ class UsersController < ApplicationController
 
   def profile
     @user = User.find(current_user.id)
+  end
+
+  def index_task
+    @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
+    if params[:task_filter_selected] == "all_tasks"
+      @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
+    elsif params[:task_filter_selected] == "assigned_and_confirmed_tasks"
+      @tasks = current_user.assigned_and_confirmed_tasks
+    elsif params[:task_filter_selected] == "create_tasks"
+      @tasks = current_user.tasks
+    elsif params[:task_filter_selected] == "assigned_and_pending_tasks"
+      @tasks = current_user.assigned_and_pending_tasks
+    elsif params[:task_filter_selected] == "other_accessed_tasks"
+      @tasks = current_user.have_accessed_tasks
+    elsif params.has_key?("task_filter_selected") && params[:task_filter_selected].blank?
+      flash.notice = "please choose a scope"
+      return redirect_to index_task_user_path(current_user)
+    end
   end
 
   private

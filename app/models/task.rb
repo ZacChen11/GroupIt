@@ -29,7 +29,15 @@ class Task < ActiveRecord::Base
 
   def task_total_work_time
     without_subtask_work_time + sub_tasks.map{|s| s.task_total_work_time}.sum
-
   end
 
+  def update_assignment_status
+    if assignees.count == 0
+      update(assignment_status: "To Be Assigned", assignment_confirmed_user_id: nil)
+    elsif assignees.count == 1
+      update(assignment_status: "Confirmed", assignment_confirmed_user_id: assignees.first.id)
+    else
+      update(assignment_status: "Pending", assignment_confirmed_user_id: nil)
+    end
+  end
 end

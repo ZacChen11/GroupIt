@@ -1,0 +1,21 @@
+%h1 Projects
+.admin_project_filter
+  = form_tag administrators_index_project_path, :method => :get
+  .admin_project_filter_select
+    Project Filter
+    = select_tag :project_filter_selected, options_for_select([["All Projects", "all_projects"],["Create Projects", "create_projects"], ["Assigned Projects", "assigned_projects"]]), prompt: "Please choose"
+  .admin_project_filter_submit
+    = submit_tag 'submit'
+.admin_projects_wrap
+  %h2
+    Projects (#{@projects.size})
+  - if @projects.present?
+    %ul{:id => "admin_projects"}
+      - @projects.each do |project|
+        %li
+          = link_to project.title, project, class: 'project_title'
+= link_to "Create a New Project", new_project_path, class: "new"
+%br
+%br
+%h3
+  = link_to "<< Back to Personal Profile", root_path

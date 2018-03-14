@@ -4,6 +4,8 @@ class CreateTasks < ActiveRecord::Migration
       t.string :title
       t.text :description
       t.string :status
+      t.string :assignment_status
+      t.integer :assignment_confirmed_user_id
       t.references :parent_task, index: true, foreign_key: true
       t.references :project, index: true, foreign_key: true
       t.references :user, index: true, foreign_key: true

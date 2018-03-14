@@ -1,0 +1,20 @@
+%h1 Tasks
+.admin_task_filter
+  = form_tag administrators_index_task_path, :method => :get
+  .admin_task_filter_select
+    Task Filter
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"]]), prompt: "Please choose"
+  .admin_task_filter_submit
+    = submit_tag 'submit'
+.admin_tasks_wrap
+  %h2
+    Tasks (#{@tasks.size})
+  - if @tasks.present?
+    %ul{:id => "user_tasks"}
+      - @tasks.each do |task|
+        %li
+          = link_to task.title,  project_task_path(task.project, task), class: 'task_title'
+%br
+%br
+%h3
+  = link_to "<< Back to Personal Profile", root_path

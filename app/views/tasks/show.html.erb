@@ -11,7 +11,9 @@
   <br/><br/>
   <p>Created at : <%= @task.created_at %></p>
   <br/>
-  <p> Belong to Project : <%= link_to @task.project.title,project_path(@task.project)%>
+  <p>Task Number : <%= @task.id%></p>
+  <br/>
+  <p>From Project : <%= link_to @task.project.title,project_path(@task.project)%>
   <br/><br/>
   <% if @task.parent_task.present? %>
       <p>Parent Task : <%= link_to @task.parent_task.title,  project_task_path(@task.project, @task.parent_task) %></p>
@@ -21,13 +23,27 @@
   <br/>
   <p>Description : <%= @task.description%></p>
   <br/>
-  <p>Job Number : <%= @task.id%></p>
-  <br/>
   <p>Status : <%= task_status(@task) %></p>
   <br/>
   <p>Task Type : <%= @task.task_type.name %></p>
   <br/>
-
+  <% if @task.assignees.blank? %>
+      <p>Assignees : No Assignees</p>
+  <% else %>
+      <ul class="task_wrap_assignee_name"> Assignee :
+        <% @task.assignees.each do |assignee| %>
+            <li>
+              <%= assignee.user_name %>
+              <% if assignee != @task.assignees.last %>
+                  |
+              <% end %>
+            </li>
+        <% end %>
+      </ul>
+  <% end %>
+  <br/>
+  <p class="task_wrap_assignment_status">Assignment Status : <%= @task.assignment_status %></p>
+  <br/>
   <div class="task_time">
     <div class="task_time_show_time">
       <p>Task Total Time : <%= @task.task_total_work_time %> h</p>

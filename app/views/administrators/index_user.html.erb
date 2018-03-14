@@ -5,13 +5,13 @@
       <%= link_to user.user_name, user, class: 'user_title' %>
       <% unless user.has_role?("administrator") %>
           | <%= link_to "delete", user, method: :delete, data: { confirm: "Are you sure?" } %>
-          | <%= link_to "modify",  administrators_edit_path(id: user.id) %>
+          | <%= link_to "modify",  administrators_edit_user_path(id: user.id) %>
       <% end %>
     </li>
   <% end %>
 </ul>
 
-<%= link_to "Create a New User", administrators_new_path, class: "new" %>
+<%= link_to "Create a New User", administrators_new_user_path, class: "new" %>
 <br/><br/>
 <h3><%= link_to "<< Back to Personal Profile", root_path %></h3>
 

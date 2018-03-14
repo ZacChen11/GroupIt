@@ -12,7 +12,11 @@
     </br>
     <p>
       <%= f.label :invite_participants %></br>
-      <%= f.collection_check_boxes :participants_id, User.where("activated = ? and id != ?", true, current_user.id), :id, :user_name, :checked => @project.participants.map(&:id), :include_hidden => false %>
+      <% if local_assigns[:edit] %>
+          <%= f.collection_check_boxes :participants_id, User.where("activated = ? and id != ?", true, @project.user.id), :id, :user_name, :checked => @project.participants.map(&:id), :include_hidden => false %>
+      <% else %>
+          <%= f.collection_check_boxes :participants_id, User.where("activated = ? and id != ?", true, current_user.id), :id, :user_name, :checked => @project.participants.map(&:id), :include_hidden => false %>
+      <% end %>
     </p>
     </br>
     <p>

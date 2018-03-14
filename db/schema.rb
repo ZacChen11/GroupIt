@@ -89,12 +89,14 @@ ActiveRecord::Schema.define(version: 20180313190125) do
     t.string   "title"
     t.text     "description"
     t.string   "status"
+    t.string   "assignment_status"
+    t.integer  "assignment_confirmed_user_id"
     t.integer  "parent_task_id"
     t.integer  "project_id"
     t.integer  "user_id"
     t.integer  "task_type_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "tasks", ["parent_task_id"], name: "index_tasks_on_parent_task_id"

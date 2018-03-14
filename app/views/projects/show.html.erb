@@ -2,7 +2,8 @@
   <h1><%= @project.title %></h1>
   <p class="project-wrap_author">Author : <%= @project.user.user_name %></p>
   <div class="project-wrap_modify">
-    <%= link_to  "edit" , edit_project_path(@project), {:style=>'color:red'} %>
+    <%= link_to  "invite participant", invite_participant_project_path(@project), {:style=>'color:red'}%>
+    | <%= link_to  "edit" , edit_project_path(@project), {:style=>'color:red'} %>
     | <%= link_to  "delete" , @project, :style=>'color:red', method: :delete, data: {confirm: "Really delete the project?"} %>
   </div>
   <br/><br/>
@@ -46,4 +47,10 @@
 
 <%= link_to "Create Task", new_project_task_path(@project), class: "new" %>
 <br/><br/>
-<h3><%= link_to "<< Back to Project List", projects_path %></h3>
+<h3>
+  <% if current_user.has_role?("administrator") %>
+      <%= link_to "<< Back to Project List",administrators_index_project_path %>
+  <% else %>
+      <%= link_to "<< Back to Project List", projects_path %>
+  <% end %>
+</h3>

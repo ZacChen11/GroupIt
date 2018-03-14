@@ -2,8 +2,13 @@
   <h1>Assign Task</h1>
   <%= form_for @task, url:assign_task_project_task_path(@task.project, @task) , method: :get  do |f| %>
       <p>
-        <%= f.label :Assign_This_Task %></br>
-        <%= f.collection_check_boxes :assignees_id, @task.project.participants, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
+        <% if @task.project.participants.present? %>
+            <%= f.label :Assign_This_Task %></br>
+            <%= f.collection_check_boxes :assignees_id, @task.project.participants, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
+        <% else %>
+            There is no participant to assign the task, please
+            <%= link_to "invite participant", invite_participant_project_path(@task.project)%>
+        <% end %>
       </p>
       <br/>
       <p><%= f.submit "Ok"%></p>

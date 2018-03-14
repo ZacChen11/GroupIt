@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   before_save { self.email = email.downcase }
   before_save {self.user_name = user_name.delete(' ')}
-  before_destroy :release_all_assigned_tasks
+  # before_destroy :release_all_assigned_tasks
   validates :user_name,  presence: true, length: {maximum: 50}, uniqueness: {case_sensitive: false}
   validates :email,  presence: true, length: {maximum: 200}, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "invalid email format"},
       uniqueness: {case_sensitive: false}
@@ -43,14 +43,30 @@ class User < ActiveRecord::Base
     hours.map{|t| t.work_time}.sum
   end
 
+  def assigned_and_confirmed_tasks
+    assigned_tasks.where(assignment_confirmed_user_id: self.id)
+  end
+
+  def assigned_and_pending_tasks
+    assigned_tasks.where(assignment_confirmed_user_id: nil)
+  end
+
+  def have_accessed_tasks
+    accessed_tasks = []
+    assigned_projects.each do |project|
+      accessed_tasks = accessed_tasks + project.tasks
+    end
+    accessed_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks - tasks
+  end
+
   private
   def set_password_validation_default_value
     self.password_validation = true
   end
 
-  def release_all_assigned_tasks
-    Task.where(assignee_id:  id).map{|task| task.update(assignee_id: nil)}
-  end
+  # def release_all_assigned_tasks
+  #   Task.where(assignee_id:  id).map{|task| task.update(assignee_id: nil)}
+  # end
 
 
 
