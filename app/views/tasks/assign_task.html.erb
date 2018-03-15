@@ -4,7 +4,7 @@
       <p>
         <% if @task.project.participants.present? %>
             <%= f.label :Assign_This_Task %></br>
-            <%= f.collection_check_boxes :assignees_id, @task.project.participants, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
+            <%= f.collection_check_boxes :assignees_id, @task.project.return_task_assignment_candidates, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
         <% else %>
             There is no participant to assign the task, please
             <%= link_to "invite participant", invite_participant_project_path(@task.project)%>

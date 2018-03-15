@@ -3,7 +3,7 @@
   = form_tag index_task_user_path, :method => :get
   .user_task_filter_select
     Task Filter
-    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"], ["Other Accessed Tasks", "other_accessed_tasks"]]), prompt: "Please choose"
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"], ["Other Accessed Tasks", "other_accessed_tasks"], ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
   .user_task_filter_submit
     = submit_tag 'submit'
 .user_tasks_wrap
@@ -14,7 +14,7 @@
       - @tasks.each do |task|
         %li
           = link_to task.title,  project_task_path(task.project, task), class: 'user_tasks_wrap_task_title'
-          - if task.assignees.exists?(current_user) && task.assignment_confirmed_user_id != current_user.id
+          - if task.assignees.exists?(current_user) && task.assignment_confirmed_user_id == nil
             %p{:class => "user_tasks_wrap_task_pending"}
               |
               = link_to image_tag("task_pending.jpg", height: '40', width: '80', class: "task_pending_icon"), accept_task_user_path(current_user, task)

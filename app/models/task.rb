@@ -40,4 +40,5 @@ class Task < ActiveRecord::Base
       update(assignment_status: "Pending", assignment_confirmed_user_id: nil)
     end
   end
+
 end

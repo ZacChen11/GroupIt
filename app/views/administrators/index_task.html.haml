@@ -3,7 +3,7 @@
   = form_tag administrators_index_task_path, :method => :get
   .admin_task_filter_select
     Task Filter
-    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"]]), prompt: "Please choose"
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"],  ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
   .admin_task_filter_submit
     = submit_tag 'submit'
 .admin_tasks_wrap

@@ -83,13 +83,13 @@ class TasksController < ApplicationController
       end
       return redirect_to project_task_path(@task.project, @task)
     end
-
   end
 
   def index_task
-    @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
+    # return the tasks by its relevant: confirmed > pending > create > others
+    @tasks = current_user.return_tasks_by_relevant
     if params[:task_filter_selected] == "all_tasks"
-      @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
+      @tasks = current_user.return_tasks_by_relevant
     elsif params[:task_filter_selected] == "assigned_and_confirmed_tasks"
       @tasks = current_user.assigned_and_confirmed_tasks
     elsif params[:task_filter_selected] == "create_tasks"
@@ -98,6 +98,13 @@ class TasksController < ApplicationController
       @tasks = current_user.assigned_and_pending_tasks
     elsif params[:task_filter_selected] == "other_accessed_tasks"
       @tasks = current_user.have_accessed_tasks
+    elsif params[:task_filter_selected] == "feature"
+      @tasks = current_user.return_taks_of_type(current_user.return_tasks_by_relevant, "Feature")
+    elsif params[:task_filter_selected] == "bug"
+      @tasks = current_user.return_taks_of_type(current_user.return_tasks_by_relevant, "Bug")
+    elsif params[:task_filter_selected] == "improvement"
+      @tasks = current_user.return_taks_of_type(current_user.return_tasks_by_relevant, "Improvement")
+
     elsif params.has_key?("task_filter_selected") && params[:task_filter_selected].blank?
       flash.notice = "please choose a scope"
       return redirect_to index_task_user_path(current_user)

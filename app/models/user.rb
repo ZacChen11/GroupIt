@@ -51,12 +51,37 @@ class User < ActiveRecord::Base
     assigned_tasks.where(assignment_confirmed_user_id: nil)
   end
 
+  # tasks that created by user without confirmed or pending by the user
+  def create_tasks
+    returned_tasks = []
+    tasks.each do |task|
+      # if a user is removed from a project, he can't see the tasks he created under the project before
+      if task.project.participants.include?(self) || task.project.user == self
+        returned_tasks = returned_tasks + [task]
+      end
+    end
+       returned_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks
+  end
+
   def have_accessed_tasks
     accessed_tasks = []
     assigned_projects.each do |project|
       accessed_tasks = accessed_tasks + project.tasks
     end
     accessed_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks - tasks
+  end
+
+  # return the tasks by its relevant: confirmed > pending > create > others
+  def return_tasks_by_relevant
+    assigned_and_confirmed_tasks + assigned_and_pending_tasks + create_tasks + have_accessed_tasks
+  end
+
+  def return_admin_tasks_by_relevant
+    assigned_and_confirmed_tasks + assigned_and_pending_tasks + create_tasks + (Task.all - assigned_and_confirmed_tasks - assigned_and_pending_tasks - create_tasks)
+  end
+
+  def return_taks_of_type(tasks, type)
+    tasks.select{|task| task.task_type_id == TaskType.find_by(name: type).id}
   end
 
   private
