@@ -1,6 +1,6 @@
 class Report
   include ActiveModel::Model
-  attr_accessor :start_time, :end_time, :task_or_user_checked, :task_status, :user_activated
+  attr_accessor :start_time, :end_time, :task_or_user_checked, :task_status, :user_activated, :task_type_id
   validates :start_time, presence: true
   validates :end_time, presence: true
   validate :validate_start_time_with_end_time

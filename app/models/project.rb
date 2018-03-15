@@ -9,4 +9,13 @@ class Project < ActiveRecord::Base
     [user] + participants
   end
 
+  def add_participant(user)
+
+  end
+
+
+  def remove_participant(user)
+
+  end
+
 end

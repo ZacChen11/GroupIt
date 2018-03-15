@@ -54,6 +54,12 @@ class ReportsController < ApplicationController
       if @report.task_status.present?
         # when choose task and task status
         @tasks = @tasks.task_status(@report.task_status)
+        if @report.task_type_id.present?
+          @tasks = @tasks.task_type(@report.task_type_id)
+        end
+      end
+      if @report.task_type_id.present?
+        @tasks = @tasks.task_type(@report.task_type_id)
       end
     elsif @report.task_or_user_checked == "user"
       @users = User.created_between(@report.start_time, @report.end_time)

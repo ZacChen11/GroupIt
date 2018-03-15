@@ -12,9 +12,10 @@ class Task < ActiveRecord::Base
   validates :title, :description, :status, :task_type, :presence => true
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
   scope :task_status, lambda{ |status| where(:status => status)}
+  scope :task_type, lambda{ |type_id| where(:task_type_id => type_id)}
 
   def self.to_csv
-    attributes = %w{id title total_work_time}
+    attributes = %w{id title type status total_work_time}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |task|

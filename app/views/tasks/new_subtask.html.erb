@@ -23,10 +23,8 @@
       </p>
       <br/>
       <p>
-        <% if @project.participants.present? %>
-            <%= f.label :Assign_This_Task %></br>
-            <%= f.collection_check_boxes :assignees_id, @project.return_task_assignment_candidates, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
-        <% end %>
+        <%= f.label :Assign_This_Task %></br>
+        <%= f.collection_check_boxes :assignees_id, @project.return_task_assignment_candidates, :id, :user_name, :checked => @task.assignees.map(&:id), :include_hidden => false %>
       </p>
       <br/>
       <p>
