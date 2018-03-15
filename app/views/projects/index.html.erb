@@ -18,6 +18,7 @@
       <ul id="projects">
         <% @projects.each do |project| %>
             <li><%= link_to project.title, project, class: 'project_title' %></li>
+            <br/>
         <% end %>
       </ul>
   <% end %>

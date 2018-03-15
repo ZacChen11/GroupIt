@@ -46,24 +46,6 @@ class UsersController < ApplicationController
     @user = User.find(current_user.id)
   end
 
-  def index_task
-    @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
-    if params[:task_filter_selected] == "all_tasks"
-      @tasks = current_user.assigned_and_confirmed_tasks + current_user.assigned_and_pending_tasks + current_user.tasks + current_user.have_accessed_tasks
-    elsif params[:task_filter_selected] == "assigned_and_confirmed_tasks"
-      @tasks = current_user.assigned_and_confirmed_tasks
-    elsif params[:task_filter_selected] == "create_tasks"
-      @tasks = current_user.tasks
-    elsif params[:task_filter_selected] == "assigned_and_pending_tasks"
-      @tasks = current_user.assigned_and_pending_tasks
-    elsif params[:task_filter_selected] == "other_accessed_tasks"
-      @tasks = current_user.have_accessed_tasks
-    elsif params.has_key?("task_filter_selected") && params[:task_filter_selected].blank?
-      flash.notice = "please choose a scope"
-      return redirect_to index_task_user_path(current_user)
-    end
-  end
-
   private
   def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)

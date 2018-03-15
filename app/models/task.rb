@@ -36,7 +36,7 @@ class Task < ActiveRecord::Base
       update(assignment_status: "To Be Assigned", assignment_confirmed_user_id: nil)
     elsif assignees.count == 1
       update(assignment_status: "Confirmed", assignment_confirmed_user_id: assignees.first.id)
-    else
+    elsif assignees.count > 1 && assignment_confirmed_user_id == nil
       update(assignment_status: "Pending", assignment_confirmed_user_id: nil)
     end
   end

@@ -1,0 +1,7 @@
+%h1 Accept a Task
+= form_tag  accept_task_user_path(@user, @task), method: :get
+%p
+  Take the task
+  = check_box_tag :accept, true
+%p
+  = submit_tag "OK"

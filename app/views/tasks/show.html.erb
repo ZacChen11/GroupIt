@@ -33,7 +33,11 @@
       <ul class="task_wrap_assignee_name"> Assignee :
         <% @task.assignees.each do |assignee| %>
             <li>
-              <%= assignee.user_name %>
+              <% if @task.assignment_confirmed_user_id == assignee.id %>
+                <%= assignee.user_name %><%= image_tag("task_check.png", height: '15', width: '15', class: "task_check_icon") %>
+              <% else %>
+                  <%= assignee.user_name %>
+              <% end %>
               <% if assignee != @task.assignees.last %>
                   |
               <% end %>

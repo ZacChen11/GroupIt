@@ -14,6 +14,7 @@
       - @projects.each do |project|
         %li
           = link_to project.title, project, class: 'project_title'
+        %br
 = link_to "Create a New Project", new_project_path, class: "new"
 %br
 %br

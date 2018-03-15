@@ -3,13 +3,18 @@ Rails.application.routes.draw do
   root to: 'users#profile'
   resources :users, except: [:index, :show, :destroy] do
     member do
-      get 'index_task'
+
       get 'reset_password'
+
     end
   end
+
   get '/users', to: 'administrators#index_user'
   get '/users/:id', to: 'administrators#show_user'
-  delete 'users/:id', to: 'administrators#destroy_user'
+  delete '/users/:id', to: 'administrators#destroy_user'
+  get '/users/:id/index_task', to: 'tasks#index_task', as: 'index_task_user'
+  get '/users/:user_id/tasks/:id/accept_task', to: 'tasks#accept_task', as: 'accept_task_user'
+
   get 'user/profile', to: 'users#profile'
   namespace :administrators do
     get 'new_user'

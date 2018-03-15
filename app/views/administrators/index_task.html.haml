@@ -10,10 +10,19 @@
   %h2
     Tasks (#{@tasks.size})
   - if @tasks.present?
-    %ul{:id => "user_tasks"}
+    %ul{:id => "admin_tasks"}
       - @tasks.each do |task|
         %li
-          = link_to task.title,  project_task_path(task.project, task), class: 'task_title'
+          = link_to task.title,  project_task_path(task.project, task), class: 'admin_tasks_wrap_task__title'
+          - if task.assignees.exists?(current_user) && task.assignment_confirmed_user_id != current_user.id
+            %p{:class => "user_tasks_wrap_task_pending"}
+              |
+            = link_to image_tag("task_pending.jpg", height: '40', width: '80', class: "task_pending_icon"), accept_task_user_path(current_user, task)
+          - if task.assignment_confirmed_user_id == current_user.id
+            %p{:class => "user_tasks_wrap_task_confirmed"}
+              |
+              = image_tag("task_confirmed.jpg", height: '50', width: '80', class: "task_confirmed_icon")
+        %br
 %br
 %br
 %h3
