@@ -16,7 +16,8 @@
       </div>
       <div class="search_wrap_task_states">
         Task Status <%= f.select :task_status, options_for_select([["Open", "open"], ["In Progress", "in_progress"], ["Waiting", "waiting"], ["Resloved", "resloved"]], :selected=> @report.task_status),prompt: "Please choose a task status" %>
-        <br/>
+      </div>
+      <div class="search_wrap_task_types">
         Task Type <%= f.collection_select :task_type_id, TaskType.all, :id, :name, prompt: "Please choose a task type" %>
       </div>
       <div class="search_wrap_user_status">
@@ -33,10 +34,10 @@
   <ul class="report_wrap_task_list">
     <% if @tasks.present? %>
         <h2>Search Result (<%= @tasks.size %>)</h2>
-        <p>Task ID | Task Title | Task Total Work Time (h)</p>
+        <p>Task ID | Task Title | Task Type | Task Status | Task Total Work Time (h)</p>
         <br/>
         <% @tasks.each do |t| %>
-            <li><%= t.id %> | <%= t.title %> | <%= t.task_total_work_time %> (h)</li>
+            <li><%= t.id %> | <%= t.title %> |  <%= t.task_type.name %> |  <%= t.status %> | <%= t.task_total_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>

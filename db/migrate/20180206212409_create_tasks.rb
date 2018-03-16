@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration
       t.string :status
       t.string :assignment_status
       t.integer :assignment_confirmed_user_id
+      t.boolean :is_deleted, default: false
       t.references :parent_task, index: true, foreign_key: true
       t.references :project, index: true, foreign_key: true
       t.references :user, index: true, foreign_key: true

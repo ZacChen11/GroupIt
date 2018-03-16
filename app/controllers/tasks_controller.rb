@@ -124,6 +124,11 @@ class TasksController < ApplicationController
       end
       return redirect_to   project_task_path(@task.project, @task)
     end
+    if params.has_key?("accept")
+      @task.update(assignment_confirmed_user_id: params[:user_id])
+      @task.update(assignment_status: "Confirmed")
+      return redirect_to  project_task_path(@task.project, @task)
+    end
   end
 
 
@@ -152,35 +157,5 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :description, :status, :assignees_id)
   end
 
-  # def update_task_type(type, task)
-  #   # parameter type is the string of task type id
-  #   if type != task.task_type_id.to_s
-  #     # when the type of a task is changed, task will delete this type and add a new type
-  #     task.task_type.tasks.delete(task)
-  #     task.task_type = TaskType.find_by(id: type)
-  #   end
-  # end
-  #
-  # def update_assignee(assignees_id, task)
-  #   # parameter participants indicate an array of participants ids string
-  #   if assignees_id.blank?
-  #     task.assignees.delete(task.assignees.all)
-  #   else
-  #     task.assignees.all.each do |assignee|
-  #       if assignees_id.exclude?(assignee.id.to_s)
-  #         task.assignees.delete(assignee)
-  #       end
-  #     end
-  #     #add new participant to project
-  #     assignees_id.each do |id|
-  #       if !task.assignees.exists?(id: id)
-  #         user = User.find_by(id: id)
-  #         task.assignees << user
-  #       end
-  #     end
-  #   end
-  #   # update task assignment status
-  #   task.update_assignment_status
-  # end
 
 end

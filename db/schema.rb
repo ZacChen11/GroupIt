@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20180313190125) do
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
+    t.boolean  "is_deleted", default: false
     t.boolean  "edit",       default: false
     t.integer  "user_id"
     t.integer  "task_id"
@@ -44,10 +45,11 @@ ActiveRecord::Schema.define(version: 20180313190125) do
   create_table "hours", force: :cascade do |t|
     t.float    "work_time"
     t.text     "explanation"
+    t.boolean  "is_deleted",  default: false
     t.integer  "task_id"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "hours", ["task_id"], name: "index_hours_on_task_id"
@@ -56,9 +58,10 @@ ActiveRecord::Schema.define(version: 20180313190125) do
   create_table "projects", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
+    t.boolean  "is_deleted",  default: false
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id"
@@ -91,12 +94,13 @@ ActiveRecord::Schema.define(version: 20180313190125) do
     t.string   "status"
     t.string   "assignment_status"
     t.integer  "assignment_confirmed_user_id"
+    t.boolean  "is_deleted",                   default: false
     t.integer  "parent_task_id"
     t.integer  "project_id"
     t.integer  "user_id"
     t.integer  "task_type_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   add_index "tasks", ["parent_task_id"], name: "index_tasks_on_parent_task_id"
@@ -109,6 +113,7 @@ ActiveRecord::Schema.define(version: 20180313190125) do
     t.string   "email"
     t.string   "first_name"
     t.string   "last_name"
+    t.boolean  "is_deleted",      default: false
     t.boolean  "activated",       default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false

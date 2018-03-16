@@ -18,7 +18,7 @@ class AdministratorsController < ApplicationController
     @user = User.create(user_params)
     if @user.save
       # assign roles for a new user
-      update_role(params[:user][:roles], @user)
+      @user.update_role(params[:user][:roles])
       return redirect_to @user
     else
       return render 'new_user'
@@ -29,14 +29,13 @@ class AdministratorsController < ApplicationController
   end
 
   def update_user
-
     # check if user reset password
     if params[:user][:password].blank?
       @user.password_validation = false
     end
     if @user.update(user_params)
       # update roles for users
-      update_role(params[:user][:roles], @user)
+      @user.update_role(params[:user][:roles])
       return redirect_to @user
     else
       return render 'edit_user'
@@ -89,26 +88,6 @@ class AdministratorsController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:user_name, :email, :first_name, :last_name, :password, :password_confirmation, :activated)
-  end
-
-  def update_role(roles_id, user)
-    # parameter roles indicate an array of role ids string
-    # no roles are chosen
-    if roles_id.blank?
-      return user.role_maps.delete(user.role_maps.all)
-    end
-    #delete roles of user which are not chosen
-    user.role_maps.all.each do |r|
-      if roles_id.exclude?(r.role_id.to_s)
-        r.destroy
-      end
-    end
-    #add new choosed role to user
-    roles_id.each do |r|
-      if !user.role_maps.exists?(role_id: r)
-        user.role_maps.create(role_id: r)
-      end
-    end
   end
 
   def load_user_before_action

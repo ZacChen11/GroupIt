@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :first_name
       t.string :last_name
+      t.boolean :is_deleted, default: false
       t.boolean :activated, default: false
       t.timestamps null: false
 

@@ -1,16 +1,17 @@
 class User < ActiveRecord::Base
   require 'csv'
-  has_many :projects, dependent: :delete_all
-  has_many :hours, dependent: :delete_all
-  has_many :role_maps, dependent: :delete_all
+  has_many :projects
+  has_many :hours
+  has_many :role_maps
   has_many :roles, through: :role_maps
-  has_many :tasks, dependent: :delete_all
-  has_many :comments, dependent: :delete_all
+  has_many :tasks
+  has_many :comments
   has_and_belongs_to_many :assigned_projects, class_name: "Project",  join_table: "assigned_projects_participants"
   has_and_belongs_to_many :assigned_tasks, class_name: "Task",  join_table: "assigned_tasks_assignees"
 
   before_save { self.email = email.downcase }
   before_save {self.user_name = user_name.delete(' ')}
+  before_destroy :release_all_associations
   # before_destroy :release_all_assigned_tasks
   validates :user_name,  presence: true, length: {maximum: 50}, uniqueness: {case_sensitive: false}
   validates :email,  presence: true, length: {maximum: 200}, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "invalid email format"},
@@ -92,17 +93,46 @@ class User < ActiveRecord::Base
    projects - ( projects - assigned_projects )
   end
 
+  def update_role(roles_id)
+    # parameter roles indicate an array of role ids string
+    # no roles are chosen
+    if roles_id.blank?
+      return role_maps.delete(role_maps.all)
+    end
+    #delete roles of user which are not chosen
+    role_maps.all.each do |role_map|
+      if roles_id.exclude?(role_map.role_id.to_s)
+        role_map.destroy
+      end
+    end
+    #add new choosed role to user
+    roles_id.each do |role_id|
+      if !role_maps.exists?(role_id: role_id)
+        role_maps.create(role_id: role_id)
+      end
+    end
+  end
+
+
   private
   def set_password_validation_default_value
     self.password_validation = true
   end
 
-  # def release_all_assigned_tasks
-  #   Task.where(assignee_id:  id).map{|task| task.update(assignee_id: nil)}
-  # end
-
-
-
-
-
+  def release_all_associations
+    # release projects
+    projects.delete(projects.all)
+    # release tasks
+    tasks.delete(tasks.all)
+    # release comments
+    comments.delete(comments.all)
+    # release hours
+    hours.delete(hours.all)
+    # release all assigned projects
+    assigned_projects.delete(assigned_projects.all)
+    # release all assigned tasks
+    assigned_tasks.delete(assigned_tasks.all)
+    # release all role maps and roles
+    role_maps.delete(role_maps)
+  end
 end

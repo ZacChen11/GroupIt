@@ -3,7 +3,7 @@
   = form_tag administrators_index_task_path, :method => :get
   .admin_task_filter_select
     Task Filter
-    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Confirmed Tasks", "confirmed_tasks"],["Pending Tasks", "pending_tasks"],  ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Confirmed Tasks", "confirmed_tasks"],["Pending Tasks", "assigned_and_pending_tasks"],  ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
   .admin_task_filter_submit
     = submit_tag 'submit'
 .admin_tasks_wrap
@@ -14,10 +14,12 @@
       - @tasks.each do |task|
         %li
           = link_to task.title,  project_task_path(task.project, task), class: 'admin_tasks_wrap_task__title'
-          - if task.assignees.exists?(current_user) && task.assignment_confirmed_user_id != current_user.id
+          - if task.assignees.exists?(current_user) && task.assignment_confirmed_user_id == nil
             %p{:class => "user_tasks_wrap_task_pending"}
               |
-            = link_to image_tag("task_pending.jpg", height: '40', width: '80', class: "task_pending_icon"), accept_task_user_path(current_user, task)
+              = link_to image_tag("task_pending.jpg", height: '40', width: '80', class: "task_pending_icon"), accept_task_user_path(current_user, task)
+              |
+              = link_to image_tag("take_task.jpg", height: '40', width: '40'), accept_task_user_path(current_user, task, accept: true), data: {confirm: "Are you sure to take the task"}
           - if task.assignment_confirmed_user_id == current_user.id
             %p{:class => "user_tasks_wrap_task_confirmed"}
               |

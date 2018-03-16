@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :participants, class_name: "User", join_table: "assigned_projects_participants"
   validates :title, :description, :presence => true
 
+
   def add_participant(user)
     participants << user
   end

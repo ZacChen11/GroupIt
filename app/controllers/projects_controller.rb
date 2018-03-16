@@ -85,36 +85,4 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:title, :description)
   end
 
-  # def update_participant(participants_id, project)
-  #   # parameter participants indicate an array of participants ids string
-  #   if participants_id.blank?
-  #     # remove user from assigned task
-  #     project.participants.each do |p|
-  #       remove_task_assignee(project, p)
-  #     end
-  #     return project.participants.delete(project.participants.all)
-  #   end
-  #   project.participants.each do |p|
-  #     if participants_id.exclude?(p.id.to_s)
-  #       # remove user from assigned task
-  #       remove_task_assignee(project, p)
-  #       project.participants.delete(p)
-  #     end
-  #   end
-  #   #add new participant to project
-  #   participants_id.each do |p|
-  #     if !project.participants.exists?(id: p)
-  #       user = User.find_by(id: p)
-  #       project.add_participant(user)
-  #     end
-  #   end
-  # end
-  #
-  # def remove_task_assignee(project, user)
-  #   project.tasks.each do |t|
-  #     t.assignees.delete(user)
-  #     t.update_assignment_status
-  #   end
-  # end
-
 end

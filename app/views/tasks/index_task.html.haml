@@ -18,6 +18,8 @@
             %p{:class => "user_tasks_wrap_task_pending"}
               |
               = link_to image_tag("task_pending.jpg", height: '40', width: '80', class: "task_pending_icon"), accept_task_user_path(current_user, task)
+              |
+              = link_to image_tag("take_task.jpg", height: '40', width: '40'), accept_task_user_path(current_user, task, accept: true), data: {confirm: "Are you sure to take the task"}
           - if task.assignment_confirmed_user_id == current_user.id
             %p{:class => "user_tasks_wrap_task_confirmed"}
               |

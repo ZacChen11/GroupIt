@@ -1,4 +1,24 @@
 %h1 Accept a Task
+%p
+  Task Title :
+  = @task.title
+%br
+%p
+  Task Author :
+  = @task.user.user_name
+%br
+%p
+  Task Description :
+  = @task.description
+%br
+%ul{:class => "accept_task_assignee_name"}
+  Task Assignees :
+  - @task.assignees.each do |assignee|
+    %li
+      = assignee.user_name
+      - if assignee != @task.assignees.last
+        |
+%br
 = form_tag  accept_task_user_path(@user, @task), method: :get
 %p
   Take the task
