@@ -4,18 +4,47 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :participants, class_name: "User", join_table: "assigned_projects_participants"
   validates :title, :description, :presence => true
 
-  # return all the users who can access the task
-  def return_task_assignment_candidates
-    [user] + participants
-  end
-
   def add_participant(user)
-
+    participants << user
   end
 
 
   def remove_participant(user)
 
   end
+
+  def update_participant(participants_id)
+    # parameter participants indicate an array of participants ids string
+    if participants_id.blank?
+      # remove user from assigned task
+      participants.each do |p|
+        remove_task_assignee(p)
+      end
+      return participants.delete(participants.all)
+    end
+    participants.each do |p|
+      if participants_id.exclude?(p.id.to_s)
+        # remove user from assigned task
+        remove_task_assignee(p)
+        participants.delete(p)
+      end
+    end
+    #add new participant to project
+    participants_id.each do |p|
+      if !participants.exists?(id: p)
+        user = User.find_by(id: p)
+        add_participant(user)
+      end
+    end
+  end
+
+  def remove_task_assignee(user)
+    tasks.each do |t|
+      t.assignees.delete(user)
+      t.update_assignment_status
+    end
+  end
+
+
 
 end

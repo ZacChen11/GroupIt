@@ -21,7 +21,7 @@ class TasksController < ApplicationController
     @task.user_id = current_user.id
     @task.task_type_id = params[:task][:task_type]
     if @task.save
-      update_assignee(params[:task][:assignees_id], @task)
+      @task.update_assignee(params[:task][:assignees_id])
       redirect_to  project_task_path(@task.project, @task)
     else
       render 'new'
@@ -37,7 +37,7 @@ class TasksController < ApplicationController
     @task.user_id = current_user.id
     @task.task_type_id = params[:task][:task_type]
     if @task.save
-      update_assignee(params[:task][:assignees_id], @task)
+      @task.update_assignee(params[:task][:assignees_id])
       redirect_to project_task_path(@task.project, @task)
     else
       render 'new_subtask'
@@ -57,9 +57,9 @@ class TasksController < ApplicationController
 
   def update
     @project = Project.find(params[:project_id])
-    update_task_type(params[:task][:task_type], @task)
+    @task.update_task_type(params[:task][:task_type])
     if @task.update(task_params)
-      update_assignee(params[:task][:assignees_id], @task)
+      @task.update_assignee(params[:task][:assignees_id])
       redirect_to project_task_path(@task.project_id, @task.id)
     else
       render 'edit'
@@ -76,10 +76,10 @@ class TasksController < ApplicationController
     if params.has_key?("commit")
       if params.has_key?("task")
         # after submitting the form, assign task if choose any users
-        update_assignee(params[:task][:assignees_id], @task)
+        @task.update_assignee(params[:task][:assignees_id])
       else
         # remove previous assignees if didn't choose any users
-        update_assignee([], @task)
+        @task.update_assignee([])
       end
       return redirect_to project_task_path(@task.project, @task)
     end
@@ -90,11 +90,11 @@ class TasksController < ApplicationController
     @tasks = current_user.return_tasks_by_relevant
     if params[:task_filter_selected] == "all_tasks"
       @tasks = current_user.return_tasks_by_relevant
-    elsif params[:task_filter_selected] == "assigned_and_confirmed_tasks"
+    elsif params[:task_filter_selected] == "confirmed_tasks"
       @tasks = current_user.assigned_and_confirmed_tasks
     elsif params[:task_filter_selected] == "create_tasks"
-      @tasks = current_user.tasks
-    elsif params[:task_filter_selected] == "assigned_and_pending_tasks"
+      @tasks = current_user.create_tasks_and_can_access
+    elsif params[:task_filter_selected] == "pending_tasks"
       @tasks = current_user.assigned_and_pending_tasks
     elsif params[:task_filter_selected] == "other_accessed_tasks"
       @tasks = current_user.have_accessed_tasks
@@ -134,8 +134,8 @@ class TasksController < ApplicationController
       flash.notice = "Task doesn't exist !"
       return redirect_to root_path
     end
-    # only allow author, participants and administrator access a task under a project
-    if !current_user.has_role?("administrator") && @task.project.user != current_user && !@task.project.participants.exists?(current_user)
+    # only allow participants and administrator access a task under a project
+    if !current_user.has_role?("administrator") && !@task.project.participants.exists?(current_user)
       flash.notice = "You don't have privilege !"
       return redirect_to root_path
     end
@@ -152,35 +152,35 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :description, :status, :assignees_id)
   end
 
-  def update_task_type(type, task)
-    # parameter type is the string of task type id
-    if type != task.task_type.id.to_s
-      # when the type of a task is changed, task will delete this type and add a new type
-      task.task_type.tasks.delete(task)
-      task.task_type = TaskType.find_by(id: type)
-    end
-  end
-
-  def update_assignee(assignees_id, task)
-    # parameter participants indicate an array of participants ids string
-    if assignees_id.blank?
-      task.assignees.delete(task.assignees.all)
-    else
-      task.assignees.all.each do |assignee|
-        if assignees_id.exclude?(assignee.id.to_s)
-          task.assignees.delete(assignee)
-        end
-      end
-      #add new participant to project
-      assignees_id.each do |id|
-        if !task.assignees.exists?(id: id)
-          user = User.find_by(id: id)
-          task.assignees << user
-        end
-      end
-    end
-    # update task assignment status
-    task.update_assignment_status
-  end
+  # def update_task_type(type, task)
+  #   # parameter type is the string of task type id
+  #   if type != task.task_type_id.to_s
+  #     # when the type of a task is changed, task will delete this type and add a new type
+  #     task.task_type.tasks.delete(task)
+  #     task.task_type = TaskType.find_by(id: type)
+  #   end
+  # end
+  #
+  # def update_assignee(assignees_id, task)
+  #   # parameter participants indicate an array of participants ids string
+  #   if assignees_id.blank?
+  #     task.assignees.delete(task.assignees.all)
+  #   else
+  #     task.assignees.all.each do |assignee|
+  #       if assignees_id.exclude?(assignee.id.to_s)
+  #         task.assignees.delete(assignee)
+  #       end
+  #     end
+  #     #add new participant to project
+  #     assignees_id.each do |id|
+  #       if !task.assignees.exists?(id: id)
+  #         user = User.find_by(id: id)
+  #         task.assignees << user
+  #       end
+  #     end
+  #   end
+  #   # update task assignment status
+  #   task.update_assignment_status
+  # end
 
 end

@@ -19,7 +19,7 @@ class Task < ActiveRecord::Base
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |task|
-        csv << [task.id, task.title, task.task_total_work_time]
+        csv << [task.id, task.title, task.task_type.name, task.status, task.task_total_work_time]
       end
     end
   end
@@ -40,6 +40,38 @@ class Task < ActiveRecord::Base
     elsif assignees.count > 1 && assignment_confirmed_user_id == nil
       update(assignment_status: "Pending", assignment_confirmed_user_id: nil)
     end
+  end
+
+
+  def update_task_type(type)
+    # parameter type is the string of task type id
+    if type != task_type_id.to_s
+      # when the type of a task is changed, task will delete this type and add a new type
+      self.task_type.tasks.delete(self)
+      self.task_type = TaskType.find_by(id: type)
+    end
+  end
+
+  def update_assignee(assignees_id)
+    # parameter participants indicate an array of participants ids string
+    if assignees_id.blank?
+      assignees.delete(assignees.all)
+    else
+      assignees.all.each do |assignee|
+        if assignees_id.exclude?(assignee.id.to_s)
+          assignees.delete(assignee)
+        end
+      end
+      #add new participant to project
+      assignees_id.each do |id|
+        if !assignees.exists?(id: id)
+          user = User.find_by(id: id)
+          assignees << user
+        end
+      end
+    end
+    # update task assignment status
+    update_assignment_status
   end
 
 end

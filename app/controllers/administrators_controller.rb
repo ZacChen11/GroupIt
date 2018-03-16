@@ -67,11 +67,11 @@ class AdministratorsController < ApplicationController
     @tasks = current_user.return_admin_tasks_by_relevant
     if params[:task_filter_selected] == "all_tasks"
       @tasks = current_user.return_admin_tasks_by_relevant
-    elsif params[:task_filter_selected] == "assigned_and_confirmed_tasks"
+    elsif params[:task_filter_selected] == "confirmed_tasks"
       @tasks = current_user.assigned_and_confirmed_tasks
     elsif params[:task_filter_selected] == "create_tasks"
       @tasks = current_user.tasks
-    elsif params[:task_filter_selected] == "assigned_and_pending_tasks"
+    elsif params[:task_filter_selected] == "pending_tasks"
       @tasks = current_user.assigned_and_pending_tasks
     elsif params[:task_filter_selected] == "feature"
       @tasks = current_user.return_taks_of_type(current_user.return_admin_tasks_by_relevant, "Feature")

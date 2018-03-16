@@ -44,8 +44,8 @@ class HoursController < ApplicationController
       flash.notice = "Hour doesn't exist !"
       redirect_to root_path
     end
-    # only allow author, participants and administrator access a task under a project
-    if !current_user.has_role?("administrator") && @hour.task.project.user != current_user && !@hour.task.project.participants.exists?(current_user)
+    # only allow participants and administrator access a task under a project
+    if !current_user.has_role?("administrator") && !@hour.task.project.participants.exists?(current_user)
       flash.notice = "You don't have privilege !"
       return redirect_to root_path
     end

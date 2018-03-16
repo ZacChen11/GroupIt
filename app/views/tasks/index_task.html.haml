@@ -3,7 +3,7 @@
   = form_tag index_task_user_path, :method => :get
   .user_task_filter_select
     Task Filter
-    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Assigned and Confirmed Tasks", "assigned_and_confirmed_tasks"],["Assigned and Pending Tasks", "assigned_and_pending_tasks"], ["Other Accessed Tasks", "other_accessed_tasks"], ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
+    = select_tag :task_filter_selected, options_for_select([["All Tasks", "all_tasks"],["Create Tasks", "create_tasks"], ["Confirmed Tasks", "confirmed_tasks"],["Pending Tasks", "pending_tasks"], ["Other Accessed Tasks", "other_accessed_tasks"], ["Feature", "feature"], ["Bug", "bug"], ["Improvement", "improvement"]]), prompt: "Please choose"
   .user_task_filter_submit
     = submit_tag 'submit'
 .user_tasks_wrap
