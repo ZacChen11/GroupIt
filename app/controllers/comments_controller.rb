@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @task =  Task.find(params[:task_id])
-    @comment.destroy
+    set_record_to_deleted(@comment)
     redirect_to project_task_path(params[:project_id], @task.id)
   end
 
@@ -40,7 +40,7 @@ class CommentsController < ApplicationController
   end
   def load_comment_before_action
     @comment = Comment.find_by(id: params[:id])
-    if @comment.blank?
+    if @comment.blank? || @comment.deleted
       flash.notice = "Comment doesn't exist !"
       redirect_to root_path
     end

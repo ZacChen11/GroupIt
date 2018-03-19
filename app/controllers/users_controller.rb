@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    # check if user reset password
+    # check if user reset password, if doesn't, skip the password validation
     if params[:user][:password].blank?
       @user.password_validation = false
     end

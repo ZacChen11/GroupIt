@@ -3,15 +3,11 @@ class Project < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :participants, class_name: "User", join_table: "assigned_projects_participants"
   validates :title, :description, :presence => true
+  scope :validated_projects, ->{where(deleted: false)}
 
 
   def add_participant(user)
     participants << user
-  end
-
-
-  def remove_participant(user)
-
   end
 
   def update_participant(participants_id)
@@ -43,6 +39,13 @@ class Project < ActiveRecord::Base
     tasks.each do |t|
       t.assignees.delete(user)
       t.update_assignment_status
+    end
+  end
+
+  def set_tasks_to_deleted
+    self.tasks.each do |task|
+      task.update(deleted: true)
+      task.set_subtasks_comments_hours_to_deleted
     end
   end
 

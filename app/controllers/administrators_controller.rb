@@ -29,7 +29,7 @@ class AdministratorsController < ApplicationController
   end
 
   def update_user
-    # check if user reset password
+    # check if user reset password, if doesn't, skip the password validation
     if params[:user][:password].blank?
       @user.password_validation = false
     end
@@ -43,18 +43,20 @@ class AdministratorsController < ApplicationController
   end
 
   def destroy_user
-    @user.destroy
-    redirect_to users_path
+    # skip password validation
+    @user.password_validation = false
+    @user.update(activated: false)
+    redirect_to @user
   end
 
   def index_project
-    @projects = Project.all
+    @projects = Project.all.validated_projects
     if params[:project_filter_selected] == "all_projects"
-      @projects = Project.all
+      @projects = Project.all.validated_projects
     elsif params[:project_filter_selected] == "assigned_projects"
-      @projects = current_user.assigned_projects
+      @projects = current_user.assigned_projects.validated_projects
     elsif params[:project_filter_selected] == "create_projects"
-      @projects = current_user.projects
+      @projects = current_user.projects.validated_projects
     elsif params.has_key?("project_filter_selected") && params[:project_filter_selected].blank?
       flash.notice = "please choose a scope"
       return redirect_to administrators_index_project_path
@@ -69,7 +71,7 @@ class AdministratorsController < ApplicationController
     elsif params[:task_filter_selected] == "confirmed_tasks"
       @tasks = current_user.assigned_and_confirmed_tasks
     elsif params[:task_filter_selected] == "create_tasks"
-      @tasks = current_user.tasks
+      @tasks = current_user.tasks.validated_tasks
     elsif params[:task_filter_selected] == "pending_tasks"
       @tasks = current_user.assigned_and_pending_tasks
     elsif params[:task_filter_selected] == "feature"
@@ -82,7 +84,6 @@ class AdministratorsController < ApplicationController
       flash.notice = "please choose a scope"
       return redirect_to administrators_index_task_path
     end
-
   end
 
   private
@@ -97,6 +98,5 @@ class AdministratorsController < ApplicationController
       redirect_to root_path
     end
   end
-
 
 end

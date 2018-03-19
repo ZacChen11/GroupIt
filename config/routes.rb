@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   root to: 'users#profile'
   resources :users, except: [:index, :show, :destroy] do
     member do
-
       get 'reset_password'
-
     end
   end
 

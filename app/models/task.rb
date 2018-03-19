@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
   require 'csv'
-  has_many :sub_tasks,  class_name: "Task", foreign_key: "parent_task_id", dependent: :delete_all
+  has_many :sub_tasks,  class_name: "Task", foreign_key: "parent_task_id"
   has_many :comments, dependent: :delete_all
   has_many :hours, dependent: :delete_all
   belongs_to :project
@@ -13,6 +13,7 @@ class Task < ActiveRecord::Base
   scope :created_between, lambda{ |start_time, end_time| where ('created_at BETWEEN ? And ?'), start_time, end_time }
   scope :task_status, lambda{ |status| where(:status => status)}
   scope :task_type, lambda{ |type_id| where(:task_type_id => type_id)}
+  scope :validated_tasks, ->{where(deleted: false)}
 
   def self.to_csv
     attributes = %w{id title type status total_work_time}
@@ -25,7 +26,7 @@ class Task < ActiveRecord::Base
   end
 
   def without_subtask_work_time
-    hours.map{|t| t.work_time}.sum
+    hours.validated_hours.map{|t| t.work_time}.sum
   end
 
   def task_total_work_time
@@ -43,7 +44,6 @@ class Task < ActiveRecord::Base
       end
     end
   end
-
 
   def update_task_type(type)
     # parameter type is the string of task type id
@@ -74,6 +74,15 @@ class Task < ActiveRecord::Base
     end
     # update task assignment status
     update_assignment_status
+  end
+
+  def set_subtasks_comments_hours_to_deleted
+    comments.update_all(deleted: true)
+    hours.update_all(deleted: true)
+    self.sub_tasks.each do |sub_task|
+      sub_task.update(deleted: true)
+      sub_task.set_subtasks_comments_hours_to_deleted
+    end
   end
 
 end

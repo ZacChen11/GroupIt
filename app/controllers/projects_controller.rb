@@ -4,11 +4,11 @@ class ProjectsController < ApplicationController
 
 
   def index
-    @projects = current_user.assigned_projects
+    @projects = current_user.assigned_projects.validated_projects
     if params[:project_filter_selected] == "all_projects"
-      @projects = current_user.assigned_projects
+      @projects = current_user.assigned_projects.validated_projects
     elsif params[:project_filter_selected] == "assigned_projects"
-      @projects = current_user.assigned_projects
+      @projects = current_user.assigned_projects.validated_projects
     elsif params[:project_filter_selected] == "create_projects"
       # only show the projects which are created and participated by the user
       @projects = current_user.create_projects_and_participate
@@ -37,8 +37,10 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # set deleted attribute to true when user delete a project
   def destroy
-    @project.destroy
+    set_record_to_deleted(@project)
+    @project.set_tasks_to_deleted
     redirect_to projects_path
   end
 
@@ -70,7 +72,7 @@ class ProjectsController < ApplicationController
   private
   def load_project_before_action
     @project = Project.find_by(id: params[:id])
-    if @project.blank?
+    if @project.blank? || @project.deleted
       flash.notice = "Project doesn't exist !"
       return redirect_to root_path
     end

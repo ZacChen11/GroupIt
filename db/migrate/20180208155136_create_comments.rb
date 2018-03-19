@@ -2,7 +2,7 @@ class CreateComments < ActiveRecord::Migration
   def change
     create_table :comments do |t|
       t.text :body
-      t.boolean :is_deleted, default: false
+      t.boolean :deleted, default: false
       t.boolean :edit, default: false
       t.references :user, index: true, foreign_key: true
       t.references :task, index: true, foreign_key: true

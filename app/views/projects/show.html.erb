@@ -29,9 +29,9 @@
 <br/>
 
 <div class="task-wrap">
-  <h2>Tasks (<%= @project.tasks.where(parent_task: nil).count %>)</h2>
+  <h2>Tasks (<%= @project.tasks.validated_tasks.where(parent_task: nil).count %>)</h2>
   <ul class="task-wrap_task-list">
-    <% @project.tasks.each do |task| %>
+    <% @project.tasks.validated_tasks.each do |task| %>
         <%# only display parent task %>
         <% if task.parent_task_id == nil %>
             <li>

@@ -50,7 +50,7 @@ class ReportsController < ApplicationController
 
   def load_records_from_search
     if @report.task_or_user_checked == "task"
-      @tasks = Task.created_between(@report.start_time, @report.end_time)
+      @tasks = Task.validated_tasks.created_between(@report.start_time, @report.end_time)
       if @report.task_status.present?
         # when choose task and task status
         @tasks = @tasks.task_status(@report.task_status)

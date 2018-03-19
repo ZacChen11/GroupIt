@@ -68,7 +68,8 @@ class TasksController < ApplicationController
 
   def destroy
     @project =  Project.find(params[:project_id])
-    @task.destroy
+    set_record_to_deleted(@task)
+    @task.set_subtasks_comments_hours_to_deleted
     redirect_to @project
   end
 
@@ -135,7 +136,7 @@ class TasksController < ApplicationController
   private
   def load_task_before_action
     @task = Task.find_by(id: params[:id])
-    if @task.blank?
+    if @task.blank? || @task.deleted
       flash.notice = "Task doesn't exist !"
       return redirect_to root_path
     end

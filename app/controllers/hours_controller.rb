@@ -29,7 +29,7 @@ class HoursController < ApplicationController
 
   def destroy
     @task =  Task.find(params[:task_id])
-    @hour.destroy
+    set_record_to_deleted(@hour)
     redirect_to  project_task_path(@task.project, @task)
   end
 
@@ -40,7 +40,7 @@ class HoursController < ApplicationController
 
   def load_hour_before_action
     @hour = Hour.find_by(id: params[:id])
-    if @hour.blank?
+    if @hour.blank? || @hour.deleted
       flash.notice = "Hour doesn't exist !"
       redirect_to root_path
     end

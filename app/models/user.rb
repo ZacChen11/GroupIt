@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   before_save { self.email = email.downcase }
   before_save {self.user_name = user_name.delete(' ')}
-  before_destroy :release_all_associations
+  # before_destroy :release_all_associations
   # before_destroy :release_all_assigned_tasks
   validates :user_name,  presence: true, length: {maximum: 50}, uniqueness: {case_sensitive: false}
   validates :email,  presence: true, length: {maximum: 200}, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "invalid email format"},
@@ -27,11 +27,11 @@ class User < ActiveRecord::Base
 
 
   def self.to_csv
-    attributes = %w{id user_name email first_name last_name total_work_time}
+    attributes = %w{id user_name email first_name last_name status total_work_time}
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |user|
-        csv << [user.id, user.user_name, user.email, user.first_name, user.last_name, user.user_total_work_time]
+        csv << [user.id, user.user_name, user.email, user.first_name, user.last_name, user.status, user.user_total_work_time]
       end
     end
   end
@@ -41,21 +41,21 @@ class User < ActiveRecord::Base
   end
 
   def user_total_work_time
-    hours.map{|t| t.work_time}.sum
+    hours.validated_hours.map{|t| t.work_time}.sum
   end
 
   def assigned_and_confirmed_tasks
-    assigned_tasks.where(assignment_confirmed_user_id: self.id)
+    assigned_tasks.validated_tasks.where(assignment_confirmed_user_id: self.id)
   end
 
   def assigned_and_pending_tasks
-    assigned_tasks.where(assignment_confirmed_user_id: nil)
+    assigned_tasks.validated_tasks.where(assignment_confirmed_user_id: nil)
   end
 
   # tasks which are created by the user and the user can also access them
   def create_tasks_and_can_access
     returned_tasks = []
-    tasks.each do |task|
+    tasks.validated_tasks.each do |task|
       if task.project.participants.include?(self)
         returned_tasks = returned_tasks + [task]
       end
@@ -70,10 +70,10 @@ class User < ActiveRecord::Base
 
   def have_accessed_tasks
     returned_tasks = []
-    assigned_projects.each do |project|
-      returned_tasks = returned_tasks + project.tasks
+    assigned_projects.validated_projects.each do |project|
+      returned_tasks = returned_tasks + project.tasks.validated_tasks
     end
-    returned_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks - tasks
+    returned_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks - tasks.validated_tasks
   end
 
   # return the tasks by its relevant: confirmed > pending > create > others
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   end
 
   def return_admin_tasks_by_relevant
-    assigned_and_confirmed_tasks + assigned_and_pending_tasks + create_tasks_without_being_assigned + (Task.all - assigned_and_confirmed_tasks - assigned_and_pending_tasks - create_tasks_without_being_assigned)
+    assigned_and_confirmed_tasks + assigned_and_pending_tasks + create_tasks_without_being_assigned + (Task.all.validated_tasks - assigned_and_confirmed_tasks - assigned_and_pending_tasks - create_tasks_without_being_assigned)
   end
 
   def return_taks_of_type(tasks, type)
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
   end
 
   def create_projects_and_participate
-   projects - ( projects - assigned_projects )
+   projects.validated_projects - ( projects.validated_projects - assigned_projects.validate_projects )
   end
 
   def update_role(roles_id)
@@ -113,26 +113,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def status
+    if activated
+      "Active"
+    else
+      "Inactive"
+    end
+  end
 
   private
   def set_password_validation_default_value
     self.password_validation = true
   end
 
-  def release_all_associations
-    # release projects
-    projects.delete(projects.all)
-    # release tasks
-    tasks.delete(tasks.all)
-    # release comments
-    comments.delete(comments.all)
-    # release hours
-    hours.delete(hours.all)
-    # release all assigned projects
-    assigned_projects.delete(assigned_projects.all)
-    # release all assigned tasks
-    assigned_tasks.delete(assigned_tasks.all)
-    # release all role maps and roles
-    role_maps.delete(role_maps)
-  end
+
+
 end

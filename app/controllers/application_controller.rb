@@ -31,4 +31,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_record_to_deleted(record)
+    record.update(deleted: true)
+  end
+
 end

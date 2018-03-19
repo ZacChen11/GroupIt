@@ -3,7 +3,7 @@ class CreateProjects < ActiveRecord::Migration
     create_table :projects do |t|
       t.string :title
       t.text :description
-      t.boolean :is_deleted, default: false
+      t.boolean :deleted, default: false
       t.references :user, index: true, foreign_key: true
       t.timestamps null: false
     end

@@ -45,10 +45,10 @@
   <ul class="report_wrap_user_list">
     <% if @users.present? %>
         <h2>Search Result (<%= @users.size %>)</h2>
-        <p>User ID | User Name | User Email | Task Total Work Time (h)</p>
+        <p>User ID | User Name | User Email | User Status | Task Total Work Time (h)</p>
         <br/>
         <% @users.each do |t| %>
-            <li><%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.user_total_work_time %> (h)</li>
+            <li><%= t.id %> | <%= t.user_name %> | <%= t.email %> | <%= t.status %> | <%= t.user_total_work_time %> (h)</li>
         <% end %>
     <% end %>
   </ul>
