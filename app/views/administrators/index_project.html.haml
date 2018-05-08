@@ -15,8 +15,9 @@
         %li
           = link_to project.title, project, class: 'project_title'
         %br
-= link_to "Create a New Project", new_project_path, class: "new"
+= link_to "Create a New Project", new_project_path, remote:true, class: "new"
 %br
 %br
+.project-form{style: "display: none;"}
 %h3
   = link_to "<< Back to Personal Profile", root_path
